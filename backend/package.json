@@ -1,0 +1,26 @@
+{
+  "name": "smart-note",
+  "version": "1.0.0",
+  "description": "une application qui permet aux étudiants de bien comprendre leurs cours",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "smart-note"
+  ],
+  "author": "van'siem fono gracia",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-myconnection": "^1.0.4",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.3",
+    "nodemailer": "^7.0.10",
+    "uuid": "^8.3.2"
+  }
+}
