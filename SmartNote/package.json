@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@react-email/components": "1.0.1",
+    "@react-email/tailwind": "2.0.1",
     "@tailwindcss/vite": "^4.1.16",
     "axios": "^1.12.2",
+    "emailjs-com": "^3.2.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.552.0",

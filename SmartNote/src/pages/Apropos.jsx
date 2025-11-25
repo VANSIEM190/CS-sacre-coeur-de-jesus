@@ -1,70 +1,51 @@
-import React from 'react'
-import {Navbar , Footer} from '../components/layout'
+import { motion } from 'framer-motion'
 
-
-const  Apropos = () => {
+const Apropos = () => {
   return (
     <>
-    <Navbar/>
-    <div>
-      <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 py-16 px-6">
-      <div className="max-w-4xl mx-auto text-center space-y-8">
-        <h1 className="text-4xl font-bold mb-4 text-gray-800 dark:text-indigo-400">
-          À propos de NotePlus
+      <motion.section
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="text-gray-600 body-font overflow-hidden"
+      >
+        <h1 className="text-4xl font-bold text-center mb-10">
+          À Propos de Nous
         </h1>
 
-        <p className="text-lg leading-relaxed">
-          Bienvenue sur <span className="font-semibold">NotePlus</span>, la
-          plateforme conçue pour aider les élèves et étudiants à mieux{" "}
-          <span className="font-semibold text-indigo-500">
-            comprendre leurs notes
-          </span>{" "}
-          et à progresser avec confiance.
-        </p>
+        <div className="container px-5 py-24 mx-auto">
+          <div className="lg:w-full  flex justify-center flex-wrap">
+            <div className=" w-3/4 shadow-2xl  p-5 rounded-2xl lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+              <h1 className="text-gray-900 text-center text-2xl font-medium mb-4">
+                COMPLEXE SCOLAIRE SACRE{' '}
+                <span className="text-blue-500">COEUR</span> DE JESUS
+              </h1>
 
-        <section className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-md space-y-4">
-          <h2 className="text-gray-800 text-2xl font-semibold dark:text-indigo-500">
-            Ce que nous proposons
-          </h2>
-          <ul className="text-left space-y-3">
-            <li>🧩 Analyse intelligente des notes pour une compréhension claire.</li>
-            <li>
-              🤖 Quiz personnalisés générés par l’IA selon ton niveau et tes
-              résultats.
-            </li>
-            <li>📊 Tableau de bord interactif pour suivre ton évolution.</li>
-          </ul>
-        </section>
-
-        <section className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-md space-y-4">
-          <h2 className="text-gray-800 text-2xl font-semibold dark:text-indigo-500"> Notre objectif</h2>
-          <p>
-            Rendre l’apprentissage <span className="font-semibold">plus
-            interactif, motivant et personnalisé</span>. Avec NotePlus, chaque
-            étudiant devient acteur de sa réussite — accompagné par
-            l’intelligence artificielle.
-          </p>
-        </section>
-
-        <section className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-md space-y-4">
-          <h2 className="text-gray-800 text-2xl font-semibold dark:text-indigo-500"> Notre vision</h2>
-          <p>
-            Faire de l’éducation numérique un espace où la technologie{" "}
-            <span className="italic">n’évalue pas seulement</span>, mais{" "}
-            <span className="font-semibold">accompagne, explique et encourage</span>.
-          </p>
-        </section>
-
-        <p className="text-lg">
-          🌟 Rejoins-nous dès aujourd’hui et découvre une nouvelle manière de
-          comprendre tes notes, d’apprendre avec plaisir et de suivre ton
-          évolution.
-        </p>
-      </div>
-    </div>
-  </div>
-  <Footer/>
-  </>
+              <p className="leading-relaxed mb-4">
+                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
+                sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
+                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
+                seitan poutine tumeric. Gastropub blue bottle austin listicle
+                pour-over, neutra jean. Fam locavore kickstarter distillery.
+                Mixtape chillwave tumeric sriracha taximy chia microdosing tilde
+                DIY. XOXO fam inxigo juiceramps cornhole raw denim forage
+                brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub
+                blue bottle austin listicle pour-over, neutra jean. Fam locavore
+                kickstarter distillery. Mixtape chillwave tumeric sriracha
+                taximy chia microdosing tilde DIY. XOXO fam inxigo juiceramps
+                cornhole raw denim forage brooklyn. Everyday carry +1 seitan
+                poutine tumeric. Gastropub blue bottle austin listicle
+                pour-over, neutra jean. Fam locavore kickstarter distillery.
+                Mixtape chillwave tumeric sriracha taximy chia microdosing tilde
+                DIY. XOXO fam inxigo juiceramps cornhole raw denim forage
+                brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub
+                blue bottle austin listicle pour-over, neutra jean.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+    </>
   )
 }
 
