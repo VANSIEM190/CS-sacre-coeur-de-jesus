@@ -55,7 +55,11 @@ export default function AnnoncesPage() {
             </div>
           </header>
 
-          {isAdmin ? <AdminPanel /> : <AnnouncementsView />}
+          {isAdmin ? (
+            <AdminPanel setAdmin={setIsAdmin} admin={isAdmin} />
+          ) : (
+            <AnnouncementsView />
+          )}
         </div>
       </div>
       <Footer />

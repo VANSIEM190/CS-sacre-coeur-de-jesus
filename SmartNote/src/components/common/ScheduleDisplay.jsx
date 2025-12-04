@@ -1,133 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScheduleCard } from './ScheduleCard'
 import { CalendarIcon, ClockIcon } from 'lucide-react'
-const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi']
-const scheduleData = {
-  Lundi: [
-    {
-      startTime: '08:00',
-      endTime: '09:30',
-      subject: 'Mathématiques',
-      teacher: 'Prof. Martin',
-      classroom: 'A101',
-      color: '#4361EE',
-    },
-    {
-      startTime: '10:00',
-      endTime: '11:30',
-      subject: 'Histoire-Géographie',
-      teacher: 'Prof. Dubois',
-      classroom: 'B205',
-      color: '#E74694',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:30',
-      subject: 'Sciences Physiques',
-      teacher: 'Prof. Leroy',
-      classroom: 'C110',
-      color: '#10B981',
-    },
-  ],
-  Mardi: [
-    {
-      startTime: '08:00',
-      endTime: '09:30',
-      subject: 'Français',
-      teacher: 'Prof. Bernard',
-      classroom: 'A203',
-      color: '#E74694',
-    },
-    {
-      startTime: '10:00',
-      endTime: '11:30',
-      subject: 'Anglais',
-      teacher: 'Prof. Wilson',
-      classroom: 'B104',
-      color: '#10B981',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:30',
-      subject: 'Éducation Physique',
-      teacher: 'Prof. Lambert',
-      classroom: 'Gymnase',
-      color: '#4361EE',
-    },
-  ],
-  Mercredi: [
-    {
-      startTime: '08:00',
-      endTime: '09:30',
-      subject: 'Arts Plastiques',
-      teacher: 'Prof. Moreau',
-      classroom: 'D101',
-      color: '#10B981',
-    },
-    {
-      startTime: '10:00',
-      endTime: '11:30',
-      subject: 'Musique',
-      teacher: 'Prof. Petit',
-      classroom: 'Salle de Musique',
-      color: '#4361EE',
-    },
-  ],
-  Jeudi: [
-    {
-      startTime: '08:00',
-      endTime: '09:30',
-      subject: 'Mathématiques',
-      teacher: 'Prof. Martin',
-      classroom: 'A101',
-      color: '#4361EE',
-    },
-    {
-      startTime: '10:00',
-      endTime: '11:30',
-      subject: 'SVT',
-      teacher: 'Prof. Roux',
-      classroom: 'C210',
-      color: '#10B981',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:30',
-      subject: 'Technologie',
-      teacher: 'Prof. Garcia',
-      classroom: 'Atelier',
-      color: '#E74694',
-    },
-  ],
-  Vendredi: [
-    {
-      startTime: '08:00',
-      endTime: '09:30',
-      subject: 'Français',
-      teacher: 'Prof. Bernard',
-      classroom: 'A203',
-      color: '#E74694',
-    },
-    {
-      startTime: '10:00',
-      endTime: '11:30',
-      subject: 'Histoire-Géographie',
-      teacher: 'Prof. Dubois',
-      classroom: 'B205',
-      color: '#4361EE',
-    },
-    {
-      startTime: '13:00',
-      endTime: '14:30',
-      subject: 'Anglais',
-      teacher: 'Prof. Wilson',
-      classroom: 'B104',
-      color: '#10B981',
-    },
-  ],
-}
+import { useStudent } from '@/contexts/StudentContext'
+import { toast } from 'react-toastify'
+const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+
 export function ScheduleDisplay() {
   const [selectedDay, setSelectedDay] = useState('Lundi')
+  const [horraires, setHorraires] = useState([])
+  const { studentData, loading } = useStudent()
+
+  useEffect(() => {
+    const fetchScheduleForOption = async () => {
+      if (!loading && studentData) {
+        try {
+          const response = await fetch(`/horraires/${studentData}.json`)
+          const data = await response.json()
+          setHorraires(data)
+          console.log('Horaires fetchés selon option:', data)
+        } catch (error) {
+          toast.error('Erreur fetch des horaires:', error.message)
+        }
+      }
+    }
+    fetchScheduleForOption()
+  }, [loading, studentData])
+
   return (
     <div className="mt-8">
       <div className="flex flex-wrap items-center justify-between mb-6">
@@ -162,17 +60,19 @@ export function ScheduleDisplay() {
           <ClockIcon className="text-[#4361EE] w-5 h-5 mr-2" />
           <h3 className="font-medium">{selectedDay}</h3>
         </div>
-        {scheduleData[selectedDay].map((schedule, index) => (
-          <ScheduleCard
-            key={index}
-            startTime={schedule.startTime}
-            endTime={schedule.endTime}
-            subject={schedule.subject}
-            teacher={schedule.teacher}
-            classroom={schedule.classroom}
-            color={schedule.color}
-          />
-        ))}
+        {horraires.map(horr => {
+          return horr[selectedDay]?.map((session, idx) => (
+            <ScheduleCard
+              key={idx}
+              startTime={session.heure.split(' - ')[0]}
+              endTime={session.heure.split(' - ')[1]}
+              subject={session.matiere}
+              teacher={session.prof}
+              classroom={session.salle}
+              color="#4361EE"
+            />
+          ))
+        })}
       </div>
     </div>
   )

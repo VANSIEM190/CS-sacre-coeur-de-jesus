@@ -1,20 +1,56 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AnnonceCard as AnnouncementCard } from '@/components/common'
+import { db } from '@/services/firebaseConfig'
+import { collection, getDocs } from 'firebase/firestore'
 import { Filter } from 'lucide-react'
+import { toast } from 'react-toastify'
+
+const categories = [
+  { value: 'all', label: 'Toutes les catégories', icon: '📋' },
+  { value: 'general', label: 'Général', icon: '📢' },
+  { value: 'scolaire', label: 'Scolaire', icon: '📚' },
+  { value: 'events', label: 'Événements', icon: '🎉' },
+  { value: 'urgent', label: 'Urgent', icon: '⚠️' },
+  { value: 'sports', label: 'Sports', icon: '⚽' },
+]
 
 export default function AnnouncementsView() {
   const [announcements, setAnnouncements] = useState([])
   const [loading, setLoading] = useState(true)
   const [category, setCategory] = useState('all')
 
-  const categories = [
-    { value: 'all', label: 'Toutes les catégories', icon: '📋' },
-    { value: 'general', label: 'Général', icon: '📢' },
-    { value: 'academic', label: 'Académique', icon: '📚' },
-    { value: 'events', label: 'Événements', icon: '🎉' },
-    { value: 'urgent', label: 'Urgent', icon: '⚠️' },
-    { value: 'sports', label: 'Sports', icon: '⚽' },
-  ]
+  const filteredAnnouncements = useCallback(
+    announcementsList => {
+      if (category === 'all') {
+        return announcementsList
+      }
+      return announcementsList.filter(
+        announcement => announcement.category === category
+      )
+    },
+    [category]
+  )
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const announcementsRef = collection(db, 'announcements')
+        const snapshot = await getDocs(announcementsRef)
+        const announcementsList = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        const filteredAnnouncementsList =
+          filteredAnnouncements(announcementsList)
+        setAnnouncements(filteredAnnouncementsList)
+        setLoading(false)
+        console.log('Annonces fetchées :', announcementsList)
+      } catch (error) {
+        toast.error('Erreur lors du fetch des annonces : ' + error.message)
+      }
+    }
+    fetchAnnouncements()
+  }, [filteredAnnouncements])
 
   return (
     <div className="space-y-6">
@@ -25,7 +61,7 @@ export default function AnnouncementsView() {
         </span>
         <select
           value={category}
-          onChange={value => setCategory(value)}
+          onChange={e => setCategory(e.target.value)}
           className="flex items-center gap-2"
         >
           {categories.map(cat => (

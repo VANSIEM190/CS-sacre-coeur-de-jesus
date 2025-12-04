@@ -8,7 +8,7 @@ import StudentsManagement from '../pages/admins/StudentsManagement'
 import PersonnelManagement from '../pages/admins/PersonnelManagement'
 import Palmares from '../pages/admins/Palmares'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
-import AnnouncementsView from '../pages/clients/Annonce'
+import ChatAI from '@/pages/clients/NoteAIPage.jsx'
 
 const RouterApp = () => {
   return (
@@ -23,6 +23,7 @@ const RouterApp = () => {
         <Route path="/eleves" element={<StudentsManagement />} />
         <Route path="/personnel" element={<PersonnelManagement />} />
         <Route path="/palmares" element={<Palmares />} />
+        <Route path="/note-ai" element={<ChatAI />} />
       </Routes>
     </Suspense>
   )

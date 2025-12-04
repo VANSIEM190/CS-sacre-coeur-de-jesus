@@ -4,11 +4,15 @@ import { NavbarRetourHome, Footer } from '@/components/layout'
 import { useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { toast } from 'react-toastify'
+import { supabase } from '@/supabase/supabaseConfig'
+import { db, auth } from '@/services/firebaseConfig'
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 const regex = /^[a-zA-ZÀ-ÿ '-]+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const regexTelephone = /^\+243[0-9]{9}$/
-
 const validationSchema = Yup.object({
   nom: Yup.string()
     .required('Le nom est requis')
@@ -153,17 +157,17 @@ const FormulaireInscription = () => {
   const [profilePhoto, setProfilePhoto] = useState(null)
   const [photoPreview, setPhotoPreview] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const onSwitchToRegister = () => {
     navigate('/connexion')
   }
 
-  const handlePhotoUpload = (e, setFieldValue) => {
+  const handlePhotoUpload = e => {
     const file = e.target.files[0]
     if (file) {
       setProfilePhoto(file)
-      setFieldValue('photo', file)
       const reader = new FileReader()
       reader.onloadend = () => {
         setPhotoPreview(reader.result)
@@ -171,6 +175,111 @@ const FormulaireInscription = () => {
       reader.readAsDataURL(file)
     }
   }
+
+  // Upload la photo dans Supabase Storage
+  const uploadProfilePhoto = async () => {
+    if (!profilePhoto) return null
+
+    const fileExt = profilePhoto.name.split('.').pop()
+    const fileName = `${Math.random()}.${fileExt}`
+    const filePath = `profile_photos/${fileName}`
+
+    const { data, error } = await supabase.storage
+      .from('SACRECOEUR')
+      .upload(filePath, profilePhoto)
+
+    if (error) {
+      toast.error('Erreur upload photo : ' + error.message)
+      return null
+    }
+
+    const { data: url, error: urlError } = await supabase.storage
+      .from('SACRECOEUR')
+      .getPublicUrl(filePath)
+
+    if (urlError) {
+      toast.error('Erreur récupération URL photo : ' + urlError.message)
+      return null
+    }
+    console.log("Photo uploadée à l'URL :", url.publicUrl)
+    return url.publicUrl
+  }
+
+  const saveUserInfo = async (userId, values, photoUrl) => {
+    try {
+      const pourcentage = values.pourcentage ? parseInt(values.pourcentage) : 0
+      const studentsDBRef = doc(db, 'students', userId)
+      await setDoc(studentsDBRef, {
+        user_id: userId,
+        nom: values.nom,
+        postnom: values.postNom,
+        sexe: values.sexe,
+        datenaissance: values.dateNaissance || null,
+        lieunaissance: values.lieuNaissance,
+        nationalite: values.nationalite,
+        nompere: values.nomPere,
+        nommere: values.nomMere,
+        territoire: values.territoire,
+        commune: values.commune,
+        secteur: values.secteur,
+        village: values.village,
+        adresse: values.adresse,
+        email: values.email,
+        telephone: values.telephone,
+        motdepasse: values.motdepasse,
+        optioneleve: values.optionEleve,
+        pourcentage: pourcentage,
+        photo_path: photoUrl || '',
+        created_at: serverTimestamp() || new Date(),
+      })
+      return true
+    } catch (err) {
+      console.error('Erreur:', err)
+      return false
+    }
+  }
+
+  const registerStudent = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      if (!userCredential) {
+        toast.error("Erreur lors de l'inscription : utilisateur non créé")
+        return null
+      }
+      return userCredential.user.uid
+    } catch (error) {
+      toast.error("Erreur lors de l'inscription : " + error.message)
+      return null
+    }
+  }
+
+  const handleSubmit = async values => {
+    setIsLoading(true)
+    try {
+      const userId = await registerStudent(values.email, values.motdepasse)
+      if (!userId) return
+
+      // Upload la photo si sélectionnée
+      const photoUrl = await uploadProfilePhoto()
+      if (photoUrl) values.photo_path = photoUrl
+
+      // Enregistrement des infos utilisateur
+      const saved = await saveUserInfo(userId, values, photoUrl)
+      if (!saved) return
+
+      setIsLoading(false)
+      setSubmitted(true)
+    } catch (error) {
+      toast.error("Erreur lors de l'inscription : " + error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   if (submitted) {
     return (
       <div className="min-h-screen  flex items-center justify-center p-4">
@@ -198,7 +307,7 @@ const FormulaireInscription = () => {
   return (
     <>
       <NavbarRetourHome />
-      <div className="min-h-screen py-12 px-4 mt-13">
+      <div className="min-h-screen py-12 px-4 mt-12">
         <div className="max-w-5xl mx-auto">
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
             {/* Header */}
@@ -218,12 +327,7 @@ const FormulaireInscription = () => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values, actions) => {
-                setSubmitted(true)
-                console.log('Form Values:', values)
-                console.log('Profile Photo:', profilePhoto)
-                actions.setSubmitting(false)
-              }}
+              onSubmit={handleSubmit}
             >
               {({
                 values,
@@ -662,11 +766,43 @@ const FormulaireInscription = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         >
                           <option value="">Sélectionnez une option</option>
-                          <option value="Scientifique">Scientifique</option>
-                          <option value="Littéraire">Littéraire</option>
-                          <option value="Commerciale">Commerciale</option>
-                          <option value="Technique">Technique</option>
-                          <option value="Pédagogique">Pédagogique</option>
+                          <option value="1 Scientifique">1 Scientifique</option>
+                          <option value="2 Scientifique">2 Scientifique</option>
+                          <option value="3 Scientifique">3 Scientifique</option>
+                          <option value="4 Scientifique">4 Scientifique</option>
+                          <option value="1 Littéraire">1 Littéraire</option>
+                          <option value="2 Littéraire">2 Littéraire</option>
+                          <option value="3 Littéraire">3 Littéraire</option>
+                          <option value="4 Littéraire">4 Littéraire</option>
+                          <option value="1 Commerciale">1 Commerciale</option>
+                          <option value="2 Commerciale">2 Commerciale</option>
+                          <option value="3 Commerciale">3 Commerciale</option>
+                          <option value="4 Commerciale">4 Commerciale</option>
+                          <option value="1 Pédagogique">1 Pédagogique</option>
+                          <option value="2 Pédagogique">2 Pédagogique</option>
+                          <option value="3 Pédagogique">3 Pédagogique</option>
+                          <option value="4 Pédagogique">4 Pédagogique</option>
+                          <option value="1 Coupe et Couture">
+                            1 Coupe et Couture
+                          </option>
+                          <option value="2 Coupe et Couture">
+                            2 Coupe et Couture
+                          </option>
+                          <option value="3 Coupe et Couture">
+                            3 Coupe et Couture
+                          </option>
+                          <option value="4 Coupe et Couture">
+                            4 Coupe et Couture
+                          </option>
+                          <option value="8 ème">8 ème</option>
+                          <option value="7 ème">7 ème</option>
+                          <option value="6 ème">6 ème</option>
+                          <option value="5 ème">5 ème</option>
+                          <option value="4 ème">4 ème</option>
+                          <option value="3 ème">3 ème</option>
+                          <option value="2 ème">2 ème</option>
+                          <option value="1 ème">1 ème</option>
+                          <option value="Maternelle">Maternelle</option>
                         </select>
                         {errors.option && touched.option && (
                           <div className="text-red-500 text-sm mt-1">
@@ -714,9 +850,10 @@ const FormulaireInscription = () => {
                   <div className="flex justify-center pt-6">
                     <button
                       type="submit"
-                      className="px-12 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      disabled={isLoading}
+                      className="px-12 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Soumettre l'Inscription
+                      {isLoading ? 'chargement...' : "Soumettre l'Inscription"}
                     </button>
                   </div>
                 </form>

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 const ElevesLinks = [
   { name: 'Mes Cours', href: '/mes-cours' },
-  { name: 'Note AI', href: '#' },
+  { name: 'Note AI', href: '/note-ai' },
   { name: 'Horraires', href: '/horraires' },
   { name: 'Annonces', href: '/annonces' },
   { name: 'Evenements', href: '#' },

@@ -8,6 +8,7 @@ import {
   NosProgrammes,
 } from '@/components/common'
 import { ChevronRightIcon, StarIcon } from 'lucide-react'
+import { supabase } from '@/supabase/supabaseConfig'
 
 const stats = [
   { number: '8+', label: "Années d'Excellence" },
@@ -22,6 +23,8 @@ const LandingPage = () => {
   const onNavigateToRegister = () => {
     navigate('/inscription')
   }
+
+  console.log(supabase)
 
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50">

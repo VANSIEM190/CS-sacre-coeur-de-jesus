@@ -16,7 +16,7 @@ export const ScheduleCard = ({
       <div className="flex justify-between items-start">
         <div>
           <h3 className="font-semibold text-lg">{subject}</h3>
-          <p className="text-sm text-gray-600">{teacher}</p>
+          <p className="text-sm text-gray-600">Prof : {teacher}</p>
           <p className="text-sm text-gray-500 mt-2">Salle: {classroom}</p>
         </div>
         <div className="text-right">

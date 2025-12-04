@@ -1,34 +1,45 @@
 import React from 'react'
 import { MailIcon, PhoneIcon, MapPinIcon } from 'lucide-react'
-// import { SMTPClient } from 'emailjs'
 import emailjs from 'emailjs-com'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+
+const regex = /^[a-zA-Z1-9éè-]+$/
+const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+const schemaValidation = Yup.object({
+  name: Yup.string()
+    .required('le nom est requis')
+    .min(4, 'le nom doit comporter au moins 4 caractères')
+    .max(20, 'le nom ne doit pas depasser 20 caractères')
+    .matches(
+      regex,
+      "le nom ne doit pas comporter @ ou d'autres caractères spéciaux"
+    ),
+  subject: Yup.string()
+    .required("l'object est requis")
+    .min(4, "l'object doit comporter au moins 4 caractères")
+    .max(50, "l'object ne doit pas depasser 50 caractères"),
+  email: Yup.string()
+    .required('email est requis')
+    .email('email est incorrect')
+    .matches(regexEmail, "format d'email invalide"),
+  message: Yup.string().required('le message est requis'),
+})
+
+const initialeValues = {
+  name: '',
+  subject: '',
+  email: '',
+  message: '',
+}
 
 const SectionContact = () => {
-  const [values, setValues] = React.useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
-
-  const handleChange = e => {
-    const { name, value } = e.target
-    setValues({ ...values, [name]: value })
-  }
-
   ;(function () {
     emailjs.init('_QdYp5ttx0im4yV0m')
   })()
 
-  const template = {
-    name: values.name,
-    email: values.email,
-    subject: values.subject,
-    message: values.message,
-  }
-
-  const sendEmail = event => {
-    event.preventDefault()
+  const sendEmail = template => {
     emailjs
       .send('service_ej5xuoc', 'template_voj1mqn', template)
       .then(response => {
@@ -84,71 +95,119 @@ const SectionContact = () => {
             </div>
           </div>
           <div className="bg-white rounded-3xl p-8 shadow-xl">
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nom Complet
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                    placeholder="Votre nom"
-                    onChange={handleChange}
-                    value={values.name}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                    placeholder="votre@email.com"
-                    onChange={handleChange}
-                    value={values.email}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Sujet
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="Sujet de votre message"
-                  onChange={handleChange}
-                  value={values.subject}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  rows={5}
-                  name="message"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="Votre message..."
-                  onChange={handleChange}
-                  value={values.message}
-                ></textarea>
-              </div>
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                  onClick={sendEmail}
-                >
-                  Envoyer le Message
-                </button>
-              </div>
-            </form>
+            <Formik
+              initialValues={initialeValues}
+              validationSchema={schemaValidation}
+              onSubmit={(values, { resetForm }) => {
+                const template = {
+                  name: values.name,
+                  email: values.email,
+                  subject: values.subject,
+                  message: values.message,
+                }
+                sendEmail(template)
+                resetForm()
+              }}
+            >
+              {({
+                values,
+                handleChange,
+                errors,
+                touched,
+                handleBlur,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nom Complet
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                        placeholder="Votre nom"
+                        onChange={handleChange}
+                        value={values.name}
+                        onBlur={handleBlur}
+                      />
+                      {errors.name && touched.name && (
+                        <div className="text-red-500 text-sm mt-1">
+                          {errors.name}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                        placeholder="votre@email.com"
+                        onChange={handleChange}
+                        value={values.email}
+                        onBlur={handleBlur}
+                      />
+                      {errors.email && touched.email && (
+                        <div className="text-red-500 text-sm mt-1">
+                          {errors.email}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sujet
+                    </label>
+                    <input
+                      type="text"
+                      name="subject"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                      placeholder="Sujet de votre message"
+                      onChange={handleChange}
+                      value={values.subject}
+                      onBlur={handleBlur}
+                    />
+                    {errors.subject && touched.subject && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {errors.subject}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      rows={5}
+                      name="message"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                      placeholder="Votre message..."
+                      onChange={handleChange}
+                      value={values.message}
+                      onBlur={handleBlur}
+                    ></textarea>
+                    {errors.message && touched.message && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {errors.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      onClick={sendEmail}
+                    >
+                      Envoyer le Message
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>
