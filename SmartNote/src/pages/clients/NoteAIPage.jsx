@@ -89,13 +89,14 @@ export default function ChatAI() {
   return (
     <>
       <NavbarRetourHome />
-      <div className="p-5 bg-gray-100 min-h-screen mt-18">
-        <div className="bg-white rounded-xl p-4 shadow-lg h-[85vh] overflow-auto">
+      <div className="p-5 bg-gray-100 min-h-screen ">
+        <div className="bg-white rounded-xl p-4 shadow-lg h-[73vh] overflow-auto mt-19">
           {/* Affichage des messages */}
           {messages.map(msg => (
             <div key={msg.id} className="my-4 flex justify-start">
-              <div className="bg-gray-200 p-3 rounded-xl w-full">
+              <div className=" p-3 rounded-xl w-full">
                 <AnimatedMarkdown text={msg.text} />
+                <hr className="my-2" />
               </div>
             </div>
           ))}

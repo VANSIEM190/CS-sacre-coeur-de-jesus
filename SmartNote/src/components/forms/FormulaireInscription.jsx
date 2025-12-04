@@ -394,7 +394,7 @@ const FormulaireInscription = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Entrez le nom"
                         />
-                        {errors.nom && (
+                        {errors.nom && touched.nom && (
                           <div className="text-red-500 text-sm mt-1">
                             {errors.nom}
                           </div>

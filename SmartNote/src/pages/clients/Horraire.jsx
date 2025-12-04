@@ -2,6 +2,8 @@ import React from 'react'
 import { ScheduleDisplay } from '@/components/common'
 import { Footer, Navbar } from '@/components/layout'
 import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
+import { jsPDF } from 'jspdf'
+
 export function Horaires() {
   return (
     <>
@@ -43,12 +45,6 @@ export function Horaires() {
                     <span>Fin des cours à 12h15 au plus tard</span>
                   </li>
                 </ul>
-              </div>
-              <div className="card">
-                <h3 className="font-bold text-lg mb-4">Télécharger</h3>
-                <button className="btn-primary w-full mb-3 flex items-center justify-center">
-                  <span>Version PDF</span>
-                </button>
               </div>
             </div>
           </div>

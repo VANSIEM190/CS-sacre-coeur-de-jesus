@@ -1,6 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const StudentsList = ({ students = [] }) => {
+  const navigate = useNavigate()
   if (!students.length) {
     return <p className="text-gray-500">Aucun élève trouvé.</p>
   }
@@ -26,7 +28,10 @@ const StudentsList = ({ students = [] }) => {
             </div>
             <p className="text-sm text-gray-500"> {student.email}</p>
             <div className="mt-3 flex items-center space-x-2">
-              <button className="px-3 py-1 text-sm rounded-md bg-linear-to-r from-blue-600 to-indigo-600 text-white">
+              <button
+                className="px-3 py-1 text-sm rounded-md bg-linear-to-r from-blue-600 to-indigo-600 text-white cursor-pointer"
+                onClick={() => navigate(`/eleves/${student.user_id}`)}
+              >
                 Voir
               </button>
               <button className="px-3 py-1 text-sm rounded-md border border-red-200 text-red-600 bg-red-50">
