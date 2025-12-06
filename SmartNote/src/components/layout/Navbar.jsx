@@ -61,7 +61,7 @@ const Navbar = () => {
             >
               Contact
             </a>
-            {studentData.user_id ? null : (
+            {studentData ? null : (
               <button
                 onClick={() => {
                   onNavigateToConnetion()

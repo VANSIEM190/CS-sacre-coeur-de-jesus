@@ -62,7 +62,10 @@ export default function AnnoncesPage() {
           </header>
 
           {isVisiblePanel ? (
-            <AdminPanel setAdmin={setIsvisiblePanel} admin={isVisiblePanel} />
+            <AdminPanel
+              setPanelIsVisible={setIsvisiblePanel}
+              panelIsVisible={isVisiblePanel}
+            />
           ) : (
             <AnnouncementsView />
           )}

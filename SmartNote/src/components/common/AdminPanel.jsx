@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Trash2 } from 'lucide-react'
 import { db } from '@/services/firebaseConfig'
+import { toast } from 'react-toastify'
+import AnnouncementsView from '@/pages/clients/Annonce.jsx'
 import {
   addDoc,
   getDocs,
@@ -9,10 +11,8 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore'
-import { toast } from 'react-toastify'
-import AnnouncementsView from '@/pages/clients/Annonce.jsx'
 
-export default function AdminPanel({ setAdmin, admin }) {
+export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
   const [announcements, setAnnouncements] = useState([])
   const [loading, setLoading] = useState(false)
   const [valueAnnonce, setValueAnnonce] = useState({
@@ -41,7 +41,7 @@ export default function AdminPanel({ setAdmin, admin }) {
         createdAt: serverTimestamp() || new Date(),
       })
       setLoading(false)
-      setAdmin(false)
+      setPanelIsVisible(false)
       toast.success('Annonce publiée avec succès !')
     } catch (error) {
       toast.error('Erreur lors de la publication : ' + error.message)
@@ -82,7 +82,7 @@ export default function AdminPanel({ setAdmin, admin }) {
     }
   }
 
-  return admin ? (
+  return panelIsVisible ? (
     <div className="grid gap-8 lg:grid-cols-2">
       <div className="shadow-xl border-0 bg-white">
         <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg p-3">

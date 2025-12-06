@@ -10,7 +10,7 @@ import Palmares from '../pages/admins/Palmares'
 import PublierCours from '../pages/admins/PublierCours'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
 import ChatAI from '@/pages/clients/NoteAIPage.jsx'
-import ProfilStudent from '@/pages/clients/ProfilStudent.jsx'
+import ProfilStudent from '@/pages/admins/ProfilStudent.jsx'
 
 const RouterApp = () => {
   return (
