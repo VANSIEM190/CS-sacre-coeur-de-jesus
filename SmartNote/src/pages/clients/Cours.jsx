@@ -1,87 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Navbar, Footer } from '@/components/layout'
 import { CourseCard } from '@/components/common'
-import { SearchIcon, FilterIcon, BookOpenIcon } from 'lucide-react'
+import {
+  SearchIcon,
+  FilterIcon,
+  BookOpenIcon,
+  FileTextIcon,
+} from 'lucide-react'
 import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
+import { db } from '@/services/firebaseConfig'
+import { collection, getDocs, query, orderBy, doc } from 'firebase/firestore'
+import { toast } from 'react-toastify'
+
 const subjects = [
   'Tous',
   'Mathématiques',
   'Français',
   'Histoire-Géographie',
-  'Sciences',
+  'Chimie',
   'Anglais',
-  'Arts',
 ]
-const coursesData = [
-  {
-    title: 'Introduction aux équations du second degré',
-    subject: 'Mathématiques',
-    teacher: 'Prof. Martin',
-    date: '15 Jan 2024',
-    fileSize: '2.4 MB',
-    color: '#4361EE',
-  },
-  {
-    title: 'La révolution française - Chapitre 3',
-    subject: 'Histoire-Géographie',
-    teacher: 'Prof. Dubois',
-    date: '12 Jan 2024',
-    fileSize: '3.1 MB',
-    color: '#E74694',
-  },
-  {
-    title: 'Les figures de style en poésie',
-    subject: 'Français',
-    teacher: 'Prof. Bernard',
-    date: '10 Jan 2024',
-    fileSize: '1.8 MB',
-    color: '#10B981',
-  },
-  {
-    title: 'Le système solaire et les planètes',
-    subject: 'Sciences',
-    teacher: 'Prof. Leroy',
-    date: '08 Jan 2024',
-    fileSize: '4.2 MB',
-    color: '#4361EE',
-  },
-  {
-    title: 'Present Perfect vs Past Simple',
-    subject: 'Anglais',
-    teacher: 'Prof. Wilson',
-    date: '05 Jan 2024',
-    fileSize: '1.5 MB',
-    color: '#E74694',
-  },
-  {
-    title: "Géométrie dans l'espace",
-    subject: 'Mathématiques',
-    teacher: 'Prof. Martin',
-    date: '03 Jan 2024',
-    fileSize: '2.9 MB',
-    color: '#4361EE',
-  },
-  {
-    title: 'Les mouvements artistiques du XXe siècle',
-    subject: 'Arts',
-    teacher: 'Prof. Moreau',
-    date: '29 Déc 2023',
-    fileSize: '5.6 MB',
-    color: '#10B981',
-  },
-  {
-    title: 'La photosynthèse et la respiration',
-    subject: 'Sciences',
-    teacher: 'Prof. Roux',
-    date: '27 Déc 2023',
-    fileSize: '2.2 MB',
-    color: '#E74694',
-  },
-]
+
 export function Cours() {
   const [selectedSubject, setSelectedSubject] = useState('Tous')
+  const [coursData, setCoursData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const filteredCourses = coursesData.filter(course => {
+
+  useEffect(() => {
+    const fetchCours = async () => {
+      try {
+        const coursQuery = query(
+          collection(db, 'course'),
+          orderBy('title', 'asc')
+        )
+        const CoursQuerySnapshop = await getDocs(coursQuery)
+        const allCours = CoursQuerySnapshop.docs.map(cour => ({
+          id: doc.id,
+          ...cour.data(),
+        }))
+        console.log(allCours)
+        setCoursData(allCours)
+      } catch (error) {
+        toast.error(
+          'un problème est survenue lors de la récupèration des cours',
+          error.message
+        )
+      }
+    }
+    fetchCours()
+  }, [])
+
+  const filteredCourses = coursData.filter(course => {
+    console.log(course)
     const matchesSubject =
       selectedSubject === 'Tous' || course.subject === selectedSubject
     const matchesSearch =
@@ -89,6 +60,7 @@ export function Cours() {
       course.subject.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesSubject && matchesSearch
   })
+
   return (
     <>
       <NavbarRetourHome />
@@ -124,9 +96,9 @@ export function Cours() {
             </div>
             <div className="bg-white rounded-xl shadow-sm p-2 overflow-x-auto">
               <div className="flex space-x-2">
-                {subjects.map(subject => (
+                {subjects.map((subject, index) => (
                   <button
-                    key={subject}
+                    key={index}
                     className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                       selectedSubject === subject
                         ? 'bg-[#4361EE] text-white font-medium'
@@ -153,7 +125,7 @@ export function Cours() {
                 teacher={course.teacher}
                 date={course.date}
                 fileSize={course.fileSize}
-                color={course.color}
+                pdfUrl={course.file_path}
               />
             ))}
           </div>

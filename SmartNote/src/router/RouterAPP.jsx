@@ -7,10 +7,10 @@ import AnnoncesPage from '../pages/AnnoncesPage'
 import StudentsManagement from '../pages/admins/StudentsManagement'
 import PersonnelManagement from '../pages/admins/PersonnelManagement'
 import Palmares from '../pages/admins/Palmares'
+import PublierCours from '../pages/admins/PublierCours'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
 import ChatAI from '@/pages/clients/NoteAIPage.jsx'
 import ProfilStudent from '@/pages/clients/ProfilStudent.jsx'
-import { AdminSignup } from '@/pages/admins/adminsForms'
 
 const RouterApp = () => {
   return (
@@ -23,12 +23,12 @@ const RouterApp = () => {
         <Route path="/mes-cours" element={<Cours />} />
         <Route path="/annonces" element={<AnnoncesPage />} />
         <Route path="/eleves" element={<StudentsManagement />} />
-        <Route path="/personnel" element={<PersonnelManagement />} />
+        <Route path="/personnels" element={<PersonnelManagement />} />
         <Route path="/palmares" element={<Palmares />} />
+        <Route path="/publier-cours" element={<PublierCours />} />
         <Route path="/note-ai" element={<ChatAI />} />
         <Route path="/eleves/:studentId" element={<ProfilStudent />} />
         {/* admin routes */}
-        <Route path="/admin/signup" element={<AdminSignup />} />
       </Routes>
     </Suspense>
   )

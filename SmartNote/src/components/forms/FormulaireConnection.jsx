@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { NavbarRetourHome, Footer } from '@/components/layout'
+import { auth } from '@/services/firebaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import {
   UserIcon,
   LockIcon,
@@ -6,8 +10,8 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
-import { NavbarRetourHome, Footer } from '@/components/layout'
+import { toast, ToastContainer } from 'react-toastify'
+
 const FormulaireConnection = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -15,6 +19,7 @@ const FormulaireConnection = () => {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const onSwitchToRegister = () => {
@@ -28,15 +33,33 @@ const FormulaireConnection = () => {
       [name]: value,
     }))
   }
-  const handleSubmit = e => {
+
+  const handleSubmit = async e => {
     e.preventDefault()
-    setLoggedIn(true)
-    console.log('Login Data:', formData)
+    setIsLoading(true)
+    try {
+      const userSignIn = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      )
+
+      if (!userSignIn) return toast.error('erreur lors de la connection')
+
+      toast.success('connection reussie !!')
+      setIsLoading(false)
+      setLoggedIn(true)
+    } catch (error) {
+      toast.error('une erreur est survenue', error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
+
   if (loggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+      <div className="min-h-screen flex items-center justify-center p-4 ">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center ">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircleIcon size={48} className="text-green-600" />
           </div>
@@ -47,8 +70,8 @@ const FormulaireConnection = () => {
             Vous êtes maintenant connecté à votre compte.
           </p>
           <button
-            onClick={() => setLoggedIn(false)}
-            className="px-6 py-3 bg-liear-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300"
+            onClick={() => navigate('/')}
+            className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 cursor-pointer"
           >
             Retour
           </button>
@@ -58,7 +81,8 @@ const FormulaireConnection = () => {
   }
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <ToastContainer position="top-right" />
+      <div className="min-h-screen flex items-center justify-center p-4 mt-20">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
             <NavbarRetourHome />
@@ -152,9 +176,10 @@ const FormulaireConnection = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mb-6"
+                disabled={isLoading}
+                className="w-full py-3 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mb-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
-                Se Connecter
+                {isLoading ? 'connexion...' : 'Se Connecter'}
               </button>
               {/* Divider */}
               <div className="relative mb-6">

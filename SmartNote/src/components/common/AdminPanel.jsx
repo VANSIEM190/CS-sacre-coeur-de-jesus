@@ -92,7 +92,7 @@ export default function AdminPanel({ setAdmin, admin }) {
           </p>{' '}
         </div>
         <div className="p-3">
-          <form onSubmit={sendAnnouncement} className="space-y-4">
+          <form onSubmit={sendAnnouncement} className="space-y-4 mt-10">
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700">
                 Titre *
@@ -133,7 +133,7 @@ export default function AdminPanel({ setAdmin, admin }) {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-5">
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-700">
                   Catégorie
@@ -171,7 +171,7 @@ export default function AdminPanel({ setAdmin, admin }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full p-3 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-indigo-700 rounded-md transition-colors duration-75 ease-in-out cursor-pointer text-white shadow-lg"
+              className="w-full p-3 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-indigo-700 rounded-md transition-colors duration-75 ease-in-out cursor-pointer text-white shadow-lg mt-5"
             >
               {loading ? 'Publication...' : "Publier l'annonce"}
             </button>
@@ -218,7 +218,7 @@ export default function AdminPanel({ setAdmin, admin }) {
                   <button
                     variant="ghost"
                     size="icon"
-                    className="ml-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="ml-2 text-red-600 hover:text-red-700 hover:bg-red-50 "
                     onClick={() => deleteAnnoucement(announcement.id)}
                   >
                     <Trash2 className="w-4 h-4" />

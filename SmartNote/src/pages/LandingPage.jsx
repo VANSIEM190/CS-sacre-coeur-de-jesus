@@ -7,8 +7,8 @@ import {
   SectionHystorique,
   NosProgrammes,
 } from '@/components/common'
-import { ChevronRightIcon, StarIcon } from 'lucide-react'
-import { supabase } from '@/supabase/supabaseConfig'
+import { ChevronRightIcon } from 'lucide-react'
+import { useStudent, useAdminContext } from '@/contexts'
 
 const stats = [
   { number: '8+', label: "Années d'Excellence" },
@@ -19,12 +19,15 @@ const stats = [
 
 const LandingPage = () => {
   const navigate = useNavigate()
+  const { adminData } = useAdminContext()
+  const { studentData } = useStudent()
 
-  const onNavigateToRegister = () => {
-    navigate('/inscription')
+  const onNavigateTo = () => {
+    const studentNavigate = studentData.user_id ? '/horraires' : '/inscription'
+    const adminNavigate = adminData === 'admin' ? '/annonces' : '/connexion'
+    const navigTo = studentNavigate || adminNavigate
+    navigate(navigTo)
   }
-
-  console.log(supabase)
 
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -51,10 +54,12 @@ const LandingPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={onNavigateToRegister}
-                  className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
+                  onClick={onNavigateTo}
+                  className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center cursor-pointer"
                 >
-                  S'inscrire Maintenant
+                  {studentData.user_id || adminData.role === 'admin'
+                    ? 'Explorer'
+                    : "S'inscrire Maintenant"}
                   <ChevronRightIcon size={20} className="ml-2" />
                 </button>
                 <a

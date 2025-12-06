@@ -1,11 +1,13 @@
 import React from 'react'
 import {
-  GraduationCapIcon,
   MailIcon,
   PhoneIcon,
   MapPinIcon,
+  Settings2Icon,
+  UserIcon,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useAdminContext } from '@/contexts/AdminContext'
 
 const ElevesLinks = [
   { name: 'Mes Cours', href: '/mes-cours' },
@@ -13,16 +15,20 @@ const ElevesLinks = [
   { name: 'Horraires', href: '/horraires' },
   { name: 'Annonces', href: '/annonces' },
   { name: 'Evenements', href: '#' },
-]
-
-const EcoleLinks = [
-  { name: 'Elèves par classe', href: '#' },
-  { name: 'Enseignants', href: '#' },
-  { name: 'Administrateurs', href: '#' },
   { name: 'Programmes Scolaires', href: '#' },
 ]
 
+const EcoleLinks = [
+  { name: 'Les Elèves', href: '/eleves' },
+  { name: 'Enseignants', href: '/personnels' },
+  { name: 'Annonces', href: '/annonces' },
+  { name: 'Palmares', href: '/palmares' },
+  { name: 'Publier un cours', href: '/publier-cours' },
+]
+
 const Footer = () => {
+  const { isAdmin } = useAdminContext()
+  const linksToShow = isAdmin ? EcoleLinks : ElevesLinks
   return (
     <footer className="bg-linear-to-r from-gray-900 to-indigo-900 text-white py-12">
       <div className="container mx-auto px-4">
@@ -45,48 +51,14 @@ const Footer = () => {
               personnel de chaque élève.
             </p>
           </div>
+
           <div>
-            <h4 className="text-lg font-semibold mb-4">Liens Rapides</h4>
+            <h4 className="text-lg font-semibold mb-4">
+              {isAdmin ? 'Ecole' : 'Eleves'}
+            </h4>
             <ul className="space-y-2">
-              <li>
-                <a
-                  href="#home"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Accueil
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#history"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Historique
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  À Propos
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#programs"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Programmes
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Eleves</h4>
-            <ul className="space-y-2">
-              {ElevesLinks.map(link => (
-                <li key={link.name}>
+              {linksToShow.map((link, id) => (
+                <li key={id}>
                   <Link
                     to={link.href}
                     className="text-gray-400 hover:text-white transition-colors"
@@ -97,6 +69,31 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Notre Application</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2 text-gray-400">
+                <Settings2Icon size={16} />
+                <Link
+                  to="/parametres"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Paramètres
+                </Link>
+              </li>
+              <li className="flex items-center space-x-2 text-gray-400">
+                <UserIcon size={16} />
+                <Link
+                  to="/mon-profil"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Mon Profil
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
@@ -104,7 +101,7 @@ const Footer = () => {
                 <PhoneIcon size={16} />
                 <span>+243 XXX XXX XXX</span>
               </li>
-              <li className="flex items-center space-x-2 text-gray-400">
+              <li className="flex items-center space-x-2 text-gray- 400">
                 <MailIcon size={16} />
                 <span>cssacrecoeurdejesus@gmail.com</span>
               </li>

@@ -2,7 +2,6 @@ import React from 'react'
 import { ScheduleDisplay } from '@/components/common'
 import { Footer, Navbar } from '@/components/layout'
 import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
-import { jsPDF } from 'jspdf'
 
 export function Horaires() {
   return (

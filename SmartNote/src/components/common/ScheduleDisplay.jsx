@@ -11,11 +11,15 @@ export function ScheduleDisplay() {
   const [horraires, setHorraires] = useState([])
   const { studentData, loading } = useStudent()
 
+  console.log(studentData)
+
   useEffect(() => {
     const fetchScheduleForOption = async () => {
       if (!loading && studentData) {
         try {
-          const response = await fetch(`/horraires/${studentData}.json`)
+          const response = await fetch(
+            `/horraires/${studentData.optioneleve}.json`
+          )
           const data = await response.json()
           setHorraires(data)
           console.log('Horaires fetchés selon option:', data)

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MenuIcon, XIcon } from 'lucide-react'
+import { useStudent } from '@/contexts'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navigate = useNavigate()
+  const { studentData } = useStudent()
 
   const onNavigateToConnetion = () => {
     navigate('/connexion')
@@ -59,12 +61,17 @@ const Navbar = () => {
             >
               Contact
             </a>
-            <button
-              onClick={onNavigateToConnetion}
-              className="px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
-            >
-              Connexion
-            </button>
+            {studentData.user_id ? null : (
+              <button
+                onClick={() => {
+                  onNavigateToConnetion()
+                  setIsMenuOpen(false)
+                }}
+                className="w-full px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg"
+              >
+                Connexion
+              </button>
+            )}
           </nav>
           {/* Mobile Menu Button */}
           <button
@@ -112,15 +119,17 @@ const Navbar = () => {
             >
               Contact
             </a>
-            <button
-              onClick={() => {
-                onNavigateToConnetion()
-                setIsMenuOpen(false)
-              }}
-              className="w-full px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg"
-            >
-              Connexion
-            </button>
+            {studentData.email ? null : (
+              <button
+                onClick={() => {
+                  onNavigateToConnetion()
+                  setIsMenuOpen(false)
+                }}
+                className="w-full px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg"
+              >
+                Connexion
+              </button>
+            )}
           </nav>
         )}
       </div>

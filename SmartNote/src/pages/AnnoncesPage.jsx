@@ -4,9 +4,11 @@ import { AdminPanel } from '@/components/common'
 import { Shield, GraduationCap } from 'lucide-react'
 import { Footer } from '@/components/layout'
 import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
+import { useAdminContext } from '@/contexts/AdminContext'
 
 export default function AnnoncesPage() {
-  const [isAdmin, setIsAdmin] = useState(false)
+  const { isAdmin } = useAdminContext()
+  const [isVisiblePanel, setIsvisiblePanel] = useState(isAdmin)
 
   return (
     <>
@@ -32,31 +34,35 @@ export default function AnnoncesPage() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsAdmin(!isAdmin)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg ${
-                  isAdmin
-                    ? 'bg-linear-to-r from-blue-600 to-indigo-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {isAdmin ? (
-                  <>
-                    <Shield className="w-5 h-5" />
-                    Mode Administrateur
-                  </>
-                ) : (
-                  <>
-                    <GraduationCap className="w-5 h-5" />
-                    Mode Élève
-                  </>
-                )}
-              </button>
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    setIsvisiblePanel(!isVisiblePanel)
+                  }}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg ${
+                    isAdmin
+                      ? 'bg-linear-to-r from-blue-600 to-indigo-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {isVisiblePanel ? (
+                    <>
+                      <Shield className="w-5 h-5" />
+                      Mode Administrateur
+                    </>
+                  ) : (
+                    <>
+                      <GraduationCap className="w-5 h-5" />
+                      Mode Élève
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </header>
 
-          {isAdmin ? (
-            <AdminPanel setAdmin={setIsAdmin} admin={isAdmin} />
+          {isVisiblePanel ? (
+            <AdminPanel setAdmin={setIsvisiblePanel} admin={isVisiblePanel} />
           ) : (
             <AnnouncementsView />
           )}

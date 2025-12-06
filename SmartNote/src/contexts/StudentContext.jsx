@@ -17,8 +17,7 @@ export const StudentProvider = ({ children }) => {
           const docRef = doc(db, 'students', user.uid)
           const docSnap = await getDoc(docRef)
           if (docSnap.exists()) {
-            setStudentData(docSnap.data().optioneleve)
-            console.log('Profil étudiant chargé :', docSnap.data().optioneleve)
+            setStudentData(docSnap.data())
           } else {
             setStudentData(null)
           }
