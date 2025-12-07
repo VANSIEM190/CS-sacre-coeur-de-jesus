@@ -1,16 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { LandingPage } from '../pages'
-import { Horaires } from '../pages/clients/Horraire'
-import { Cours } from '../pages/clients/Cours'
 import AnnoncesPage from '../pages/AnnoncesPage'
-import StudentsManagement from '../pages/admins/StudentsManagement'
-import PersonnelManagement from '../pages/admins/PersonnelManagement'
-import Palmares from '../pages/admins/Palmares'
-import PublierCours from '../pages/admins/PublierCours'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
-import ChatAI from '@/pages/clients/NoteAIPage.jsx'
-import ProfilStudent from '@/pages/admins/ProfilStudent.jsx'
+import { ChatAI, Cours, Horaires } from '@/pages/clients'
+import {
+  ProfilStudent,
+  PublierCours,
+  Palmares,
+  PersonnelManagement,
+  StudentsManagement,
+} from '@/pages/admins'
 
 const RouterApp = () => {
   return (

@@ -7,8 +7,8 @@ import { db, auth } from '@/services/firebaseConfig'
 const AdminContext = createContext()
 
 const AdminProvider = ({ children }) => {
-  const [adminData, setAdminData] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdminLoading, setIsAdminLoading] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async admin => {
@@ -17,22 +17,24 @@ const AdminProvider = ({ children }) => {
           const docRef = doc(db, 'admin', admin.uid)
           const docSnap = await getDoc(docRef)
           if (docSnap.exists()) {
-            setAdminData(docSnap.data().role)
             setIsAdmin(true)
           } else {
-            setAdminData(null)
             setIsAdmin(false)
           }
         } catch (error) {
           toast.error('Erreur fetch profil : ' + error.message)
+        } finally {
+          setIsAdminLoading(false)
         }
+      } else {
+        toast.error("vous n'avais pas de compte inscrivez vous")
       }
     })
     return () => unsubscribe()
   })
 
   return (
-    <AdminContext.Provider value={{ adminData, isAdmin }}>
+    <AdminContext.Provider value={{ isAdmin, isAdminLoading }}>
       {children}
     </AdminContext.Provider>
   )

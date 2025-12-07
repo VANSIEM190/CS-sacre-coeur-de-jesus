@@ -4,10 +4,12 @@ import { db } from '@/services/firebaseConfig'
 import { getDocs, orderBy, query, collection } from 'firebase/firestore'
 import { NavbarRetourHome, Footer } from '@/components/layout'
 import { toast } from 'react-toastify'
+import { Loader } from 'lucide-react'
 
 const StudentsManagement = () => {
   const [value, setValue] = useState('')
   const [eleves, setEleves] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -22,8 +24,11 @@ const StudentsManagement = () => {
           ...doc.data(),
         }))
         setEleves(studentsList)
+        setLoading(false)
       } catch (error) {
         toast.error('Erreur lors du fetch des élèves : ' + error.message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchStudents()
@@ -66,7 +71,13 @@ const StudentsManagement = () => {
 
             <main className="md:col-span-3">
               <div className="bg-white p-4 rounded-lg shadow">
-                <StudentsList students={eleves} />
+                {loading ? (
+                  <div className="flex justify-center items-center">
+                    <Loader />
+                  </div>
+                ) : (
+                  <StudentsList students={eleves} />
+                )}
               </div>
             </main>
           </div>

@@ -33,7 +33,7 @@ function AnimatedMarkdown({ text }) {
   )
 }
 
-export default function ChatAI() {
+const ChatAI = () => {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -126,3 +126,5 @@ export default function ChatAI() {
     </>
   )
 }
+
+export default ChatAI

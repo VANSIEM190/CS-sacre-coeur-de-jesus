@@ -1,0 +1,4 @@
+export { default as AnnouncementsView } from './Annonce'
+export { Cours } from './Cours'
+export { Horaires } from './Horraire'
+export { default as ChatAI } from './NoteAIPage'

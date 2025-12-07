@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MailIcon, PhoneIcon, MapPinIcon } from 'lucide-react'
 import emailjs from 'emailjs-com'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import { toast } from 'react-toastify'
 
-const regex = /^[a-zA-Z1-9éè-]+$/
+const regex = /^[a-zA-Z1-9À-ÿ ']+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 const schemaValidation = Yup.object({
@@ -35,19 +36,29 @@ const initialeValues = {
 }
 
 const SectionContact = () => {
+  const [isMailLoading, setIsMailLoading] = useState(false)
+
   ;(function () {
     emailjs.init('_QdYp5ttx0im4yV0m')
   })()
 
   const sendEmail = template => {
-    emailjs
-      .send('service_ej5xuoc', 'template_voj1mqn', template)
-      .then(response => {
-        console.log('Email sent successfully!', response.status, response.text)
-      })
-      .catch(error => {
-        console.error('Failed to send email.', error)
-      })
+    try {
+      const response = emailjs.send(
+        'service_ej5xuoc',
+        'template_voj1mqn',
+        template
+      )
+
+      if (!response) return toast.error("une erreur s' est produit")
+
+      toast.success('Email envoyé avec succes!')
+      setIsMailLoading(false)
+    } catch (error) {
+      toast.error('Failed to send email.', error)
+    } finally {
+      setIsMailLoading(false)
+    }
   }
   return (
     <section
@@ -198,11 +209,13 @@ const SectionContact = () => {
                   </div>
                   <div className="text-center">
                     <button
-                      type="button"
-                      className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                      onClick={sendEmail}
+                      type="subtmit"
+                      disabled={isMailLoading}
+                      className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
                     >
-                      Envoyer le Message
+                      {isMailLoading
+                        ? "encours d'envoie ..."
+                        : 'Envoyer le Message'}
                     </button>
                   </div>
                 </form>

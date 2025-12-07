@@ -8,7 +8,7 @@ const StudentContext = createContext()
 
 export const StudentProvider = ({ children }) => {
   const [studentData, setStudentData] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [isStudentLoading, setIsStudentLoading] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
@@ -24,17 +24,20 @@ export const StudentProvider = ({ children }) => {
         } catch (error) {
           toast.error('Erreur fetch profil : ' + error.message)
         } finally {
-          setLoading(false)
+          setIsStudentLoading(false)
         }
+      } else {
+        toast.error('veillez vous inscrire')
       }
     })
+    unsubscribe()
     return () => unsubscribe()
   }, [])
 
   // Fonction pour fetch le profil
 
   return (
-    <StudentContext.Provider value={{ studentData, loading }}>
+    <StudentContext.Provider value={{ studentData, isStudentLoading }}>
       {children}
     </StudentContext.Provider>
   )

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Navbar, Footer } from '@/components/layout'
+import React, { useState, useEffect, useMemo } from 'react'
+import { NavbarRetourHome, Footer } from '@/components/layout'
 import { CourseCard } from '@/components/common'
 import {
   SearchIcon,
   FilterIcon,
   BookOpenIcon,
   FileTextIcon,
+  Loader,
 } from 'lucide-react'
-import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
 import { db } from '@/services/firebaseConfig'
 import { collection, getDocs, query, orderBy, doc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
@@ -21,10 +21,10 @@ const subjects = [
   'Anglais',
 ]
 
-export function Cours() {
+export const Cours = () => {
   const [selectedSubject, setSelectedSubject] = useState('Tous')
   const [coursData, setCoursData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
@@ -39,27 +39,34 @@ export function Cours() {
           id: doc.id,
           ...cour.data(),
         }))
-        console.log(allCours)
         setCoursData(allCours)
       } catch (error) {
         toast.error(
           'un problème est survenue lors de la récupèration des cours',
           error.message
         )
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchCours()
   }, [])
 
-  const filteredCourses = coursData.filter(course => {
-    console.log(course)
-    const matchesSubject =
-      selectedSubject === 'Tous' || course.subject === selectedSubject
-    const matchesSearch =
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.subject.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesSubject && matchesSearch
-  })
+  const filterCourse = (course, subject, query) => {
+    const lowerQuery = query.toLowerCase()
+    return (
+      (subject === 'Tous' || course.subject === subject) &&
+      (course.title.toLowerCase().includes(lowerQuery) ||
+        course.subject.toLowerCase().includes(lowerQuery))
+    )
+  }
+
+  const filteredCourses = useMemo(() => {
+    const lowerQuery = searchQuery.toLowerCase() // calcul une seule fois
+    return coursData.filter(course =>
+      filterCourse(course, selectedSubject, lowerQuery)
+    )
+  }, [coursData, selectedSubject, searchQuery])
 
   return (
     <>
@@ -116,31 +123,40 @@ export function Cours() {
             {filteredCourses.length} cours trouvé
             {filteredCourses.length > 1 ? 's' : ''}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((course, index) => (
-              <CourseCard
-                key={index}
-                title={course.title}
-                subject={course.subject}
-                teacher={course.teacher}
-                date={course.date}
-                fileSize={course.fileSize}
-                pdfUrl={course.file_path}
-              />
-            ))}
-          </div>
-          {filteredCourses.length === 0 && (
-            <div className="text-center py-12">
-              <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
-                <FileTextIcon className="w-12 h-12 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Aucun cours trouvé
-              </h3>
-              <p className="text-gray-600">
-                Essayez de modifier vos filtres ou votre recherche
-              </p>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loader />
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredCourses.map((course, index) => (
+                  <CourseCard
+                    key={index}
+                    title={course.title}
+                    subject={course.subject}
+                    teacher={course.teacher}
+                    date={course.date}
+                    fileSize={course.fileSize}
+                    pdfUrl={course.file_path}
+                  />
+                ))}
+              </div>
+
+              {filteredCourses.length === 0 && (
+                <div className="text-center py-12">
+                  <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
+                    <FileTextIcon className="w-12 h-12 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Aucun cours trouvé
+                  </h3>
+                  <p className="text-gray-600">
+                    Essayez de modifier vos filtres ou votre recherche
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </main>
         <Footer />

@@ -28,7 +28,7 @@ const userData = {
 
 const ProfilStudent = () => {
   const { studentId } = useParams()
-  const [student, setStudent] = useState(null)
+  const [student, setStudent] = useState('')
 
   useEffect(() => {
     const fetchStudent = async () => {

@@ -3,7 +3,7 @@ import { ScheduleDisplay } from '@/components/common'
 import { Footer, Navbar } from '@/components/layout'
 import NavbarRetourHome from '@/components/layout/NavbarRetourHome'
 
-export function Horaires() {
+export const Horaires = () => {
   return (
     <>
       <NavbarRetourHome />

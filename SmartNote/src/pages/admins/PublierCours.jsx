@@ -41,7 +41,7 @@ const initialValues = {
   file: null,
 }
 
-export default function PublierCours() {
+const PublierCours = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -257,3 +257,5 @@ export default function PublierCours() {
     </>
   )
 }
+
+export default PublierCours

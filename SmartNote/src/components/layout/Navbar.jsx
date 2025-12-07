@@ -2,11 +2,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MenuIcon, XIcon } from 'lucide-react'
 import { useStudent } from '@/contexts'
+import { useAdminContext } from '@/contexts'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navigate = useNavigate()
   const { studentData } = useStudent()
+  const { isAdmin } = useAdminContext()
+  const accesUtilisateur = studentData || isAdmin
 
   const onNavigateToConnetion = () => {
     navigate('/connexion')
@@ -61,7 +64,7 @@ const Navbar = () => {
             >
               Contact
             </a>
-            {studentData ? null : (
+            {accesUtilisateur ? null : (
               <button
                 onClick={() => {
                   onNavigateToConnetion()
@@ -119,7 +122,7 @@ const Navbar = () => {
             >
               Contact
             </a>
-            {studentData.email ? null : (
+            {accesUtilisateur ? null : (
               <button
                 onClick={() => {
                   onNavigateToConnetion()
