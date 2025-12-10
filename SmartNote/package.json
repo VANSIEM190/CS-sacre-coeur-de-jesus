@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.86.0",
     "@tailwindcss/vite": "^4.1.16",
     "axios": "^1.12.2",
+    "class-variance-authority": "^0.7.1",
     "emailjs-com": "^3.2.0",
     "firebase": "^12.6.0",
     "formik": "^2.4.6",
@@ -26,6 +28,8 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.9.4",
     "react-toastify": "^11.0.5",
+    "recharts": "^3.5.1",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.16",
     "typed.js": "^2.1.0",
     "yup": "^1.7.1"

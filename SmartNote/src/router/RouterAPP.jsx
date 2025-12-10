@@ -4,6 +4,7 @@ import { LandingPage } from '../pages'
 import AnnoncesPage from '../pages/AnnoncesPage'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
 import { ChatAI, Cours, Horaires } from '@/pages/clients'
+import DashboardClasses from '@/pages/teachers/StudentPresence'
 import {
   ProfilStudent,
   PublierCours,
@@ -28,6 +29,11 @@ const RouterApp = () => {
         <Route path="/publier-cours" element={<PublierCours />} />
         <Route path="/note-ai" element={<ChatAI />} />
         <Route path="/eleves/:studentId" element={<ProfilStudent />} />
+        <Route path="/eleves/Presences" element={<DashboardClasses />} />
+        <Route
+          path="/eleves/Presences/:classeId"
+          element={<DashboardClasses />}
+        />
         {/* admin routes */}
       </Routes>
     </Suspense>

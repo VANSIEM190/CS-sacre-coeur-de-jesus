@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Navbar, Footer } from '@/components/layout'
 import { ChevronRightIcon } from 'lucide-react'
-import etatUtilisateur from '@/utils/etatUtilisateur'
+import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
 import { ToastContainer } from 'react-toastify'
 import { Loader } from '@/components/common'
 import {
@@ -21,7 +21,7 @@ const stats = [
 
 const LandingPage = () => {
   const navigate = useNavigate()
-  const { isAdmin, studentData, loading } = etatUtilisateur()
+  const { isAdmin, studentData, loading } = useEtatUtilisateur()
 
   const onNavigateTo = () => {
     if (isAdmin) {

@@ -6,25 +6,21 @@ import { doc, getDoc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
 import { NavbarRetourHome } from '@/components/layout'
 
-const userData = {
-  nom: 'Kabongo',
-  postNom: 'Mukendi',
-  dateNaissance: '15/03/1995',
-  lieuNaissance: 'Lubumbashi, Haut-Katanga',
-  nationalite: 'Congolaise (RDC)',
-  sexe: 'Masculin',
-  nomPere: 'Kabongo Tshimanga Jean-Pierre',
-  nomMere: 'Mukendi Kalala Marie-Claire',
-  territoire: 'Lubumbashi',
-  commune: 'Kampemba',
-  secteur: 'Kenya',
-  village: 'Kasapa',
-  adresse: 'Avenue Kasavubu, N°245, Quartier Industriel, Lubumbashi',
-  email: 'kabongo.mukendi@example.cd',
-  telephone: '+243 998 765 432',
-  filiere: 'Informatique de Gestion',
-  profileImage: null,
-}
+const ProfileField = ({ label, value }) => (
+  <div className="flex flex-col">
+    <span className="text-sm font-medium text-gray-500">{label}</span>
+    <span className="text-base font-semibold text-gray-900 bg-white p-3 rounded-lg border shadow-sm mt-1">
+      {value || 'Non renseigné'}
+    </span>
+  </div>
+)
+
+const ProfileSection = ({ title, children }) => (
+  <section className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+    <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
+    <div className="space-y-4">{children}</div>
+  </section>
+)
 
 const ProfilStudent = () => {
   const { studentId } = useParams()
@@ -48,22 +44,6 @@ const ProfilStudent = () => {
     fetchStudent()
   }, [studentId])
 
-  const ProfileField = ({ label, value }) => (
-    <div className="flex flex-col">
-      <span className="text-sm font-medium text-gray-500">{label}</span>
-      <span className="text-base font-semibold text-gray-900 bg-white p-3 rounded-lg border shadow-sm mt-1">
-        {value || 'Non renseigné'}
-      </span>
-    </div>
-  )
-
-  const ProfileSection = ({ title, children }) => (
-    <section className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
-      <div className="space-y-4">{children}</div>
-    </section>
-  )
-
   return (
     <>
       <NavbarRetourHome />
@@ -71,11 +51,9 @@ const ProfilStudent = () => {
       <main className="w-full flex justify-center py-10 px-3 bg-gray-100 min-h-screen mt-15">
         <div className="w-full max-w-4xl space-y-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Profil Utilisateur
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">Profil Elève</h1>
             <p className="text-gray-600 text-base mt-1">
-              Informations détaillées du profil personnel et administratif
+              Informations détaillées du profil personnel et Scolaire
             </p>
           </div>
 

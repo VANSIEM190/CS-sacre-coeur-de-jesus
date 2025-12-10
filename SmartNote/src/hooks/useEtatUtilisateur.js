@@ -1,6 +1,6 @@
 import { useStudent, useAdminContext } from '@/contexts'
 
-const etatUtilisateur = () => {
+const useEtatUtilisateur = () => {
   const { isAdmin, isAdminLoading } = useAdminContext()
   const { studentData, isStudentLoading } = useStudent()
   const loading = isStudentLoading && isAdminLoading
@@ -13,4 +13,4 @@ const etatUtilisateur = () => {
   return userInformation
 }
 
-export default etatUtilisateur
+export default useEtatUtilisateur
