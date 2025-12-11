@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { LandingPage } from '../pages'
+import SchoolGalleryPage from '@/pages/SchoolGalleryPage'
 import AnnoncesPage from '../pages/AnnoncesPage'
 import { FormulaireConnection, FormulaireInscription } from '@/components/forms'
 import { ChatAI, Cours, Horaires } from '@/pages/clients'
@@ -29,6 +30,7 @@ const RouterApp = () => {
         <Route path="/publier-cours" element={<PublierCours />} />
         <Route path="/note-ai" element={<ChatAI />} />
         <Route path="/eleves/:studentId" element={<ProfilStudent />} />
+        <Route path="/galerie-ecole" element={<SchoolGalleryPage />} />
         <Route path="/eleves/Presences" element={<DashboardClasses />} />
         <Route
           path="/eleves/Presences/:classeId"

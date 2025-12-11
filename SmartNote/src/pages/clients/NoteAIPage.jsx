@@ -119,9 +119,9 @@ Réponds de manière structurée, claire et très pratique.
   return (
     <>
       <NavbarRetourHome />
-      <div className="p-5 min-h-screen bg-gray-100">
+      <div className="p-5 min-h-screen flex flex-col justify-center bg-gray-100">
         {/* Chat Box */}
-        <div className="bg-gray-50 rounded-xl p-4 shadow-lg h-[62vh] mt-20 overflow-auto mb-6">
+        <div className="bg-gray-50 rounded-xl p-4 shadow-lg h-[72vh] mt-20 overflow-auto mb-6">
           {messages.map(msg => (
             <div key={msg.id} className="my-4 flex justify-start">
               <div className="p-4 rounded-xl w-full bg-gray-800 shadow-sm">
