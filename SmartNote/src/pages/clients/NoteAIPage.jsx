@@ -121,7 +121,7 @@ Réponds de manière structurée, claire et très pratique.
       <NavbarRetourHome />
       <div className="p-5 min-h-screen bg-gray-100">
         {/* Chat Box */}
-        <div className="bg-gray-50 rounded-xl p-4 shadow-lg h-[75vh] mt-20 overflow-auto mb-6">
+        <div className="bg-gray-50 rounded-xl p-4 shadow-lg h-[62vh] mt-20 overflow-auto mb-6">
           {messages.map(msg => (
             <div key={msg.id} className="my-4 flex justify-start">
               <div className="p-4 rounded-xl w-full bg-gray-800 shadow-sm">
@@ -139,15 +139,15 @@ Réponds de manière structurée, claire et très pratique.
         </div>
 
         {/* Prompt Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div className=" grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
           {Object.entries(prompts).map(([key, promptText]) => (
             <button
               key={key}
               type="button"
               onClick={() => setSelectedPrompt(promptText)}
-              className={`p-3 rounded-xl border font-medium shadow-sm transition hover:shadow-md ${
+              className={`p-3 rounded-xl border font-medium shadow-sm transition text-gray-100 hover:bg-purple-600 hover:shadow-md ${
                 selectedPrompt === promptText
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-purple-600 text-white'
                   : 'bg-gray-100 text-gray-900'
               }`}
             >
