@@ -30,7 +30,7 @@ const Footer = () => {
   const { isAdmin } = useAdminContext()
   const linksToShow = isAdmin ? EcoleLinks : ElevesLinks
   return (
-    <footer className="bg-linear-to-r from-gray-900 to-indigo-900 text-white py-12">
+    <footer className=" bg-linear-to-r from-gray-900 to-indigo-900 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
