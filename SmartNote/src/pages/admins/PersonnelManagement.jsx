@@ -72,12 +72,12 @@ export default function PersonnelManagement() {
             </div>
 
             {/* mobile search */}
-            <div className="mt-4 md:hidden flex gap-2">
+            <div className="mt-4 md:hidden flex gap-2 max-md:hidden">
               <div className="flex items-center bg-white border border-slate-200 rounded-lg shadow-sm px-3 py-1 w-full">
                 <Search size={16} className="text-slate-400" />
                 <input
                   aria-label="Recherche mobile"
-                  className="ml-2 outline-none w-full text-sm"
+                  className=" ml-2 outline-none w-full text-sm"
                   placeholder="Rechercher le personnel..."
                   value={query}
                   onChange={e => setQuery(e.target.value)}
@@ -97,9 +97,9 @@ export default function PersonnelManagement() {
             </div>
           </header>
 
-          <main className="max-w-[90%] grid grid-cols-1 lg:grid-cols-4 px-5 gap-8">
+          <main className="max-md:flex max-md:flex-col max-md:items-center max-md:justify-center  grid grid-cols-1 lg:grid-cols-4 px-5 gap-8">
             {/* Left: summary / quick access */}
-            <aside className="lg:col-span-1 bg-white rounded-2xl p-6 shadow">
+            <aside className="max-md:w-60 lg:col-span-1 bg-white rounded-2xl p-6 shadow">
               <h2 className="text-lg font-medium mb-4">Vue d’ensemble</h2>
               <p className="text-sm text-slate-600 mb-4">
                 Nombre total de membres :{' '}
@@ -138,7 +138,7 @@ export default function PersonnelManagement() {
 
             {/* Right: grid of staff */}
             <section className="lg:col-span-3 ">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-max gap-y-4 ">
+              <div className="max-md:flex max-md:flex-col max-md:justify-center max-md:items-center w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4  gap-y-4 ">
                 {filtered.length === 0 && (
                   <div className="col-span-full text-center py-12 bg-white rounded-2xl shadow">
                     <p className="text-slate-500">
@@ -155,7 +155,7 @@ export default function PersonnelManagement() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="bg-white w-sm rounded-3xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer  mx-2"
+                    className="bg-white  max-md:w-68 rounded-3xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer  mx-2"
                     onClick={() => setSelected(member)}
                   >
                     {/* Header : photo + nom + rôle */}

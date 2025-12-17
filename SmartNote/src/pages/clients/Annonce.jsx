@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnnonceCard as AnnouncementCard } from '@/components/common'
 import { db } from '@/services/firebaseConfig'
 import { collection, getDocs } from 'firebase/firestore'
@@ -19,18 +19,6 @@ export default function AnnouncementsView() {
   const [loading, setLoading] = useState(true)
   const [category, setCategory] = useState('all')
 
-  const filteredAnnouncements = useCallback(
-    announcementsList => {
-      if (category === 'all') {
-        return announcementsList
-      }
-      return announcementsList.filter(
-        announcement => announcement.category === category
-      )
-    },
-    [category]
-  )
-
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
@@ -40,17 +28,27 @@ export default function AnnouncementsView() {
           id: doc.id,
           ...doc.data(),
         }))
-        const filteredAnnouncementsList =
-          filteredAnnouncements(announcementsList)
-        setAnnouncements(filteredAnnouncementsList)
         setLoading(false)
-        console.log('Annonces fetchées :', announcementsList)
+        setAnnouncements(announcementsList)
       } catch (error) {
         toast.error('Erreur lors du fetch des annonces : ' + error.message)
       }
     }
     fetchAnnouncements()
-  }, [filteredAnnouncements])
+  }, [])
+
+  const filteredAnnouncements = useMemo(() => {
+    const touteCategory = 'all'
+    if (category === touteCategory) {
+      return announcements
+    }
+
+    return announcements.filter(
+      announcement => announcement.category === category
+    )
+  }, [category, announcements])
+
+  console.log()
 
   return (
     <div className="space-y-6">
@@ -98,7 +96,7 @@ export default function AnnouncementsView() {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {announcements.map(announcement => (
+          {filteredAnnouncements.map(announcement => (
             <AnnouncementCard
               key={announcement.id}
               announcement={announcement}

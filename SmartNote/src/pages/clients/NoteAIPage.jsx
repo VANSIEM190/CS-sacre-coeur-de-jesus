@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from 'react'
 import Typed from 'typed.js'
 import ReactMarkdown from 'react-markdown'
 import { NavbarRetourHome } from '@/components/layout'
+import { Link } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 
 // Composant pour l'animation Markdown
 function AnimatedMarkdown({ text }) {
@@ -38,117 +40,186 @@ export default function ChatAI() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [selectedPrompt, setSelectedPrompt] = useState('')
+  const textTypedRef = useRef(null)
+  const [isVisible, setIsVisible] = useState(true)
 
   const prompts = {
     analyse: `
-Tu es un assistant pédagogique avancé. Quand je te fournis des notes, des idées ou un texte confus, tu dois :
-1. Résumer clairement ce que j’ai voulu dire.
-2. Organiser toutes les idées de façon logique et structurée.
-3. Expliquer les concepts difficiles avec des exemples simples.
-4. Identifier les points manquants ou imprécis.
-5. Améliorer la qualité de mes notes sans changer leur sens.
-Réponds toujours de manière claire, pédagogique et concise.
+Tu es un assistant pédagogique expert en éducation. Quand je te fournis des notes, idées ou un texte confus :
+1. Fais un **résumé clair et concis** de ce que j’ai voulu dire.
+2. Organise les idées en sections logiques et structurées.
+3. Fournis une **explication détaillée**, étape par étape, avec des **exemples concrets et analogies simples** pour faciliter la compréhension.
+4. Identifie les points manquants, ambiguïtés ou imprécisions, et propose des compléments.
+5. Améliore la formulation et la clarté sans modifier le sens.
+
+⚠️ Important : Ne réponds pas seulement par quelques phrases. Fournis une explication complète et riche.
+
+Ensuite, génère **10 questions d’évaluation avec 3 options chacune**, et marque la bonne réponse.
+
+Retourne STRICTEMENT un JSON valide au format suivant :
+
+{
+  "lesson": {
+    "title": "Titre de la leçon",
+    "explanation": "Explication détaillée complète avec exemples et analogies."
+  },
+  "quiz": [
+    {
+      "id": 1,
+      "question": "Texte de la question 1",
+      "options": ["Option 1", "Option 2", "Option 3"],
+      "correctAnswer": "Option 2"
+    }
+  ]
+}
 `,
     professeur: `
-Tu es mon professeur particulier d’intelligence artificielle. Lorsque je te donne mes notes ou un sujet que je ne comprends pas :
-1. Reformule pour vérifier si tu as bien compris.
-2. Explique-moi étape par étape comme si j’étais débutant.
-3. Donne des analogies simples pour que je comprenne facilement.
-4. Pose-moi une petite question pour vérifier ma compréhension.
-5. Propose une version améliorée de mes notes à la fin.
-Sois patient, clair et très pédagogique.
+Tu es un professeur particulier très patient et clair. Quand je te fournis des notes ou un sujet :
+1. Reformule d'abord pour vérifier que tu as bien compris.
+2. Explique **étape par étape**, de manière détaillée, avec des exemples concrets et analogies simples.
+3. Ajoute des notes supplémentaires pour mieux clarifier les concepts.
+4. Propose ensuite 10 questions d’évaluation avec 3 options chacune et indique la bonne réponse.
+
+⚠️ Ne fais jamais une réponse trop brève. Sois exhaustif et structuré.
+
+Retourne STRICTEMENT un JSON valide au format suivant :
+
+{
+  "lesson": {
+    "title": "Titre de la leçon",
+    "explanation": "Explication détaillée complète, claire et pédagogique."
+  },
+  "quiz": [
+    {
+      "id": 1,
+      "question": "Texte de la question",
+      "options": ["Option 1", "Option 2", "Option 3"],
+      "correctAnswer": "Option 1"
+    }
+  ]
+}
 `,
     revision: `
-Tu es un assistant IA spécialisé en mémorisation. Quand je te partage des notes, tu dois :
-1. Repérer les concepts-clés.
-2. Créer une explication courte + une explication détaillée.
-3. Générer des exemples réels pour m’aider à retenir.
-4. Produire un mini quiz de 3 questions pour tester ma compréhension.
-5. Me proposer une version optimisée de mes notes sous forme de fiche de révision.
-Réponds de manière structurée, claire et très pratique.
+Tu es un assistant IA spécialisé en mémorisation et fiches de révision. Quand je te partage des notes :
+1. Identifie les **concepts clés**.
+2. Propose une explication courte pour révision rapide.
+3. Fournis une **explication détaillée complète**, avec exemples et analogies pour bien comprendre.
+4. Crée 10 questions d’évaluation avec 3 options chacune pour tester la compréhension.
+5. Donne une version optimisée des notes sous forme de fiche claire et structurée.
+
+⚠️ Ne fais pas de réponses courtes. Sois structuré, pédagogique et complet.
+
+Retourne STRICTEMENT un JSON valide au format suivant :
+
+{
+  "lesson": {
+    "title": "Titre de la leçon",
+    "explanation": "Explication complète et détaillée pour révision."
+  },
+  "quiz": [
+    {
+      "id": 1,
+      "question": "Texte de la question",
+      "options": ["Option 1", "Option 2", "Option 3"],
+      "correctAnswer": "Option 2"
+    }
+  ]
+}
 `,
   }
 
   const fullPrompt = `${selectedPrompt}\n\nVoici mes notes :\n${input}`
 
-  const sendMessage = async e => {
+  const askQuestion = async e => {
     e.preventDefault()
     if (!input.trim()) return
 
     setLoading(true)
     setInput('')
-
+    setIsVisible(false)
     try {
-      const response = await fetch(
-        'https://openrouter.ai/api/v1/chat/completions',
-        {
-          method: 'POST',
-          headers: {
-            Authorization:
-              'Bearer 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',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              {
-                role: 'system',
-                content:
-                  'Réponds de manière structurée et agréable à lire, en Markdown.',
-              },
-              { role: 'user', content: fullPrompt },
-            ],
-          }),
-        }
-      )
-
-      const data = await response.json()
-      const aiText = data.choices[0].message.content
-
-      setMessages(prev => [
-        ...prev,
-        { id: Date.now(), text: aiText, from: 'ai' },
-      ])
-    } catch (err) {
-      console.error(err)
+      const res = await fetch('http://localhost:3000/generate-quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullPrompt }),
+      })
+      const data = await res.json()
+      if (data.success && data.quiz && data.quiz.lesson) {
+        const explanation = data.quiz.lesson.explanation
+        setMessages(prev => [
+          ...prev,
+          { id: Date.now(), text: explanation, from: 'ai' },
+        ])
+      }
+    } catch (error) {
+      toast.error('erreur veillez ressayer', error.message)
     } finally {
       setLoading(false)
     }
   }
 
+  useEffect(() => {
+    const typed = new Typed(textTypedRef.current, {
+      strings: [
+        'Infogenuis est disponible. Que puis-je faire pour vous ?',
+        'Travaillez plus intelligemment avec InfoGenius.',
+        'Boostez votre productivité avec InfoGenius.',
+      ],
+      typeSpeed: 18,
+      showCursor: true,
+      loop: true,
+    })
+
+    return () => typed.destroy()
+  }, [])
+
   return (
     <>
       <NavbarRetourHome />
-      <div className="p-5 min-h-screen flex flex-col justify-center bg-gray-100">
+      <ToastContainer position="top-right" />
+      <div className="p-5 h-screen bg-gray-900 flex flex-col justify-center items-center">
         {/* Chat Box */}
-        <div className="bg-gray-50 rounded-xl p-4 shadow-lg h-[72vh] mt-20 overflow-auto mb-6">
-          {messages.map(msg => (
-            <div key={msg.id} className="my-4 flex justify-start">
-              <div className="p-4 rounded-xl w-full bg-gray-800 shadow-sm">
-                <AnimatedMarkdown text={msg.text} />
-                <hr className="my-2 border-gray-600" />
+        <div className="bg-gray-900 rounded-xl p-4 shadow-lg w-full h-full  mt-20 overflow-auto mb-6">
+          {isVisible ? (
+            <div className="flex justify-center flex-col items-center gap-4">
+              <img
+                src="/aiImage.jpeg"
+                alt="image de IA"
+                className="rounded-full size-22 object-cover"
+              />
+              <div className="flex justify-center text-white space-x-2">
+                <p ref={textTypedRef} className="text-white"></p>
               </div>
             </div>
-          ))}
+          ) : (
+            messages.map(msg => (
+              <div key={msg.id} className="my-4 flex justify-start">
+                <div className="p-4 rounded-xl w-full bg-gray-800 shadow-sm">
+                  <AnimatedMarkdown text={msg.text} />
+                  <hr className="my-2 border-gray-600" />
+                </div>
+              </div>
+            ))
+          )}
 
           {loading && (
-            <div className="text-gray-900 text-center mt-5 animate-pulse">
+            <div className="text-gray-400 text-center mt-5 animate-pulse">
               L'IA réfléchit...
             </div>
           )}
         </div>
 
         {/* Prompt Selection */}
-        <div className=" grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
           {Object.entries(prompts).map(([key, promptText]) => (
             <button
               key={key}
               type="button"
               onClick={() => setSelectedPrompt(promptText)}
-              className={`p-3 rounded-xl border font-medium shadow-sm transition text-gray-100 hover:bg-purple-600 hover:shadow-md ${
+              className={`p-3 rounded-xl border border-gray-100 text-gray-100 hover:bg-purple-600 hover:text-white font-medium shadow-sm transition hover:shadow-md ${
                 selectedPrompt === promptText
                   ? 'bg-purple-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
+                  : 'bg-transparent text-gray-100'
               }`}
             >
               {key === 'analyse'
@@ -161,21 +232,29 @@ Réponds de manière structurée, claire et très pratique.
         </div>
 
         {/* Input Form */}
-        <form onSubmit={sendMessage} className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 p-3 rounded-xl border border-gray-500 text-gray-900 placeholder-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Écris ton message..."
-            value={input}
-            onChange={e => setInput(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="px-4 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition"
-          >
-            Envoyer
-          </button>
-        </form>
+        {messages.length === 0 ? (
+          <form onSubmit={askQuestion} className="flex gap-2 w-full">
+            <input
+              type="text"
+              name="question"
+              className="w-full flex-1 p-3 rounded-xl border border-gray-500 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Écris ton message..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition disabled:cursor-not-allowed disabled:bg-purple-300 "
+            >
+              Envoyer
+            </button>
+          </form>
+        ) : (
+          <Link to="/quiz" className="text-white">
+            Teste Ta Comprehension avec Infogenuis-Quiz
+          </Link>
+        )}
       </div>
     </>
   )

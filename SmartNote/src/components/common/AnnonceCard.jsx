@@ -1,20 +1,22 @@
 import { Calendar, User, Tag } from 'lucide-react'
 
-export default function AnnouncementCard({ announcement }) {
-  const categoryColors = {
-    general: { bg: 'bg-blue-100', text: 'text-blue-700', icon: '📢' },
-    academic: { bg: 'bg-purple-100', text: 'text-purple-700', icon: '📚' },
-    events: { bg: 'bg-green-100', text: 'text-green-700', icon: '🎉' },
-    urgent: { bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' },
-    sports: { bg: 'bg-orange-100', text: 'text-orange-700', icon: '⚽' },
-  }
+const categoryColors = {
+  general: { bg: 'bg-blue-100', text: 'text-blue-700', icon: '📢' },
+  academic: { bg: 'bg-purple-100', text: 'text-purple-700', icon: '📚' },
+  events: { bg: 'bg-green-100', text: 'text-green-700', icon: '🎉' },
+  urgent: { bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' },
+  sports: { bg: 'bg-orange-100', text: 'text-orange-700', icon: '⚽' },
+}
 
-  const priorityBorders = {
-    low: 'border-l-gray-400',
-    normal: 'border-l-blue-500',
-    high: 'border-l-orange-500',
-    urgent: 'border-l-red-500',
-  }
+const priorityBorders = {
+  low: 'border-l-gray-400',
+  normal: 'border-l-blue-500',
+  high: 'border-l-orange-500',
+  urgent: 'border-l-red-500',
+}
+
+export default function AnnouncementCard({ announcement }) {
+  console.log(announcement.category)
 
   const category =
     categoryColors[announcement.category] || categoryColors.general

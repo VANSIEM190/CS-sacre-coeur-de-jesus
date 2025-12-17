@@ -8,12 +8,12 @@ import { useAdminContext } from '@/contexts/AdminContext'
 
 export default function AnnoncesPage() {
   const { isAdmin } = useAdminContext()
-  const [isVisiblePanel, setIsvisiblePanel] = useState(isAdmin)
+  const [isVisiblePanel, setIsvisiblePanel] = useState(true)
 
   return (
     <>
       <NavbarRetourHome />
-      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 mt-20">
+      <div className="min-h-[70%] bg-linear-to-br from-blue-50 via-white to-indigo-50 mt-20">
         <div className="container mx-auto px-4 py-8">
           <header className="mb-8">
             <div className="flex items-center justify-between mb-6">
@@ -45,17 +45,13 @@ export default function AnnoncesPage() {
                       : 'bg-white text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  {isVisiblePanel ? (
-                    <>
-                      <Shield className="w-5 h-5" />
-                      Mode Administrateur
-                    </>
-                  ) : (
-                    <>
-                      <GraduationCap className="w-5 h-5" />
-                      Mode Élève
-                    </>
-                  )}
+                  <Shield
+                    className={`w-5 h-5 ${isVisiblePanel ? '' : 'hidden'}`}
+                  />
+                  <GraduationCap
+                    className={`w-5 h-5 ${!isVisiblePanel ? '' : 'hidden'}`}
+                  />
+                  {isVisiblePanel ? 'Mode Administrateur' : 'Mode Élève'}
                 </button>
               )}
             </div>

@@ -54,11 +54,12 @@ export const Cours = () => {
 
   const filterCourse = (course, subject, query) => {
     const lowerQuery = query.toLowerCase()
-    return (
-      (subject === 'Tous' || course.subject === subject) &&
-      (course.title.toLowerCase().includes(lowerQuery) ||
-        course.subject.toLowerCase().includes(lowerQuery))
-    )
+    const matchesSubject = subject === 'Tous' || course.subject === subject
+    const matchesQuery =
+      course.title.toLowerCase().includes(lowerQuery) ||
+      course.subject.toLowerCase().includes(lowerQuery)
+
+    return matchesSubject && matchesQuery
   }
 
   const filteredCourses = useMemo(() => {
@@ -118,11 +119,11 @@ export const Cours = () => {
                 ))}
               </div>
             </div>
+            <div className="mt-3 text-sm text-gray-600">
+              {`${filteredCourses.length} cours trouvé (s)`}
+            </div>
           </div>
-          <div className="mb-4 text-sm text-gray-600">
-            {filteredCourses.length} cours trouvé
-            {filteredCourses.length > 1 ? 's' : ''}
-          </div>
+
           {isLoading ? (
             <div className="flex justify-center items-center">
               <Loader />

@@ -21,7 +21,7 @@ const stats = [
 
 const LandingPage = () => {
   const navigate = useNavigate()
-  const { isAdmin, studentData, loading } = useEtatUtilisateur()
+  const { isAdmin, isStudent, loading } = useEtatUtilisateur()
 
   const onNavigateTo = () => {
     if (isAdmin) {
@@ -29,7 +29,7 @@ const LandingPage = () => {
       return
     }
 
-    if (studentData?.user_id) {
+    if (isStudent) {
       navigate('/horraires')
       return
     }
@@ -71,7 +71,7 @@ const LandingPage = () => {
                     onClick={onNavigateTo}
                     className="px-8 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center cursor-pointer "
                   >
-                    {studentData || isAdmin
+                    {isStudent || isAdmin
                       ? 'Explorer'
                       : "S'inscrire Maintenant"}
                     <ChevronRightIcon size={20} className="ml-2" />
