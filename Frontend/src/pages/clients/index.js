@@ -1,0 +1,5 @@
+export { default as AnnouncementsView } from './AnnouncementView'
+export { default as Cours } from './Cours'
+export { default as ScheduleClass } from './ScheduleClass'
+export { default as ChatAI } from './NoteAIPage'
+export { default as QuizPage } from './QuizPage'

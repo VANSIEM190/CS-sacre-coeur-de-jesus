@@ -1,0 +1,233 @@
+[
+  {
+    "Lundi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "A.C",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Français",
+        "prof": "C. Kingi",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Français",
+        "prof": "C. Kingi",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "C.C.F",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      }
+    ],
+
+    "Mardi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Docom",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Fiscalité",
+        "prof": "D. Kambamba",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Réligion",
+        "prof": "J. Tutu",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "E.V",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      }
+    ],
+    "Mercredi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "C.C.F",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "C.C.F",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Informatique",
+        "prof": "B. Sieta",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Informatique",
+        "prof": "B. Sieta",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Français",
+        "prof": "C. Kingi",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Français",
+        "prof": "C. Kingi",
+        "salle": "1er Com"
+      }
+    ],
+    "Jeudi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "Comptabilité",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Droit",
+        "prof": "D. Kambamba",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Géographie-Eco",
+        "prof": "D. Matsiala",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Mathématiques",
+        "prof": "H. Kitambala",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Mathématiques",
+        "prof": "H. Kitambala",
+        "salle": "1er Com"
+      }
+    ],
+    "Vendredi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "Docom",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "Informatique",
+        "prof": "B. Sieta",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Anglais",
+        "prof": "S. Makobo",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Math-Fin",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Math-Fin",
+        "prof": "B. Kakobula",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Mathématiques",
+        "prof": "H. Kitambala",
+        "salle": "1er Com"
+      }
+    ],
+    "Samedi": [
+      {
+        "heure": "08:00 - 09:00",
+        "matiere": "Informatique",
+        "prof": "B. Sieta",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "09:00 - 10:00",
+        "matiere": "Anglais",
+        "prof": "S. Makobo",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "C.C.A",
+        "prof": "S. Makobo",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "E.C.M",
+        "prof": "chico",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Docom",
+        "prof": "F. Ngonga",
+        "salle": "1er Com"
+      },
+      {
+        "heure": "10:15 - 11:15",
+        "matiere": "Mathématiques",
+        "prof": "H. Kitambala",
+        "salle": "1er Com"
+      }
+    ]
+  }
+]
