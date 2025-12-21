@@ -11,6 +11,7 @@ import {
 import { db } from '@/services/firebaseConfig'
 import { collection, getDocs, query, orderBy, doc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
+import { cn } from '@/lib/cn'
 
 const subjects = [
   'Tous',
@@ -55,6 +56,7 @@ const Cours = () => {
   const filterCourse = (course, subject, query) => {
     const lowerQuery = query.toLowerCase()
     const matchesSubject = subject === 'Tous' || course.subject === subject
+
     const matchesQuery =
       course.title.toLowerCase().includes(lowerQuery) ||
       course.subject.toLowerCase().includes(lowerQuery)
@@ -63,7 +65,7 @@ const Cours = () => {
   }
 
   const filteredCourses = useMemo(() => {
-    const lowerQuery = searchQuery.toLowerCase() // calcul une seule fois
+    const lowerQuery = searchQuery.toLowerCase()
     return coursData.filter(course =>
       filterCourse(course, selectedSubject, lowerQuery)
     )
@@ -107,11 +109,12 @@ const Cours = () => {
                 {subjects.map((subject, index) => (
                   <button
                     key={index}
-                    className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    className={cn(
+                      'px-4 py-2 rounded-lg whitespace-nowrap transition-colors',
                       selectedSubject === subject
                         ? 'bg-[#4361EE] text-white font-medium'
                         : 'text-gray-700 hover:bg-gray-100'
-                    }`}
+                    )}
                     onClick={() => setSelectedSubject(subject)}
                   >
                     {subject}

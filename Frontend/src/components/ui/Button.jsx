@@ -11,7 +11,7 @@ const Button = ({
   variant = 'primary',
   disabled = false,
   className,
-  onClick,
+  ...props
 }) => {
   return (
     <button
@@ -23,7 +23,7 @@ const Button = ({
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
-      onClick={onClick}
+      {...props}
     >
       {children}
     </button>

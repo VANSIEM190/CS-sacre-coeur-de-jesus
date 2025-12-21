@@ -9,6 +9,8 @@ import { supabase } from '@/supabase/supabaseConfig'
 import { db, auth } from '@/services/firebaseConfig'
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import Input from '../ui/Input'
+import Button from '../ui/Button'
 
 const regex = /^[a-zA-ZÀ-ÿ '-]+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -384,14 +386,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Nom *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="nom"
                           value={values.nom}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Entrez le nom"
                         />
                         {errors.nom && touched.nom && (
@@ -404,14 +405,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Post Nom *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="postNom"
                           value={values.postNom}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Entrez le post nom"
                         />
                         {errors.postNom && touched.postNom && (
@@ -446,14 +446,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Date de Naissance *
                         </label>
-                        <input
+                        <Input
                           type="date"
                           name="dateNaissance"
                           value={values.dateNaissance}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         />
                         {errors.dateNaissance && touched.dateNaissance && (
                           <div className="text-red-500 text-sm mt-1">
@@ -465,14 +464,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Lieu de Naissance *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="lieuNaissance"
                           value={values.lieuNaissance}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Ville/Province"
                         />
                         {errors.lieuNaissance && touched.lieuNaissance && (
@@ -485,14 +483,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Nationalité *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="nationalite"
                           value={values.nationalite}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Ex: Congolaise"
                         />
                         {errors.nationalite && touched.nationalite && (
@@ -513,14 +510,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Nom du Père *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="nomPere"
                           value={values.nomPere}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Nom complet du père"
                         />
                         {errors.nomPere && touched.nomPere && (
@@ -533,14 +529,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Nom de la Mère *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="nomMere"
                           value={values.nomMere}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Nom complet de la mère"
                         />
                         {errors.nomMere && touched.nomMere && (
@@ -561,14 +556,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Territoire *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="territoire"
                           value={values.territoire}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Territoire"
                         />
                         {errors.territoire && touched.territoire && (
@@ -581,14 +575,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Commune *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="commune"
                           value={values.commune}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Commune"
                         />
                         {errors.commune && touched.commune && (
@@ -601,14 +594,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Secteur *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="secteur"
                           value={values.secteur}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Secteur"
                         />
                         {errors.secteur && touched.secteur && (
@@ -621,14 +613,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Village *
                         </label>
-                        <input
+                        <Input
                           type="text"
                           name="village"
                           value={values.village}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Village"
                         />
                         {errors.village && touched.village && (
@@ -648,8 +639,8 @@ const FormulaireInscription = () => {
                           required
                           onBlur={handleBlur}
                           rows={3}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Adresse complète de résidence"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         ></textarea>
                         {errors.adresse && touched.adresse && (
                           <div className="text-red-500 text-sm mt-1">
@@ -669,14 +660,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Email *
                         </label>
-                        <input
+                        <Input
                           type="email"
                           name="email"
                           value={values.email}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="exemple@email.com"
                         />
                         {errors.email && touched.email && (
@@ -689,14 +679,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Numéro de Téléphone *
                         </label>
-                        <input
+                        <Input
                           type="tel"
                           name="telephone"
                           value={values.telephone}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="+243 XXX XXX XXX"
                         />
                         {errors.telephone && touched.telephone && (
@@ -709,14 +698,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Mot de Passe *
                         </label>
-                        <input
+                        <Input
                           type="password"
                           name="motdepasse"
                           value={values.motdepasse}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="XXX XXX XXX"
                         />
                         {errors.motdepasse && touched.motdepasse && (
@@ -729,14 +717,13 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Confirmer le Mot de Passe *
                         </label>
-                        <input
+                        <Input
                           type="password"
                           name="confirmMdp"
                           value={values.confirmMdp}
                           onChange={handleChange}
                           required
                           onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="XXX XXX XXX"
                         />
                         {errors.confirmMdp && touched.confirmMdp && (
@@ -766,42 +753,68 @@ const FormulaireInscription = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         >
                           <option value="">Sélectionnez une option</option>
-                          <option value="1 Scientifique">1 Scientifique</option>
-                          <option value="2 Scientifique">2 Scientifique</option>
-                          <option value="3 Scientifique">3 Scientifique</option>
-                          <option value="4 Scientifique">4 Scientifique</option>
-                          <option value="1 Littéraire">1 Littéraire</option>
-                          <option value="2 Littéraire">2 Littéraire</option>
-                          <option value="3 Littéraire">3 Littéraire</option>
-                          <option value="4 Littéraire">4 Littéraire</option>
-                          <option value="1 Commerciale">1 Commerciale</option>
-                          <option value="2 Commerciale">2 Commerciale</option>
-                          <option value="3 Commerciale">3 Commerciale</option>
-                          <option value="4 Commerciale">4 Commerciale</option>
-                          <option value="1 Pédagogique">1 Pédagogique</option>
-                          <option value="2 Pédagogique">2 Pédagogique</option>
-                          <option value="3 Pédagogique">3 Pédagogique</option>
-                          <option value="4 Pédagogique">4 Pédagogique</option>
-                          <option value="1 Coupe et Couture">
-                            1 Coupe et Couture
+
+                          {/* <!-- Scientifique --> */}
+                          <option value="1re Scientifique">
+                            1re Scientifique
                           </option>
-                          <option value="2 Coupe et Couture">
-                            2 Coupe et Couture
+                          <option value="2e Scientifique">
+                            2e Scientifique
                           </option>
-                          <option value="3 Coupe et Couture">
-                            3 Coupe et Couture
+                          <option value="3e Scientifique">
+                            3e Scientifique
                           </option>
-                          <option value="4 Coupe et Couture">
-                            4 Coupe et Couture
+                          <option value="4e Scientifique">
+                            4e Scientifique
                           </option>
-                          <option value="8 ème">8 ème</option>
-                          <option value="7 ème">7 ème</option>
-                          <option value="6 ème">6 ème</option>
-                          <option value="5 ème">5 ème</option>
-                          <option value="4 ème">4 ème</option>
-                          <option value="3 ème">3 ème</option>
-                          <option value="2 ème">2 ème</option>
-                          <option value="1 ème">1 ème</option>
+
+                          {/* <!-- Littéraire --> */}
+                          <option value="1re Littéraire">1re Littéraire</option>
+                          <option value="2e Littéraire">2e Littéraire</option>
+                          <option value="3e Littéraire">3e Littéraire</option>
+                          <option value="4e Littéraire">4e Littéraire</option>
+
+                          {/* <!-- Commerciale --> */}
+                          <option value="1re Commerciale">
+                            1re Commerciale
+                          </option>
+                          <option value="2e Commerciale">2e Commerciale</option>
+                          <option value="3e Commerciale">3e Commerciale</option>
+                          <option value="4e Commerciale">4e Commerciale</option>
+
+                          {/* <!-- Pédagogique --> */}
+                          <option value="1re Pédagogique">
+                            1re Pédagogique
+                          </option>
+                          <option value="2e Pédagogique">2e Pédagogique</option>
+                          <option value="3e Pédagogique">3e Pédagogique</option>
+                          <option value="4e Pédagogique">4e Pédagogique</option>
+
+                          {/* <!-- Coupe et Couture --> */}
+                          <option value="1re Coupe et Couture">
+                            1re Coupe et Couture
+                          </option>
+                          <option value="2e Coupe et Couture">
+                            2e Coupe et Couture
+                          </option>
+                          <option value="3e Coupe et Couture">
+                            3e Coupe et Couture
+                          </option>
+                          <option value="4e Coupe et Couture">
+                            4e Coupe et Couture
+                          </option>
+
+                          {/* <!-- Humanités / Collège --> */}
+                          <option value="8e">8e</option>
+                          <option value="7e">7e</option>
+                          <option value="6e">6e</option>
+                          <option value="5e">5e</option>
+                          <option value="4e">4e</option>
+                          <option value="3e">3e</option>
+                          <option value="2e">2e</option>
+                          <option value="1re">1re</option>
+
+                          {/* Maternelle  */}
                           <option value="Maternelle">Maternelle</option>
                         </select>
                         {errors.option && touched.option && (
@@ -814,8 +827,8 @@ const FormulaireInscription = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Pourcentage École Venant *
                         </label>
-                        <input
-                          type="number"
+                        <Input
+                          type={'number'}
                           name="pourcentage"
                           value={values.pourcentage}
                           onChange={handleChange}
@@ -823,7 +836,6 @@ const FormulaireInscription = () => {
                           onBlur={handleBlur}
                           min="0"
                           max="100"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                           placeholder="Ex: 75"
                         />
                         {errors.pourcentage && touched.pourcentage && (
@@ -848,13 +860,13 @@ const FormulaireInscription = () => {
                   </div>
                   {/* Submit Button */}
                   <div className="flex justify-center pt-6">
-                    <button
-                      type="submit"
+                    <Button
+                      type={'submit'}
                       disabled={isLoading}
-                      className="px-12 py-4 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                    >
-                      {isLoading ? 'chargement...' : "Soumettre l'Inscription"}
-                    </button>
+                      children={
+                        isLoading ? 'chargement...' : "Soumettre l'Inscription"
+                      }
+                    />
                   </div>
                 </form>
               )}

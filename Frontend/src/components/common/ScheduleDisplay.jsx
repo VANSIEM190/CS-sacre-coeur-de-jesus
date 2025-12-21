@@ -4,14 +4,13 @@ import { CalendarIcon, ClockIcon } from 'lucide-react'
 import { useStudent } from '@/contexts/StudentContext'
 import { toast } from 'react-toastify'
 import ButtonDownload from './ButtonDownload'
+import { cn } from '@/lib/cn'
 const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 
 export function ScheduleDisplay() {
   const [selectedDay, setSelectedDay] = useState('Lundi')
   const [horraires, setHorraires] = useState([])
   const { studentData, loading } = useStudent()
-
-  console.log(studentData)
 
   useEffect(() => {
     const fetchScheduleForOption = async () => {
@@ -49,11 +48,12 @@ export function ScheduleDisplay() {
             {daysOfWeek.map(day => (
               <button
                 key={day}
-                className={`flex-1 py-3 px-4 text-center rounded-lg transition-colors ${
+                className={cn(
+                  'flex-1 py-3 px-4 text-center rounded-lg transition-colors',
                   selectedDay === day
                     ? 'bg-[#4361EE] text-white font-medium'
                     : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                )}
                 onClick={() => setSelectedDay(day)}
               >
                 {day}

@@ -1,4 +1,6 @@
-import { Calendar, User, Tag } from 'lucide-react'
+import { cn } from '@/lib/cn'
+import { Calendar, User } from 'lucide-react'
+import formatDate from '@/utils/FormatDate'
 
 const categoryColors = {
   general: { bg: 'bg-blue-100', text: 'text-blue-700', icon: '📢' },
@@ -19,19 +21,13 @@ export default function AnnouncementCard({ announcement }) {
   const category =
     categoryColors[announcement.category] || categoryColors.general
 
-  const formatDate = date => {
-    return new Date(date).toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    })
-  }
-
   return (
     <div
-      className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4 ${
-        priorityBorders[announcement.priority]
-      } group`}
+      className={cn(
+        'bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4',
+        priorityBorders[announcement.priority],
+        'group'
+      )}
     >
       <div className="p-6">
         <div className="flex items-start justify-between mb-4">
@@ -60,7 +56,7 @@ export default function AnnouncementCard({ announcement }) {
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
             <span className="text-sm">
-              {formatDate(announcement.createdAt)}
+              {formatDate(announcement.createdAt.toDate())}
             </span>
           </div>
         </div>

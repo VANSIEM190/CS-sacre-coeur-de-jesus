@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { MailIcon, PhoneIcon, MapPinIcon } from 'lucide-react'
 import emailjs from 'emailjs-com'
-import { Formik, Form } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-toastify'
-import Button from '../ui/Button'
+import { Button, Input } from '../ui'
 
 const regex = /^[a-zA-Z1-9À-ÿ ']+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -135,10 +135,10 @@ const SectionContact = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Nom Complet
                       </label>
-                      <input
-                        type="text"
+                      <Input
+                        type={'text'}
                         name="name"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                        className="w-full px-4 py-3"
                         placeholder="Votre nom"
                         onChange={handleChange}
                         value={values.name}
@@ -154,10 +154,10 @@ const SectionContact = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email
                       </label>
-                      <input
-                        type="email"
+                      <Input
+                        type={'email'}
                         name="email"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                        className=" px-4 py-3"
                         placeholder="votre@email.com"
                         onChange={handleChange}
                         value={values.email}
@@ -174,10 +174,10 @@ const SectionContact = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Sujet
                     </label>
-                    <input
-                      type="text"
+                    <Input
+                      type={'text'}
                       name="subject"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                      className="w px-4 py-3"
                       placeholder="Sujet de votre message"
                       onChange={handleChange}
                       value={values.subject}

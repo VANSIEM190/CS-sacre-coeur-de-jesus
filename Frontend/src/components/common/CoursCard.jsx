@@ -1,5 +1,6 @@
 import React from 'react'
 import { FileTextIcon, DownloadIcon, CalendarIcon } from 'lucide-react'
+import formatDate from '@/utils/FormatDate'
 
 export const CourseCard = ({
   title,
@@ -55,7 +56,7 @@ export const CourseCard = ({
 
         <div className="flex items-center text-sm text-gray-500">
           <CalendarIcon className="w-4 h-4 mr-2" />
-          <span>{new Date().toLocaleDateString(date)}</span>
+          <span>{formatDate(date.toDate())}</span>
           <span className="mx-2">•</span>
           <span>{formatFileSize(fileSize)}</span>
         </div>

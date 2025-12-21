@@ -39,7 +39,7 @@ const AnnouncementPage = () => {
                     setIsvisiblePanel(prevVisibility => !prevVisibility)
                   }}
                   className={cn(
-                    'flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg max-sm:text-sm',
+                    'flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg max-sm:text-sm cursor-pointer',
                     isAdmin
                       ? 'bg-linear-to-r from-blue-600 to-indigo-600 text-white'
                       : 'bg-white text-gray-700 hover:bg-gray-50'
@@ -57,7 +57,7 @@ const AnnouncementPage = () => {
             </div>
           </header>
 
-          {isVisiblePanel ? (
+          {isAdmin && isVisiblePanel ? (
             <AdminPanel
               setPanelIsVisible={setIsvisiblePanel}
               panelIsVisible={isVisiblePanel}

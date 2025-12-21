@@ -11,6 +11,8 @@ import {
   EyeOffIcon,
 } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify'
+import Input from '../ui/Input'
+import Button from '../ui/Button'
 
 const FormulaireConnection = () => {
   const [formData, setFormData] = useState({
@@ -107,13 +109,13 @@ const FormulaireConnection = () => {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <UserIcon size={20} className="text-gray-400" />
                   </div>
-                  <input
-                    type="email"
+                  <Input
+                    type={'email'}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                    className=" pl-10 pr-4 py-3"
                     placeholder="exemple@email.com"
                   />
                 </div>
@@ -127,13 +129,13 @@ const FormulaireConnection = () => {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <LockIcon size={20} className="text-gray-400" />
                   </div>
-                  <input
+                  <Input
                     type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                    className=" pl-10 pr-12 py-3"
                     placeholder="••••••••"
                   />
                   <button
@@ -174,13 +176,12 @@ const FormulaireConnection = () => {
                 </a>
               </div>
               {/* Submit Button */}
-              <button
-                type="submit"
+              <Button
+                type={'submit'}
+                children={isLoading ? 'connexion...' : 'Se Connecter'}
                 disabled={isLoading}
-                className="w-full py-3 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mb-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {isLoading ? 'connexion...' : 'Se Connecter'}
-              </button>
+                className="w-full py-3 mb-6"
+              />
               {/* Divider */}
               <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
