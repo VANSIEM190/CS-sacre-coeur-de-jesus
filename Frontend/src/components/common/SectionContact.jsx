@@ -4,7 +4,7 @@ import emailjs from 'emailjs-com'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-toastify'
-import { Button, Input } from '../ui'
+import { Button, Input, Textarea, Label } from '../ui'
 
 const regex = /^[a-zA-Z1-9À-ÿ ']+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -132,14 +132,13 @@ const SectionContact = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nom Complet
-                      </label>
+                      <Label htmlFor="name">Nom Complet</Label>
                       <Input
-                        type={'text'}
+                        type="text"
                         name="name"
                         className="w-full px-4 py-3"
                         placeholder="Votre nom"
+                        required
                         onChange={handleChange}
                         value={values.name}
                         onBlur={handleBlur}
@@ -151,14 +150,13 @@ const SectionContact = () => {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email
-                      </label>
+                      <Label htmlFor="email">Email</Label>
                       <Input
-                        type={'email'}
+                        type="email"
                         name="email"
-                        className=" px-4 py-3"
+                        className="px-4 py-3"
                         placeholder="votre@email.com"
+                        required
                         onChange={handleChange}
                         value={values.email}
                         onBlur={handleBlur}
@@ -171,14 +169,13 @@ const SectionContact = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Sujet
-                    </label>
+                    <Label htmlFor="subject">Sujet</Label>
                     <Input
-                      type={'text'}
+                      type="text"
                       name="subject"
                       className="w px-4 py-3"
                       placeholder="Sujet de votre message"
+                      required
                       onChange={handleChange}
                       value={values.subject}
                       onBlur={handleBlur}
@@ -190,18 +187,15 @@ const SectionContact = () => {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      rows={5}
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea
                       name="message"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                       placeholder="Votre message..."
+                      required
                       onChange={handleChange}
                       value={values.message}
                       onBlur={handleBlur}
-                    ></textarea>
+                    />
                     {errors.message && touched.message && (
                       <div className="text-red-500 text-sm mt-1">
                         {errors.message}

@@ -1,9 +1,12 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, use } from 'react'
 import Typed from 'typed.js'
 import ReactMarkdown from 'react-markdown'
 import { NavbarRetourHome } from '@/components/layout'
 import { Link } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
+import { Button, Input, Textarea } from '@/components/ui'
+import { SendHorizontal } from 'lucide-react'
+import { cn } from '@/lib/cn'
 
 // Composant pour l'animation Markdown
 function AnimatedMarkdown({ text }) {
@@ -25,7 +28,7 @@ function AnimatedMarkdown({ text }) {
   }, [text])
 
   return (
-    <div className="max-w-full prose prose-neutral text-gray-100">
+    <div className="max-w-full prose prose-neutral text-gray-900">
       {done ? (
         <ReactMarkdown>{text}</ReactMarkdown>
       ) : (
@@ -128,6 +131,11 @@ Retourne STRICTEMENT un JSON valide au format suivant :
 `,
   }
 
+  const textSpeech = `Bonjour et bienvenue sur votre espace d’intelligence artificielle.
+Ici, tu peux poser toutes tes questions, apprendre à ton rythme et explorer de nouvelles connaissances sans stress.
+Je suis là pour t’aider à comprendre tes leçons, t’accompagner dans tes exercices et t’encourager à progresser chaque jour.
+N’aie pas peur de te tromper, car apprendre, c’est essayer.
+Alors, commence quand tu veux : je t’écoute.`
   const fullPrompt = `${selectedPrompt}\n\nVoici mes notes :\n${input}`
 
   const askQuestion = async e => {
@@ -161,9 +169,8 @@ Retourne STRICTEMENT un JSON valide au format suivant :
   useEffect(() => {
     const typed = new Typed(textTypedRef.current, {
       strings: [
-        'Infogenuis est disponible. Que puis-je faire pour vous ?',
-        'Travaillez plus intelligemment avec InfoGenius.',
-        'Boostez votre productivité avec InfoGenius.',
+        'Sacré Coeur AI  est disponible. Que puis-je faire pour vous ?',
+        'Travaillez plus intelligemment avec Sacré Coeur AI !',
       ],
       typeSpeed: 18,
       showCursor: true,
@@ -173,28 +180,68 @@ Retourne STRICTEMENT un JSON valide au format suivant :
     return () => typed.destroy()
   }, [])
 
+  let voices = []
+
+  const loadVoices = () => {
+    voices = speechSynthesis.getVoices()
+  }
+
+  speechSynthesis.onvoiceschanged = loadVoices
+  loadVoices()
+
+  function speak(textSpeech) {
+    if (!voices.length) return
+
+    const utterance = new SpeechSynthesisUtterance(textSpeech)
+
+    // 🎯 Microsoft Paul
+    const paulVoice = voices.find(v =>
+      v.name.toLowerCase().includes('microsoft paul')
+    )
+
+    // fallback français
+    const frenchVoice = voices.find(v => v.lang.startsWith('fr'))
+
+    utterance.voice = paulVoice || frenchVoice || voices[0]
+    utterance.rate = 0.95
+    utterance.pitch = 1
+
+    speechSynthesis.cancel()
+    speechSynthesis.speak(utterance)
+
+    console.log('Voix utilisée :', utterance.voice.name)
+  }
+
+  useEffect(() => {
+    window.addEventListener('click', () => speak(textSpeech))
+    window.addEventListener('load', () => speak(textSpeech))
+
+    return () => {
+      window.removeEventListener('click', () => speak(textSpeech))
+      window.removeEventListener('mouseover', () => speak(textSpeech))
+    }
+  }, [textSpeech])
+
   return (
     <>
       <NavbarRetourHome />
       <ToastContainer position="top-right" />
-      <div className="p-5 h-screen bg-gray-900 flex flex-col justify-center items-center">
+      <div className="p-5 h-screen bg-white flex flex-col justify-center items-center">
         {/* Chat Box */}
-        <div className="bg-gray-900 rounded-xl p-4 shadow-lg w-full h-full  mt-20 overflow-auto mb-6">
+        <div className=" rounded-xl p-4  w-full h-full  mt-20 overflow-auto mb-6">
           {isVisible ? (
-            <div className="flex justify-center flex-col items-center gap-4">
-              <img
-                src="/aiImage.jpeg"
-                alt="image de IA"
-                className="rounded-full size-22 object-cover"
-              />
+            <div className="flex justify-center h-[60%] items-center gap-4">
               <div className="flex justify-center text-white space-x-2">
-                <p ref={textTypedRef} className="text-white"></p>
+                <p
+                  ref={textTypedRef}
+                  className="text-gray-900 text-3xl font-mono font-semibold "
+                ></p>
               </div>
             </div>
           ) : (
             messages.map(msg => (
               <div key={msg.id} className="my-4 flex justify-start">
-                <div className="p-4 rounded-xl w-full bg-gray-800 shadow-sm">
+                <div className="p-4 rounded-xl w-full ">
                   <AnimatedMarkdown text={msg.text} />
                   <hr className="my-2 border-gray-600" />
                 </div>
@@ -210,17 +257,18 @@ Retourne STRICTEMENT un JSON valide au format suivant :
         </div>
 
         {/* Prompt Selection */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div className="w-2/4 grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
           {Object.entries(prompts).map(([key, promptText]) => (
             <button
               key={key}
               type="button"
               onClick={() => setSelectedPrompt(promptText)}
-              className={`p-3 rounded-xl border border-gray-100 text-gray-100 hover:bg-purple-600 hover:text-white font-medium shadow-sm transition hover:shadow-md ${
+              className={cn(
+                'w-full px-4 py-3 rounded-full border  font-medium hover:ring-2 hover:ring-purple-400 transition ',
                 selectedPrompt === promptText
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-transparent text-gray-100'
-              }`}
+                  ? 'bg-purple-600 text-gray-100'
+                  : 'bg-transparent text-gray-900'
+              )}
             >
               {key === 'analyse'
                 ? '🔍 Analyse intelligente'
@@ -233,26 +281,31 @@ Retourne STRICTEMENT un JSON valide au format suivant :
 
         {/* Input Form */}
         {messages.length === 0 ? (
-          <form onSubmit={askQuestion} className="flex gap-2 w-full">
-            <input
-              type="text"
+          <form
+            onSubmit={askQuestion}
+            className="flex items-center gap-2 w-2/4"
+          >
+            <Textarea
               name="question"
-              className="w-full flex-1 p-3 rounded-xl border border-gray-500 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full flex-1 p-3 rounded-3xl border border-gray-500 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Écris ton message..."
               value={input}
+              rows={3}
               onChange={e => setInput(e.target.value)}
             />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition disabled:cursor-not-allowed disabled:bg-purple-300 "
-            >
-              Envoyer
-            </button>
+            {selectedPrompt && (
+              <Button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-3 size-12 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition disabled:cursor-not-allowed disabled:bg-purple-300 "
+              >
+                <SendHorizontal />
+              </Button>
+            )}
           </form>
         ) : (
-          <Link to="/quiz" className="text-white">
-            Teste Ta Comprehension avec Infogenuis-Quiz
+          <Link to="/quiz" className="text-gray-700 underline mt-4">
+            Teste Ta Comprehension avec Sacré Coeur Quiz
           </Link>
         )}
       </div>

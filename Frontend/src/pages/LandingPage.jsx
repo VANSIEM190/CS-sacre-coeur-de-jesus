@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Navbar, Footer } from '@/components/layout'
 import { ChevronRightIcon } from 'lucide-react'
 import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
-import { ToastContainer } from 'react-toastify'
 import { Loader } from '@/components/common'
-import Button from '@/components/ui/Button'
+import { Button } from '@/components/ui'
 import {
   SectionAprpos,
   SectionContact,
@@ -44,7 +43,6 @@ const LandingPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" />
       <div className="min-h-screen w-full bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50">
         {/* Header Navigation */}
         <Navbar />
@@ -70,7 +68,7 @@ const LandingPage = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     onClick={onNavigateTo}
-                    type={'button'}
+                    type="button"
                     className={'flex items-center justify-center'}
                   >
                     {isStudent || isAdmin

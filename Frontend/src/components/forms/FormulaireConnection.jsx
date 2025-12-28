@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { NavbarRetourHome, Footer } from '@/components/layout'
 import { auth } from '@/services/firebaseConfig'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { toast, ToastContainer } from 'react-toastify'
+import { Button, Input } from '../ui'
 import {
   UserIcon,
   LockIcon,
@@ -10,9 +12,7 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from 'lucide-react'
-import { toast, ToastContainer } from 'react-toastify'
-import Input from '../ui/Input'
-import Button from '../ui/Button'
+import { Label } from 'radix-ui'
 
 const FormulaireConnection = () => {
   const [formData, setFormData] = useState({
@@ -23,10 +23,6 @@ const FormulaireConnection = () => {
   const [loggedIn, setLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-
-  const onSwitchToRegister = () => {
-    navigate('/inscription')
-  }
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -102,29 +98,25 @@ const FormulaireConnection = () => {
             <form onSubmit={handleSubmit} className="p-8">
               {/* Email */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email *
-                </label>
+                <Label htmlFor="email">Email *</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <UserIcon size={20} className="text-gray-400" />
                   </div>
                   <Input
-                    type={'email'}
+                    type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className=" pl-10 pr-4 py-3"
+                    className="pl-10 pr-4 py-3"
                     placeholder="exemple@email.com"
                   />
                 </div>
               </div>
               {/* Password */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mot de passe *
-                </label>
+                <Label htmlFor="password">Mot de passe *</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <LockIcon size={20} className="text-gray-400" />
@@ -134,8 +126,8 @@ const FormulaireConnection = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    required
                     className=" pl-10 pr-12 py-3"
+                    required
                     placeholder="••••••••"
                   />
                   <button
@@ -162,7 +154,7 @@ const FormulaireConnection = () => {
                 <label className="flex items-center">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="w-4 h-4  border-gray-300 rounded focus:ring-indigo-500"
                   />
                   <span className="ml-2 text-sm text-gray-600">
                     Se souvenir de moi
@@ -177,11 +169,12 @@ const FormulaireConnection = () => {
               </div>
               {/* Submit Button */}
               <Button
-                type={'submit'}
-                children={isLoading ? 'connexion...' : 'Se Connecter'}
+                type="submit"
                 disabled={isLoading}
                 className="w-full py-3 mb-6"
-              />
+              >
+                {isLoading ? 'connexion...' : 'Se Connecter'}
+              </Button>
               {/* Divider */}
               <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
@@ -195,13 +188,12 @@ const FormulaireConnection = () => {
               <div className="text-center">
                 <p className="text-gray-600">
                   Vous n'avez pas de compte?{' '}
-                  <button
-                    type="button"
-                    onClick={onSwitchToRegister}
+                  <Link
+                    to="/inscription"
                     className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-300"
                   >
                     Inscrivez-vous ici
-                  </button>
+                  </Link>
                 </p>
               </div>
             </form>

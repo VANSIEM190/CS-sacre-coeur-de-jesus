@@ -1,0 +1,108 @@
+{
+  "lesson": {
+    "title": "Compréhension de la constante PI en mathématiques",
+    "explanation": "La constante PI (π) est un nombre irrationnel et transcendant qui représente le rapport de la circonférence d'un cercle à son diamètre. En d'autres termes, peu importe la taille du cercle, si vous mesurez la circonférence (le contour) et le diamètre (la distance à travers le cercle) et que vous divisez la circonférence par le diamètre, vous obtiendrez toujours environ 3.14, bien que PI ait des décimales infinies et ne se répète jamais. \n\nFor example, si vous avez un cercle avec un diamètre de 2 mètres, la circonférence sera d'environ 3.14 mètres (2 * π). Pour rendre cela plus concret, imaginez un pot de fleurs rond : si le diamètre fait 2 mètres, le tour du pot sera de près de 3.14 mètres. Une autre analogie est celle d'une pizza : si le diamètre de votre pizza est de 30 centimètres, la circonférence sera environ 94.2 centimètres (30 cm * π). \n\nIl est important de noter que PI est souvent simplifié en 3.14 pour des calculs approximatifs, mais dans des contextes plus techniques, il peut être utilisé avec plus de décimales pour une précision accrue, comme 3.14159. Comprendre PI est fondamental en géométrie et en trigonométrie, où il est utilisé pour calculer les propriétés des cercles et d'autres formes basées sur des courbes."
+  },
+  "quiz": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que PI représente en mathématiques ?",
+      "options": [
+        "Le diamètre d'un cercle",
+        "Le rapport de la circonférence à son diamètre",
+        "La surface d'un cercle"
+      ],
+      "correctAnswer": "Le rapport de la circonférence à son diamètre"
+    },
+    {
+      "id": 2,
+      "question": "Quel est la valeur approximative de PI ?",
+      "options": [
+        "3.14",
+        "2.71",
+        "1.41"
+      ],
+      "correctAnswer": "3.14"
+    },
+    {
+      "id": 3,
+      "question": "Comment calcule-t-on la circonférence d'un cercle ?",
+      "options": [
+        "Diamètre × 2",
+        "Diamètre × PI",
+        "Diamètre + PI"
+      ],
+      "correctAnswer": "Diamètre × PI"
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la nature de PI ?",
+      "options": [
+        "Rationnel",
+        "Irrationnel",
+        "Probable"
+      ],
+      "correctAnswer": "Irrationnel"
+    },
+    {
+      "id": 5,
+      "question": "Si un cercle a un diamètre de 2 mètres, quelle est sa circonférence approximative ?",
+      "options": [
+        "2 mètres",
+        "3.14 mètres",
+        "6.28 mètres"
+      ],
+      "correctAnswer": "6.28 mètres"
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert la constante PI dans les calculs ?",
+      "options": [
+        "Pour déterminer la superficie des rectangles",
+        "Pour calculer des propriétés des cercles",
+        "Pour évaluer des angles"
+      ],
+      "correctAnswer": "Pour calculer des propriétés des cercles"
+    },
+    {
+      "id": 7,
+      "question": "PI est un nombre qui se répète ou qui a une fin ?",
+      "options": [
+        "Se répète",
+        "A une fin",
+        "N'est ni se répète ni a une fin"
+      ],
+      "correctAnswer": "N'est ni se répète ni a une fin"
+    },
+    {
+      "id": 8,
+      "question": "Comment noterait-on PI avec plus de précision ?",
+      "options": [
+        "3.1415",
+        "3.14",
+        "3.14159"
+      ],
+      "correctAnswer": "3.14159"
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi est-il important de connaître PI en géométrie ?",
+      "options": [
+        "Pour développer des solides",
+        "Pour calculer les angles",
+        "Pour estimer les circonférences et activités en lien avec des cercles"
+      ],
+      "correctAnswer": "Pour estimer les circonférences et activités en lien avec des cercles"
+    },
+    {
+      "id": 10,
+      "question": "Dans quel domaine PI est-il largement utilisé ?",
+      "options": [
+        "Musique",
+        "Mathématiques",
+        "Cuisine"
+      ],
+      "correctAnswer": "Mathématiques"
+    }
+  ]
+}

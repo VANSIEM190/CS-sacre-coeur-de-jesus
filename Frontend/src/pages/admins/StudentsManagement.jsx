@@ -5,6 +5,7 @@ import { getDocs, orderBy, query, collection } from 'firebase/firestore'
 import { NavbarRetourHome, Footer } from '@/components/layout'
 import { toast } from 'react-toastify'
 import { Loader } from 'lucide-react'
+import ListeParClasse from '@/utils/ListeParClasse'
 
 const StudentsManagement = () => {
   const [value, setValue] = useState('')
@@ -33,6 +34,8 @@ const StudentsManagement = () => {
     }
     fetchStudents()
   }, [])
+
+  const filteredClassStudents = ListeParClasse.filter(student => student.classe)
 
   return (
     <>
@@ -63,9 +66,15 @@ const StudentsManagement = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <aside className="md:col-span-1">
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-semibold mb-3">Classes</h3>
-                filtered
+              <div className="bg-white p-4 rounded-lg shadow fixed">
+                <select name="classe" id="classe">
+                  <option value="">Toutes les classes</option>
+                  {filteredClassStudents.map(classe => (
+                    <option key={classe.classe} value={classe.classe}>
+                      {classe.classe}
+                    </option>
+                  ))}
+                </select>
               </div>
             </aside>
 

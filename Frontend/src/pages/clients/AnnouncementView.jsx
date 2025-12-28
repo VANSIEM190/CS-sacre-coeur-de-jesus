@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AnnonceCard as AnnouncementCard } from '@/components/common'
+import {
+  AnnonceCard as AnnouncementCard,
+  ModalInformation,
+} from '@/components/common'
 import { db } from '@/services/firebaseConfig'
 import { collection, getDocs, query, orderBy } from 'firebase/firestore'
 import { Filter } from 'lucide-react'
@@ -11,7 +14,6 @@ const categories = [
   { value: 'scolaire', label: 'Scolaire', icon: '📚' },
   { value: 'events', label: 'Événements', icon: '🎉' },
   { value: 'urgent', label: 'Urgent', icon: '⚠️' },
-  { value: 'sports', label: 'Sports', icon: '⚽' },
 ]
 
 const SKELETON_COUNT = 12
@@ -21,6 +23,7 @@ export default function AnnouncementsView() {
   const [announcements, setAnnouncements] = useState([])
   const [loading, setLoading] = useState(true)
   const [category, setCategory] = useState('all')
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -44,8 +47,8 @@ export default function AnnouncementsView() {
   }, [])
 
   const filteredAnnouncements = useMemo(() => {
-    const touteCategory = 'all'
-    if (category === touteCategory) {
+    const allCategory = 'all'
+    if (category === allCategory) {
       return announcements
     }
 
@@ -53,6 +56,7 @@ export default function AnnouncementsView() {
       announcement => announcement.category === category
     )
   }, [category, announcements])
+
 
   return (
     <>
@@ -90,7 +94,7 @@ export default function AnnouncementsView() {
               </div>
             ))}
           </div>
-        ) : announcements.length === 0 ? (
+        ) : filteredAnnouncements.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl shadow-md">
             <div className="text-6xl mb-4">📭</div>
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -106,11 +110,16 @@ export default function AnnouncementsView() {
               <AnnouncementCard
                 key={announcement.id}
                 announcement={announcement}
+                setSelectedAnnouncement={setSelectedAnnouncement}
               />
             ))}
           </div>
         )}
       </div>
+      <ModalInformation
+        selectedAnnouncement={selectedAnnouncement}
+        setSelectedAnnouncement={setSelectedAnnouncement}
+      />
     </>
   )
 }

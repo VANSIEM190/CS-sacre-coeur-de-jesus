@@ -3,7 +3,7 @@ import { Trash2 } from 'lucide-react'
 import { db } from '@/services/firebaseConfig'
 import { toast, ToastContainer } from 'react-toastify'
 import AnnouncementsView from '@/pages/clients/AnnouncementView.jsx'
-import Button from '../ui/Button'
+import { Button, Input, Textarea, Label } from '../ui'
 import {
   addDoc,
   getDocs,
@@ -105,29 +105,26 @@ export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
             <div className="p-3">
               <form onSubmit={sendAnnouncement} className="space-y-4 mt-10">
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700">
-                    Titre *
-                  </label>
-                  <input
+                  <Label htmlFor="title">Titre *</Label>
+                  <Input
+                    type="text"
                     value={valueAnnonce.title}
                     name="title"
                     onChange={handleChange}
+                    required
                     placeholder="Titre de l'annonce"
-                    className="w-[90%] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700">
-                    Contenu *
-                  </label>
-                  <textarea
+                  <Label htmlFor="content">Contenu *</Label>
+                  <Textarea
                     value={valueAnnonce.content}
                     name="content"
                     onChange={handleChange}
-                    placeholder="Contenu de l'annonce"
+                    required
                     rows={5}
-                    className="w-[90%] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                    placeholder="Contenu de l'annonce"
                   />
                 </div>
 
@@ -135,16 +132,17 @@ export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
                   <label className="block text-sm font-medium mb-2 text-gray-700">
                     Auteur *
                   </label>
-                  <input
+                  <Input
+                    type="text"
                     value={valueAnnonce.author}
                     name="author"
                     onChange={handleChange}
+                    required
                     placeholder="Nom de l'auteur"
-                    className="w-[90%] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-4 mt-5">
+                <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-4 mt-8">
                   <div>
                     <label className="block text-sm font-medium mb-2 text-gray-700">
                       Catégorie
@@ -155,10 +153,9 @@ export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
                       onChange={handleChange}
                     >
                       <option value="general">📢 Général</option>
-                      <option value="academic">📚 Académique</option>
+                      <option value="Scolaire">📚 Scolaire</option>
                       <option value="events">🎉 Événements</option>
                       <option value="urgent">⚠️ Urgent</option>
-                      <option value="sports">⚽ Sports</option>
                     </select>
                   </div>
 
@@ -180,13 +177,14 @@ export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
                 </div>
 
                 <Button
-                  type={'submit'}
-                  children={loading ? 'Publication...' : "Publier l'annonce"}
+                  type="submit"
                   disabled={loading}
                   className={
-                    'w-full p-3 cursor-pointer text-white shadow-lg mt-5 hover:scale-100'
+                    'w-full p-3 cursor-pointer text-white shadow-lg mt-5  hover:scale-100'
                   }
-                />
+                >
+                  {loading ? 'Publication...' : "Publier l'annonce"}
+                </Button>
               </form>
             </div>
           </div>

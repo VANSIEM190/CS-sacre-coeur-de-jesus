@@ -1,5 +1,0 @@
-export { default as Palmares } from './Palmares'
-export { default as PersonnelManagement } from './PersonnelManagement'
-export { default as ProfilStudent } from './ProfilStudent'
-export { default as PublierCours } from './PublierCours'
-export { default as StudentsManagement } from './StudentsManagement'

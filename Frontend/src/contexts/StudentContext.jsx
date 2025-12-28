@@ -1,51 +1,64 @@
-import { useContext, createContext, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
-import { db, auth } from '@/services/firebaseConfig'
+import { auth, db } from '@/services/firebaseConfig'
 
-const StudentContext = createContext()
+const StudentContext = createContext(null)
 
 export const StudentProvider = ({ children }) => {
   const [studentData, setStudentData] = useState(null)
+  const [isStudent, setIsStudent] = useState(false)
   const [isStudentLoading, setIsStudentLoading] = useState(true)
-  const [isStudent, setIsstudent] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        try {
-          const docRef = doc(db, 'students', user.uid)
-          const docSnap = await getDoc(docRef)
-          if (docSnap.exists()) {
-            setStudentData(docSnap.data())
-            setIsStudentLoading(false)
-            setIsstudent(true)
-          } else {
-            setStudentData(null)
-            setIsstudent(false)
-          }
-        } catch (error) {
-          toast.error('Erreur fetch profil : ' + error.message)
-        } finally {
+      try {
+        if (!user) {
+          setStudentData(null)
+          setIsStudent(false)
           setIsStudentLoading(false)
+          return
         }
-      } else {
-        toast.error('veillez vous inscrire')
+
+        const studentRef = doc(db, 'students', user.uid)
+        const studentSnap = await getDoc(studentRef)
+
+        if (studentSnap.exists()) {
+          setStudentData(studentSnap.data())
+          setIsStudent(true)
+        } else {
+          setStudentData(null)
+          setIsStudent(false)
+        }
+      } catch (error) {
+        toast.error(`Erreur lors du chargement du profil : ${error.message}`)
+      } finally {
+        setIsStudentLoading(false)
       }
     })
-    return () => unsubscribe()
-  }, [])
 
-  // Fonction pour fetch le profil
+    return unsubscribe
+  }, [])
 
   return (
     <StudentContext.Provider
-      value={{ studentData, isStudentLoading, isStudent }}
+      value={{
+        studentData,
+        isStudent,
+        isStudentLoading,
+      }}
     >
+      <ToastContainer position="top-right" />
       {children}
     </StudentContext.Provider>
   )
 }
 
-export const useStudent = () => useContext(StudentContext)
+export const useStudent = () => {
+  const context = useContext(StudentContext)
+  if (!context) {
+    throw new Error('useStudent must be used inside StudentProvider')
+  }
+  return context
+}

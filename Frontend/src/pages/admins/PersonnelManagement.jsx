@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useMemo, useState } from 'react'
 import { Search, Users, User, Briefcase, Mail } from 'lucide-react'
 import { Footer, NavbarRetourHome } from '@/components/layout'
+import { PersonnelManagementCard } from '@/components/common'
+
 import STAFF from '@/utils/staff'
+import ModalDetailPersonel from '@/components/common/ModalDetailPersonel'
 
 export default function PersonnelManagement() {
   const [query, setQuery] = useState('')
@@ -14,15 +16,19 @@ export default function PersonnelManagement() {
     ...Array.from(new Set(STAFF.map(s => s.department))),
   ]
 
-  const filtered = STAFF.filter(staffPersonnel => {
-    const matchesQuery =
-      staffPersonnel.name.toLowerCase().includes(query.toLowerCase()) ||
-      staffPersonnel.role.toLowerCase().includes(query.toLowerCase())
-    const matchesFilter =
-      filter === 'All' || staffPersonnel.department === filter
-    return matchesQuery && matchesFilter
-  })
-  console.log(window.innerWidth)
+  const filteredPersonnel = useMemo(
+    () =>
+      STAFF.filter(staffPersonnel => {
+        const allCategory = 'All'
+        const matchesQuery =
+          staffPersonnel.name.toLowerCase().includes(query.toLowerCase()) ||
+          staffPersonnel.role.toLowerCase().includes(query.toLowerCase())
+        const matchesFilter =
+          filter === allCategory || staffPersonnel.department === filter
+        return matchesQuery && matchesFilter
+      }),
+    [filter, query]
+  )
 
   return (
     <>
@@ -45,6 +51,7 @@ export default function PersonnelManagement() {
                   </p>
                 </div>
               </div>
+
               <div className="hidden md:flex items-center gap-3">
                 <div className="flex items-center bg-white border border-slate-200 rounded-lg shadow-sm px-3 py-1 w-80">
                   <Search size={16} className="text-slate-400" />
@@ -136,127 +143,15 @@ export default function PersonnelManagement() {
             </aside>
 
             {/* Right: grid of staff */}
-            <section className="lg:col-span-3 ">
-              <div className="max-md:flex max-md:flex-col max-md:justify-center max-md:items-center w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4  gap-y-4 ">
-                {filtered.length === 0 && (
-                  <div className="col-span-full text-center py-12 bg-white rounded-2xl shadow">
-                    <p className="text-slate-500">
-                      Aucun personnel correspondant. Essayez une autre
-                      recherche.
-                    </p>
-                  </div>
-                )}
-
-                {filtered.map((member, id) => (
-                  <motion.article
-                    key={id}
-                    layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="bg-white  max-md:w-68 rounded-3xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer  mx-2"
-                    onClick={() => setSelected(member)}
-                  >
-                    {/* Header : photo + nom + rôle */}
-                    <div className="flex items-start gap-5">
-                      <img
-                        src={member.img}
-                        alt={`Photo de ${member.name}`}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-slate-200"
-                      />
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-slate-900">
-                          {member.name}
-                        </h3>
-                        <div className="text-sm text-slate-500 mt-1">
-                          {member.role}
-                        </div>
-                        <div className="text-xs text-slate-400 mt-0.5">
-                          {member.department}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bio */}
-                    <p className="mt-4 text-sm text-slate-600 leading-relaxed line-clamp-3">
-                      {member.bio}
-                    </p>
-
-                    {/* Séparateur */}
-                    <div className="border-t border-slate-200 mt-5 pt-4 flex items-center justify-between">
-                      {/* Email */}
-                      <div className="flex items-center gap-2 text-sm text-slate-500">
-                        <Mail size={16} />
-                        <span>{member.email}</span>
-                      </div>
-
-                      {/* Voir la fiche */}
-                      <div className="text-xs text-slate-400 font-medium hover:text-blue-500 transition-colors">
-                        Voir la fiche
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            </section>
+            <PersonnelManagementCard
+              filteredPersonnel={filteredPersonnel}
+              setSelected={setSelected}
+            />
           </main>
 
           {/* Modal / fiche detail */}
-          <AnimatePresence>
-            {selected && (
-              <motion.div
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <motion.div
-                  className="bg-white rounded-2xl shadow-xl max-w-2xl w-full p-6"
-                  initial={{ scale: 0.98, y: 8 }}
-                  animate={{ scale: 1, y: 0 }}
-                  exit={{ scale: 0.98, y: 8 }}
-                >
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={selected.img}
-                      alt={`Photo de ${selected.name}`}
-                      className="w-24 h-24 rounded-full object-cover border"
-                    />
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold">{selected.name}</h3>
-                      <div className="text-sm text-slate-500">
-                        {selected.role} — {selected.department}
-                      </div>
-                      <p className="mt-3 text-sm text-slate-600">
-                        {selected.bio}
-                      </p>
 
-                      <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <a
-                          href={`mailto:${selected.email}`}
-                          className="inline-flex items-center gap-2 px-3 py-2 rounded-md border text-sm hover:bg-slate-50"
-                        >
-                          <Mail size={14} />
-                          Contacter
-                        </a>
-                        <button
-                          onClick={() => setSelected(null)}
-                          className="ml-auto text-sm text-slate-500"
-                        >
-                          Fermer
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <div
-                  className="fixed inset-0 bg-black/30"
-                  onClick={() => setSelected(null)}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <ModalDetailPersonel selected={selected} setSelected={setSelected} />
         </div>
       </div>
       <Footer />

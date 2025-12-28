@@ -8,16 +8,22 @@ import { toast } from 'react-toastify'
 import { db } from '@/services/firebaseConfig'
 import { addDoc, serverTimestamp, collection } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-import Button from '@/components/ui/Button'
+import { Button, Input, Label } from '@/components/ui'
 
 const regex = /^[a-zA-ZÀ-ÿ '-]+$/
 const schema = Yup.object({
-  title: Yup.string().required('Titre requis').min(5),
-  subject: Yup.string().required('Matière requise'),
+  title: Yup.string()
+    .required('Titre requis')
+    .min(5, 'le titre doit avoir au moins 5 caractères')
+    .max(50, 'le titre ne doit pas avoir plus de 50 caractères'),
+  subject: Yup.string()
+    .required('Matière requise')
+    .min(4, 'la matière ne doit pas avoir moins de 4 caractères')
+    .max(20, 'la matière ne doit pas dépasser 20 caractères'),
   teacher: Yup.string()
     .required("Nom de l'enseignant requis")
     .min(4, 'le nom doit comporter au moins 4 caractères')
-    .max(20, 'le nom ne doit pas dépasser 20 caractères')
+    .max(15, 'le nom ne doit pas dépasser 15 caractères')
     .matches(
       regex,
       "Le nom ne doit contenir que des lettres, espaces, apostrophes ou traits d'union"
@@ -65,7 +71,6 @@ const PublishCours = () => {
     const fileExt = fileCours.name.split('.').pop()
     const fileName = `${Date.now()}.${fileExt}`
     const filePath = `course-files/${fileName}`
-    console.log(fileCours)
 
     const { data, error } = await supabase.storage
       .from('cours-files')
@@ -80,7 +85,6 @@ const PublishCours = () => {
       .from('cours-files')
       .getPublicUrl(filePath)
 
-    console.log("fichier uploadée à l'URL :", url.publicUrl)
     return url.publicUrl
   }
 
@@ -150,19 +154,21 @@ const PublishCours = () => {
                 handleChange,
                 setFieldValue,
                 handleSubmit,
+                handleBlur,
                 errors,
                 touched,
               }) => (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Titre
-                    </label>
-                    <input
+                    <Label htmlFor="title">Titre</Label>
+                    <Input
+                      type="text"
                       name="title"
                       value={values.title}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       className="mt-1 w-full px-4 py-3 border rounded-lg"
+                      required
                       placeholder="Titre du cours"
                     />
                     {errors.title && touched.title && (
@@ -172,14 +178,15 @@ const PublishCours = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Matière
-                      </label>
-                      <input
+                      <Label htmlFor="subject">Matière</Label>
+                      <Input
+                        type="text"
                         name="subject"
                         value={values.subject}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         className="mt-1 w-full px-4 py-3 border rounded-lg"
+                        required
                         placeholder="Mathématiques"
                       />
                       {errors.subject && touched.subject && (
@@ -189,14 +196,15 @@ const PublishCours = () => {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Enseignant
-                      </label>
-                      <input
+                      <Label htmlFor="teacher">Enseignant</Label>
+                      <Input
+                        type="text"
                         name="teacher"
                         value={values.teacher}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         className="mt-1 w-full px-4 py-3 border rounded-lg"
+                        required
                         placeholder="Prénom Nom"
                       />
                       {errors.teacher && touched.teacher && (
@@ -223,6 +231,7 @@ const PublishCours = () => {
                             handleFileUpload(e) &&
                             setFieldValue('file', e.currentTarget.files[0])
                           }
+                          onBlur={handleBlur}
                         />
                       </label>
                       <div className="text-sm text-gray-600">
@@ -238,11 +247,12 @@ const PublishCours = () => {
 
                   <div className="flex items-center justify-between">
                     <Button
-                      type={'submit'}
+                      type="submit"
                       disabled={isLoading}
-                      children={isLoading ? 'publication...' : 'Publier'}
                       className={'px-6 py-2  text-white rounded-lg'}
-                    />
+                    >
+                      {isLoading ? 'publication...' : 'Publier'}
+                    </Button>
 
                     <div className="text-sm text-gray-500">
                       Aperçu rapide du cours

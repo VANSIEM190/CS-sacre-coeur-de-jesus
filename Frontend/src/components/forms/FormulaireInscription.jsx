@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
-import { UserIcon, UploadIcon, CheckCircleIcon } from 'lucide-react'
+import {
+  UserIcon,
+  UploadIcon,
+  CheckCircleIcon,
+  ChevronUp,
+  ChevronDown,
+} from 'lucide-react'
 import { NavbarRetourHome, Footer } from '@/components/layout'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-toastify'
@@ -9,8 +15,23 @@ import { supabase } from '@/supabase/supabaseConfig'
 import { db, auth } from '@/services/firebaseConfig'
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import Input from '../ui/Input'
-import Button from '../ui/Button'
+import ListeParClasse from '@/utils/ListeParClasse'
+import {
+  Button,
+  Input,
+  Label,
+  Textarea,
+  Select,
+  SelectGroup,
+  SelectItem,
+  SelectScrollDownButton,
+  SelectTrigger,
+  SelectScrollUpButton,
+  SelectLabel,
+  SelectValue,
+  SelectIcon,
+  SelectContent,
+} from '../ui'
 
 const regex = /^[a-zA-ZÀ-ÿ '-]+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -91,8 +112,7 @@ const validationSchema = Yup.object({
   adresse: Yup.string()
     .required("L'adresse est requise")
     .min(10, "L'adresse doit comporter au moins 10 caractères")
-    .max(100, "L'adresse ne peut pas dépasser 100 caractères")
-    .matches(regex, "L'adresse contient des caractères invalides"),
+    .max(100, "L'adresse ne peut pas dépasser 100 caractères"),
   email: Yup.string()
     .required("L'email est requis")
     .email("Format d'email invalide")
@@ -162,10 +182,6 @@ const FormulaireInscription = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  const onSwitchToRegister = () => {
-    navigate('/connexion')
-  }
-
   const handlePhotoUpload = e => {
     const file = e.target.files[0]
     if (file) {
@@ -228,7 +244,6 @@ const FormulaireInscription = () => {
         adresse: values.adresse,
         email: values.email,
         telephone: values.telephone,
-        motdepasse: values.motdepasse,
         optioneleve: values.optionEleve,
         pourcentage: pourcentage,
         photo_path: photoUrl || '',
@@ -383,16 +398,14 @@ const FormulaireInscription = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nom *
-                        </label>
+                        <Label htmlFor="nom">Nom *</Label>
                         <Input
                           type="text"
                           name="nom"
                           value={values.nom}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Entrez le nom"
                         />
                         {errors.nom && touched.nom && (
@@ -402,16 +415,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Post Nom *
-                        </label>
+                        <Label htmlFor="postNom">Post Nom *</Label>
                         <Input
                           type="text"
                           name="postNom"
                           value={values.postNom}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Entrez le post nom"
                         />
                         {errors.postNom && touched.postNom && (
@@ -420,22 +431,33 @@ const FormulaireInscription = () => {
                           </div>
                         )}
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Sexe *
-                        </label>
-                        <select
-                          name="sexe"
+                      <div translate="no" className="relative">
+                        <Label htmlFor="sexe">Sexe *</Label>
+                        <Select
                           value={values.sexe}
-                          onChange={handleChange}
+                          onValueChange={value => setFieldValue('sexe', value)}
                           required
-                          onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         >
-                          <option value="">Sélectionnez</option>
-                          <option value="Masculin">Masculin</option>
-                          <option value="Féminin">Féminin</option>
-                        </select>
+                          <SelectTrigger className="w-full flex justify-between items-center px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300">
+                            <SelectValue placeholder="Sélectionnez le sexe" />
+                            <SelectIcon>
+                              <ChevronDown className="size-4" />
+                            </SelectIcon>
+                          </SelectTrigger>
+                          <SelectContent className="mt-8 absolute z-10 right-0 top-7 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <SelectScrollUpButton>
+                              <ChevronUp className="size-4" />
+                            </SelectScrollUpButton>
+                            <SelectGroup>
+                              <SelectItem value="Masculin">Masculin</SelectItem>
+                              <SelectItem value="Féminin">Féminin</SelectItem>
+                            </SelectGroup>
+                            <SelectScrollDownButton>
+                              <ChevronDown className="size-4" />
+                            </SelectScrollDownButton>
+                          </SelectContent>
+                        </Select>
+
                         {errors.sexe && touched.sexe && (
                           <div className="text-red-500 text-sm mt-1">
                             {errors.sexe}
@@ -443,9 +465,9 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Label htmlFor="dateNaissance">
                           Date de Naissance *
-                        </label>
+                        </Label>
                         <Input
                           type="date"
                           name="dateNaissance"
@@ -461,16 +483,16 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Label htmlFor="lieuNaissance">
                           Lieu de Naissance *
-                        </label>
+                        </Label>
                         <Input
                           type="text"
                           name="lieuNaissance"
                           value={values.lieuNaissance}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Ville/Province"
                         />
                         {errors.lieuNaissance && touched.lieuNaissance && (
@@ -480,16 +502,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nationalité *
-                        </label>
+                        <Label htmlFor="nationalite">Nationalité *</Label>
                         <Input
                           type="text"
                           name="nationalite"
                           value={values.nationalite}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Ex: Congolaise"
                         />
                         {errors.nationalite && touched.nationalite && (
@@ -507,16 +527,14 @@ const FormulaireInscription = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nom du Père *
-                        </label>
+                        <Label htmlFor="nomPere">Nom du Père *</Label>
                         <Input
                           type="text"
                           name="nomPere"
                           value={values.nomPere}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Nom complet du père"
                         />
                         {errors.nomPere && touched.nomPere && (
@@ -526,16 +544,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nom de la Mère *
-                        </label>
+                        <Label htmlFor="nomMere">Nom de la Mère *</Label>
                         <Input
                           type="text"
                           name="nomMere"
                           value={values.nomMere}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Nom complet de la mère"
                         />
                         {errors.nomMere && touched.nomMere && (
@@ -553,16 +569,14 @@ const FormulaireInscription = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Territoire *
-                        </label>
+                        <Label htmlFor="territoire">Territoire *</Label>
                         <Input
                           type="text"
                           name="territoire"
                           value={values.territoire}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Territoire"
                         />
                         {errors.territoire && touched.territoire && (
@@ -572,16 +586,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Commune *
-                        </label>
+                        <Label htmlFor="commune">Commune *</Label>
                         <Input
                           type="text"
                           name="commune"
                           value={values.commune}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Commune"
                         />
                         {errors.commune && touched.commune && (
@@ -591,16 +603,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Secteur *
-                        </label>
+                        <Label htmlFor="secteur">Secteur *</Label>
                         <Input
                           type="text"
                           name="secteur"
                           value={values.secteur}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Secteur"
                         />
                         {errors.secteur && touched.secteur && (
@@ -610,16 +620,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Village *
-                        </label>
+                        <Label htmlFor="village">Village *</Label>
                         <Input
                           type="text"
                           name="village"
                           value={values.village}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="Village"
                         />
                         {errors.village && touched.village && (
@@ -629,19 +637,15 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Adresse Complète *
-                        </label>
-                        <textarea
+                        <Label htmlFor="adresse">Adresse Complète *</Label>
+                        <Textarea
                           name="adresse"
                           value={values.adresse}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
-                          rows={3}
+                          required
                           placeholder="Adresse complète de résidence"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
-                        ></textarea>
+                        />
                         {errors.adresse && touched.adresse && (
                           <div className="text-red-500 text-sm mt-1">
                             {errors.adresse}
@@ -657,16 +661,14 @@ const FormulaireInscription = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email *
-                        </label>
+                        <Label htmlFor="email">Email *</Label>
                         <Input
                           type="email"
                           name="email"
                           value={values.email}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="exemple@email.com"
                         />
                         {errors.email && touched.email && (
@@ -676,16 +678,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Numéro de Téléphone *
-                        </label>
+                        <Label htmlFor="telephone">Numéro de Téléphone *</Label>
                         <Input
                           type="tel"
                           name="telephone"
                           value={values.telephone}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="+243 XXX XXX XXX"
                         />
                         {errors.telephone && touched.telephone && (
@@ -695,16 +695,14 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Mot de Passe *
-                        </label>
+                        <Label htmlFor="motdepasse">Mot de Passe *</Label>
                         <Input
                           type="password"
                           name="motdepasse"
                           value={values.motdepasse}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="XXX XXX XXX"
                         />
                         {errors.motdepasse && touched.motdepasse && (
@@ -714,16 +712,16 @@ const FormulaireInscription = () => {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Label htmlFor="confirmMdp">
                           Confirmer le Mot de Passe *
-                        </label>
+                        </Label>
                         <Input
                           type="password"
                           name="confirmMdp"
                           value={values.confirmMdp}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
+                          required
                           placeholder="XXX XXX XXX"
                         />
                         {errors.confirmMdp && touched.confirmMdp && (
@@ -740,11 +738,9 @@ const FormulaireInscription = () => {
                       Informations Scolaires
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Option *
-                        </label>
-                        <select
+                      <div translate="no">
+                        <Label htmlFor="optionEleve">Option *</Label>
+                        {/* <select
                           name="optionEleve"
                           value={values.optionEleve}
                           onChange={handleChange}
@@ -753,89 +749,49 @@ const FormulaireInscription = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
                         >
                           <option value="">Sélectionnez une option</option>
+                        </select> */}
 
-                          {/* <!-- Scientifique --> */}
-                          <option value="1re Scientifique">
-                            1re Scientifique
-                          </option>
-                          <option value="2e Scientifique">
-                            2e Scientifique
-                          </option>
-                          <option value="3e Scientifique">
-                            3e Scientifique
-                          </option>
-                          <option value="4e Scientifique">
-                            4e Scientifique
-                          </option>
+                        <Select
+                          value={values.optionEleve}
+                          onValueChange={value => {
+                            setFieldValue('optionEleve', value)
+                          }}
+                        >
+                          <SelectTrigger className="w-full px-2 py-2 flex justify-between border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                            <SelectValue placeholder="Sélectionnez une option" />
+                            <SelectIcon>
+                              <ChevronDown />
+                            </SelectIcon>
+                          </SelectTrigger>
 
-                          {/* <!-- Littéraire --> */}
-                          <option value="1re Littéraire">1re Littéraire</option>
-                          <option value="2e Littéraire">2e Littéraire</option>
-                          <option value="3e Littéraire">3e Littéraire</option>
-                          <option value="4e Littéraire">4e Littéraire</option>
+                          <SelectContent>
+                            <SelectScrollUpButton />
+                            {ListeParClasse.map(({ classe, fillierCode }) => (
+                              <SelectItem key={classe} value={fillierCode}>
+                                {classe}
+                              </SelectItem>
+                            ))}
+                            <SelectScrollDownButton />
+                          </SelectContent>
+                        </Select>
 
-                          {/* <!-- Commerciale --> */}
-                          <option value="1re Commerciale">
-                            1re Commerciale
-                          </option>
-                          <option value="2e Commerciale">2e Commerciale</option>
-                          <option value="3e Commerciale">3e Commerciale</option>
-                          <option value="4e Commerciale">4e Commerciale</option>
-
-                          {/* <!-- Pédagogique --> */}
-                          <option value="1re Pédagogique">
-                            1re Pédagogique
-                          </option>
-                          <option value="2e Pédagogique">2e Pédagogique</option>
-                          <option value="3e Pédagogique">3e Pédagogique</option>
-                          <option value="4e Pédagogique">4e Pédagogique</option>
-
-                          {/* <!-- Coupe et Couture --> */}
-                          <option value="1re Coupe et Couture">
-                            1re Coupe et Couture
-                          </option>
-                          <option value="2e Coupe et Couture">
-                            2e Coupe et Couture
-                          </option>
-                          <option value="3e Coupe et Couture">
-                            3e Coupe et Couture
-                          </option>
-                          <option value="4e Coupe et Couture">
-                            4e Coupe et Couture
-                          </option>
-
-                          {/* <!-- Humanités / Collège --> */}
-                          <option value="8e">8e</option>
-                          <option value="7e">7e</option>
-                          <option value="6e">6e</option>
-                          <option value="5e">5e</option>
-                          <option value="4e">4e</option>
-                          <option value="3e">3e</option>
-                          <option value="2e">2e</option>
-                          <option value="1re">1re</option>
-
-                          {/* Maternelle  */}
-                          <option value="Maternelle">Maternelle</option>
-                        </select>
-                        {errors.option && touched.option && (
+                        {errors.optionEleve && touched.optionEleve && (
                           <div className="text-red-500 text-sm mt-1">
-                            {errors.option}
+                            {errors.optionEleve}
                           </div>
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Pourcentage École Venant *
-                        </label>
+                        <Label htmlFor="">Pourcentage École Venant *</Label>
                         <Input
-                          type={'number'}
+                          type="number"
                           name="pourcentage"
                           value={values.pourcentage}
                           onChange={handleChange}
-                          required
                           onBlur={handleBlur}
                           min="0"
                           max="100"
+                          required
                           placeholder="Ex: 75"
                         />
                         {errors.pourcentage && touched.pourcentage && (
@@ -849,24 +805,19 @@ const FormulaireInscription = () => {
                   <div className="text-center">
                     <p className="text-gray-600">
                       J'ai déjà un compte?{' '}
-                      <button
-                        type="button"
-                        onClick={onSwitchToRegister}
+                      <Link
+                        to="/connexion"
                         className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-300"
                       >
                         connectez-vous ici
-                      </button>
+                      </Link>
                     </p>
                   </div>
                   {/* Submit Button */}
                   <div className="flex justify-center pt-6">
-                    <Button
-                      type={'submit'}
-                      disabled={isLoading}
-                      children={
-                        isLoading ? 'chargement...' : "Soumettre l'Inscription"
-                      }
-                    />
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading ? 'chargement...' : "Soumettre l'Inscription"}
+                    </Button>
                   </div>
                 </form>
               )}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FileTextIcon, DownloadIcon, CalendarIcon } from 'lucide-react'
 import formatDate from '@/utils/FormatDate'
+import { CardContainer, CardHeader, CardContent, InfoRow } from '../ui'
 
 export const CourseCard = ({
   title,
@@ -11,14 +12,18 @@ export const CourseCard = ({
   pdfUrl,
 }) => {
   const formatFileSize = fileSize => {
+    const MEGA_OCTET = fileSize * 1024 * 1024
+    const KILO_OCTET = `${(fileSize / 1024).toFixed(2)} Ko`
+    const MEGA_OCTET_PLUS = `${(fileSize / (1024 * 1024)).toFixed(2)} MO`
+
     if (!fileSize) return 'Taille inconnue'
 
-    if (fileSize < 1024 * 1024) {
+    if (MEGA_OCTET) {
       // Moins de 1 Mo → afficher en Ko
-      return (fileSize / 1024).toFixed(2) + ' Ko'
+      return KILO_OCTET
     } else {
       // 1 Mo ou plus → afficher en Mo
-      return (fileSize / (1024 * 1024)).toFixed(2) + ' Mo'
+      return MEGA_OCTET_PLUS
     }
   }
 
@@ -28,15 +33,13 @@ export const CourseCard = ({
 
     const link = document.createElement('a')
     link.href = pdfUrl
-    link.download = `${title}.pdf` // nom du fichier lors du téléchargement
+    link.download = `${title}.pdf`
     link.click()
   }
 
-  // Aperçu du PDF
-
   return (
-    <div className="card hover:shadow-lg transition-all duration-300 border-t-4 border-[#4361EE] p-4 rounded-lg bg-white">
-      <div className="flex items-start justify-between mb-4">
+    <CardContainer>
+      <CardHeader>
         <div className="flex items-start space-x-3">
           <div className="p-2 rounded-lg bg-gray-100">
             <FileTextIcon className="w-6 h-6" />
@@ -46,21 +49,18 @@ export const CourseCard = ({
             <p className="text-sm text-gray-600">{subject}</p>
           </div>
         </div>
-      </div>
+      </CardHeader>
 
-      <div className="space-y-2 mb-4">
-        <div className="flex items-center text-sm text-gray-600">
-          <span className="font-medium mr-2">Enseignant:</span>
-          <span>{teacher}</span>
-        </div>
+      <CardContent className="space-y-2 mb-4">
+        <InfoRow leading={'Enseignant:'}>{teacher}</InfoRow>
 
-        <div className="flex items-center text-sm text-gray-500">
-          <CalendarIcon className="w-4 h-4 mr-2" />
-          <span>{formatDate(date.toDate())}</span>
-          <span className="mx-2">•</span>
-          <span>{formatFileSize(fileSize)}</span>
-        </div>
-      </div>
+        <InfoRow
+          leading={<CalendarIcon className="w-4 h-4 text-gray-500" />}
+          trailing={formatFileSize(fileSize)}
+        >
+          {formatDate(date.toDate())}
+        </InfoRow>
+      </CardContent>
 
       <div className="flex space-x-2">
         <button
@@ -71,6 +71,6 @@ export const CourseCard = ({
           Télécharger
         </button>
       </div>
-    </div>
+    </CardContainer>
   )
 }

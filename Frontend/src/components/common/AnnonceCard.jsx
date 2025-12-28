@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn'
 import { Calendar, User } from 'lucide-react'
 import formatDate from '@/utils/FormatDate'
+import { CardContainer, CardContent, CardHeader, InfoRow } from '../ui'
 
 const categoryColors = {
   general: { bg: 'bg-blue-100', text: 'text-blue-700', icon: '📢' },
@@ -17,28 +18,34 @@ const priorityBorders = {
   urgent: 'border-l-red-500',
 }
 
-export default function AnnouncementCard({ announcement }) {
+const AnnouncementCard = ({ announcement, setSelectedAnnouncement }) => {
   const category =
     categoryColors[announcement.category] || categoryColors.general
 
   return (
-    <div
+    <CardContainer
       className={cn(
-        'bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4',
-        priorityBorders[announcement.priority],
-        'group'
+        'bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border-t-0 overflow-hidden border-l-4',
+        priorityBorders[announcement.priority]
       )}
+      onClick={() => {
+        if (announcement.content.length < 45) return
+        setSelectedAnnouncement(announcement.content)
+      }}
     >
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
+      <CardContent className="p-6">
+        <CardHeader>
           <span
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${category.bg} ${category.text}`}
+            className={cn(
+              'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium',
+              category.bg,
+              category.text
+            )}
           >
             <span>{category.icon}</span>
-            {announcement.category.charAt(0).toUpperCase() +
-              announcement.category.slice(1)}
+            {announcement.category}
           </span>
-        </div>
+        </CardHeader>
 
         <h3 className="text-xl max-sm:text-sm font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
           {announcement.title}
@@ -49,18 +56,17 @@ export default function AnnouncementCard({ announcement }) {
         </p>
 
         <div className="space-y-2 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2 ">
-            <User className="w-4 h-4" />
-            <span className="text-sm">{announcement.author}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            <span className="text-sm">
-              {formatDate(announcement.createdAt.toDate())}
-            </span>
-          </div>
+          <InfoRow leading={<User className="w-4 h-4" />}>
+            {announcement.author}
+          </InfoRow>
+
+          <InfoRow leading={<Calendar className="w-4 h-4" />}>
+            {formatDate(announcement.createdAt.toDate())}
+          </InfoRow>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </CardContainer>
   )
 }
+
+export default AnnouncementCard

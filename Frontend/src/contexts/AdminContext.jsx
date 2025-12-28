@@ -1,43 +1,54 @@
-import { createContext, useContext, useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
-import { db, auth } from '@/services/firebaseConfig'
+import { ToastContainer, toast } from 'react-toastify'
+import { auth, db } from '@/services/firebaseConfig'
 
-const AdminContext = createContext()
+const AdminContext = createContext(null)
 
-const AdminProvider = ({ children }) => {
+export const AdminProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isAdminLoading, setIsAdminLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async admin => {
-      if (admin) {
-        try {
-          const docRef = doc(db, 'admin', admin.uid)
-          const docSnap = await getDoc(docRef)
-          if (docSnap.exists()) {
-            setIsAdmin(true)
-          } else {
-            setIsAdmin(false)
-          }
-        } catch (error) {
-          toast.error('Erreur fetch profil : ' + error.message)
-        } finally {
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      try {
+        if (!user) {
+          setIsAdmin(false)
           setIsAdminLoading(false)
+          return
         }
-      } else {
-        toast.error("vous n'avais pas de compte inscrivez vous")
+
+        const adminRef = doc(db, 'admin', user.uid)
+        const adminSnap = await getDoc(adminRef)
+
+        if (adminSnap.exists()) {
+          setIsAdmin(true)
+        } else {
+          setIsAdmin(false)
+        }
+      } catch (error) {
+        toast.error(`Erreur lors du chargement admin : ${error.message}`)
+      } finally {
+        setIsAdminLoading(false)
       }
     })
-    return () => unsubscribe()
-  })
+
+    return unsubscribe
+  }, [])
 
   return (
     <AdminContext.Provider value={{ isAdmin, isAdminLoading }}>
+      <ToastContainer position="top-right" />
       {children}
     </AdminContext.Provider>
   )
 }
-export default AdminProvider
-export const useAdminContext = () => useContext(AdminContext)
+
+export const useAdminContext = () => {
+  const context = useContext(AdminContext)
+  if (!context) {
+    throw new Error('useAdminContext must be used inside AdminProvider')
+  }
+  return context
+}
