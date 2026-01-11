@@ -27,7 +27,6 @@ import {
   SelectScrollDownButton,
   SelectTrigger,
   SelectScrollUpButton,
-  SelectLabel,
   SelectValue,
   SelectIcon,
   SelectContent,
@@ -219,7 +218,6 @@ const FormulaireInscription = () => {
       toast.error('Erreur récupération URL photo : ' + urlError.message)
       return null
     }
-    console.log("Photo uploadée à l'URL :", url.publicUrl)
     return url.publicUrl
   }
 
@@ -740,16 +738,6 @@ const FormulaireInscription = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div translate="no">
                         <Label htmlFor="optionEleve">Option *</Label>
-                        {/* <select
-                          name="optionEleve"
-                          value={values.optionEleve}
-                          onChange={handleChange}
-                          required
-                          onBlur={handleBlur}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
-                        >
-                          <option value="">Sélectionnez une option</option>
-                        </select> */}
 
                         <Select
                           value={values.optionEleve}

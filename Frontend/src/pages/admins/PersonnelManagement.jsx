@@ -5,6 +5,7 @@ import { PersonnelManagementCard } from '@/components/common'
 
 import STAFF from '@/utils/staff'
 import ModalDetailPersonel from '@/components/common/ModalDetailPersonel'
+import { Input } from '@/components/ui'
 
 export default function PersonnelManagement() {
   const [query, setQuery] = useState('')
@@ -36,8 +37,8 @@ export default function PersonnelManagement() {
       <div className=" w-screen  flex justify-center  items-center  bg-linear-to-b from-neutral-50 to-white ">
         <div className=" mt-20 min-h-screen p-6 md:p-8 font-sans text-slate-900">
           <header className="max-w-6xl mb-8">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
+            <div className="flex justify-between items-center w-screen">
+              <div className="flex items-center gap-4 ">
                 <div className="bg-indigo-600 text-white p-3 rounded-lg shadow-md">
                   <Users size={20} />
                 </div>
@@ -51,29 +52,33 @@ export default function PersonnelManagement() {
                   </p>
                 </div>
               </div>
-
-              <div className="hidden md:flex items-center gap-3">
-                <div className="flex items-center bg-white border border-slate-200 rounded-lg shadow-sm px-3 py-1 w-80">
-                  <Search size={16} className="text-slate-400" />
-                  <input
-                    aria-label="Recherche du personnel"
-                    className="ml-2 outline-none w-full text-sm"
-                    placeholder="Rechercher par nom ou rôle..."
-                    value={query}
-                    onChange={e => setQuery(e.target.value)}
-                  />
+              <div>
+                <div className="hidden md:flex items-center gap-3">
+                  <div className="relative w-xl">
+                    <Search
+                      size={16}
+                      className="text-slate-400 absolute right-2  top-1/2 -translate-y-1/2"
+                    />
+                    <Input
+                      type="search"
+                      placeholder="Rechercher par nom ou rôle..."
+                      value={query}
+                      onChange={e => setQuery(e.target.value)}
+                      className="p-3 w-3/4"
+                    />
+                  </div>
+                  <select
+                    className="px-3 py-2 border rounded-lg text-sm"
+                    value={filter}
+                    onChange={e => setFilter(e.target.value)}
+                  >
+                    {departments.map(d => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <select
-                  className="px-3 py-2 border rounded-lg text-sm"
-                  value={filter}
-                  onChange={e => setFilter(e.target.value)}
-                >
-                  {departments.map(d => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
-                  ))}
-                </select>
               </div>
             </div>
 
@@ -81,9 +86,7 @@ export default function PersonnelManagement() {
             <div className="mt-4 md:hidden flex gap-2 max-md:hidden">
               <div className="flex items-center bg-white border border-slate-200 rounded-lg shadow-sm px-3 py-1 w-full">
                 <Search size={16} className="text-slate-400" />
-                <input
-                  aria-label="Recherche mobile"
-                  className=" ml-2 outline-none w-full text-sm"
+                <Input
                   placeholder="Rechercher le personnel..."
                   value={query}
                   onChange={e => setQuery(e.target.value)}

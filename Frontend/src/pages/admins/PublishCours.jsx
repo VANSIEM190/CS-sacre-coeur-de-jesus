@@ -2,13 +2,26 @@ import React, { useState } from 'react'
 import { NavbarRetourHome, Footer } from '@/components/layout'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { UploadCloud } from 'lucide-react'
+import { UploadCloud, ChevronDown } from 'lucide-react'
 import { supabase } from '@/supabase/supabaseConfig'
 import { toast } from 'react-toastify'
 import { db } from '@/services/firebaseConfig'
 import { addDoc, serverTimestamp, collection } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, Label } from '@/components/ui'
+import {
+  Button,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectIcon,
+  SelectTrigger,
+  SelectScrollDownButton,
+  SelectItem,
+  SelectScrollUpButton,
+  SelectValue,
+} from '@/components/ui'
+import ListeParClasse from '@/utils/ListeParClasse'
 
 const regex = /^[a-zA-ZÀ-ÿ '-]+$/
 const schema = Yup.object({
@@ -212,6 +225,32 @@ const PublishCours = () => {
                           {errors.teacher}
                         </div>
                       )}
+                    </div>
+                    <div translate="no">
+                      <Label htmlFor="classe">Classe</Label>
+                      <Select
+                        name="classe"
+                        value={values.classe}
+                        onValueChange={value => setFieldValue('classe', value)}
+                        onBlur={handleBlur}
+                      >
+                        <SelectTrigger className="w-full px-2 py-2 flex justify-between border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                          <SelectValue placeholder="Sélectionnez une classe" />
+                          <SelectIcon>
+                            <ChevronDown />
+                          </SelectIcon>
+                        </SelectTrigger>
+
+                        <SelectContent>
+                          <SelectScrollUpButton />
+                          {ListeParClasse.map(({ classe, fillierCode }) => (
+                            <SelectItem key={classe} value={fillierCode}>
+                              {classe}
+                            </SelectItem>
+                          ))}
+                          <SelectScrollDownButton />
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 

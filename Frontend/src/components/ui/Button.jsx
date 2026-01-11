@@ -3,8 +3,7 @@ import { cn } from '@/lib/cn'
 const buttonVariants = {
   primary:
     'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105',
-  ghost:
-    'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 text-transparent bg-clip-text p-3',
+  ghost: 'border border-red-200 text-red-600 bg-red-50',
 }
 
 const Button = ({

@@ -15,7 +15,7 @@ const ElevesLinks = [
   { name: 'Horraires', href: '/horraires' },
   { name: 'Annonces', href: '/annonces' },
   { name: 'Evenements', href: '#' },
-  { name: 'Programmes Scolaires', href: '#' },
+  { name: 'Programmes Scolaires', href: '/programme-scolaire' },
 ]
 
 const EcoleLinks = [

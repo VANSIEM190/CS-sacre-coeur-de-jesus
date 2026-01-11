@@ -1,7 +1,11 @@
 import React from 'react'
-import { FileTextIcon, DownloadIcon, CalendarIcon } from 'lucide-react'
+import { FileTextIcon, DownloadIcon, CalendarIcon, Trash2 } from 'lucide-react'
 import formatDate from '@/utils/FormatDate'
 import { CardContainer, CardHeader, CardContent, InfoRow } from '../ui'
+import { db } from '@/services/firebaseConfig'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { toast } from 'react-toastify'
+import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
 
 export const CourseCard = ({
   title,
@@ -10,7 +14,10 @@ export const CourseCard = ({
   date,
   fileSize,
   pdfUrl,
+  coursId,
+  setCoursData,
 }) => {
+  const { isAdmin } = useEtatUtilisateur()
   const formatFileSize = fileSize => {
     const MEGA_OCTET = fileSize * 1024 * 1024
     const KILO_OCTET = `${(fileSize / 1024).toFixed(2)} Ko`
@@ -19,10 +26,10 @@ export const CourseCard = ({
     if (!fileSize) return 'Taille inconnue'
 
     if (MEGA_OCTET) {
-      // Moins de 1 Mo → afficher en Ko
+      // Moins de 1 Mo  afficher en Ko
       return KILO_OCTET
     } else {
-      // 1 Mo ou plus → afficher en Mo
+      // 1 Mo ou plus  afficher en Mo
       return MEGA_OCTET_PLUS
     }
   }
@@ -37,17 +44,39 @@ export const CourseCard = ({
     link.click()
   }
 
+  const deleteCours = async id => {
+    try {
+      const coursDocRef = doc(db, 'course', id)
+      await deleteDoc(coursDocRef)
+      setCoursData(prevCours => prevCours.filter(cours => cours.id !== id))
+      toast.success('cours supprimé avec succès !')
+    } catch (error) {
+      toast.error('Erreur lors de la suppression : ' + error.message)
+    }
+  }
+
   return (
     <CardContainer>
       <CardHeader>
-        <div className="flex items-start space-x-3">
-          <div className="p-2 rounded-lg bg-gray-100">
-            <FileTextIcon className="w-6 h-6" />
+        <div className="w-full flex items-center justify-between space-x-3">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-lg bg-gray-100">
+              <FileTextIcon className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">{title}</h3>
+              <p className="text-sm text-gray-600">{subject}</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-lg">{title}</h3>
-            <p className="text-sm text-gray-600">{subject}</p>
-          </div>
+          {isAdmin && (
+            <button
+              size="icon"
+              className="ml-2 text-red-600 hover:text-red-700 hover:bg-red-50 "
+              onClick={() => deleteCours(coursId)}
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </CardHeader>
 

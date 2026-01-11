@@ -4,7 +4,7 @@ import { NavbarRetourHome, Footer } from '@/components/layout'
 import { auth } from '@/services/firebaseConfig'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { toast, ToastContainer } from 'react-toastify'
-import { Button, Input } from '../ui'
+import { Button, Input, Label } from '../ui'
 import {
   UserIcon,
   LockIcon,
@@ -12,7 +12,6 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from 'lucide-react'
-import { Label } from 'radix-ui'
 
 const FormulaireConnection = () => {
   const [formData, setFormData] = useState({

@@ -9,7 +9,7 @@ import {
   Loader,
 } from 'lucide-react'
 import { db } from '@/services/firebaseConfig'
-import { collection, getDocs, query, orderBy, doc } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy } from 'firebase/firestore'
 import { toast } from 'react-toastify'
 import { cn } from '@/lib/cn'
 
@@ -37,7 +37,7 @@ const Cours = () => {
         )
         const CoursQuerySnapshop = await getDocs(coursQuery)
         const allCours = CoursQuerySnapshop.docs.map(cour => ({
-          id: doc.id,
+          id: cour.id,
           ...cour.data(),
         }))
         setCoursData(allCours)
@@ -143,6 +143,8 @@ const Cours = () => {
                     date={course.date}
                     fileSize={course.fileSize}
                     pdfUrl={course.file_path}
+                    coursId={course.id}
+                    setCoursData={setCoursData}
                   />
                 ))}
               </div>

@@ -226,7 +226,6 @@ export default function AdminPanel({ setPanelIsVisible, panelIsVisible }) {
                         </div>
                       </div>
                       <button
-                        variant="ghost"
                         size="icon"
                         className="ml-2 text-red-600 hover:text-red-700 hover:bg-red-50 "
                         onClick={() => deleteAnnoucement(announcement.id)}
