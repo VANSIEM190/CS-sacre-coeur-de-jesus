@@ -27,11 +27,11 @@ app.post('/generate-quiz', async (req, res) => {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY} `,
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'openai/gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -83,4 +83,4 @@ app.get('/api/quiz', (req, res) => {
 
 const PORT = process.env.PORT || 3001
 
-app.listen(PORT, () => console.log('Backend lancé sur port 3001'))
+app.listen(PORT, () => console.log('Backend lancé sur port ' + PORT))

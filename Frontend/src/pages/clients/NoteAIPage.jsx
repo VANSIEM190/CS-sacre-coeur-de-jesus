@@ -152,8 +152,8 @@ export default function ChatAI() {
               {key === 'analyse'
                 ? '🔍 Analyse intelligente'
                 : key === 'professeur'
-                ? '👨‍🏫 Mode Professeur'
-                : '📚 Fiche de Révision'}
+                  ? '👨‍🏫 Mode Professeur'
+                  : '📚 Fiche de Révision'}
             </button>
           ))}
         </div>

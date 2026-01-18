@@ -35,6 +35,7 @@ import { communesKinshasa } from '@/data/communeList'
 import { paysDuMonde } from '@/data/paysList'
 import { religionsKinshasa } from '@/data/religionlist'
 import { maladiesList } from '@/data/maladieList'
+import FicheInscription from './FicheInscription'
 
 const regex = /^[a-zA-Z0-9À-ÿ '-]+$/
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -192,6 +193,7 @@ const validationSchema = Yup.object({
 const initialValues = {
   nom: '',
   postNom: '',
+  prenom: '',
   sexe: '',
   nationalite: '',
   dateNaissance: '',
@@ -223,7 +225,6 @@ const FormulaireInscription = () => {
   const [photoPreview, setPhotoPreview] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
 
   const handlePhotoUpload = e => {
     const file = e.target.files[0]
@@ -273,20 +274,27 @@ const FormulaireInscription = () => {
         user_id: userId,
         nom: values.nom,
         postnom: values.postNom,
+        prenom: values.prenom,
         sexe: values.sexe,
         datenaissance: values.dateNaissance || null,
         lieunaissance: values.lieuNaissance,
         nationalite: values.nationalite,
         nompere: values.nomPere,
         nommere: values.nomMere,
-        territoire: values.territoire,
+        professionPere: values.professionPere,
+        professionMere: values.professionMere,
+        degreParente: values.degreParente,
+        avenue: values.avenue,
         commune: values.commune,
-        secteur: values.secteur,
-        village: values.village,
-        adresse: values.adresse,
+        quartier: values.quartier,
+        religion: values.religion,
+        maladie: values.maladie,
+        precisionSante: values.precisionSante,
         email: values.email,
         telephone: values.telephone,
         optioneleve: values.optionEleve,
+        ecoleProvenance: values.ecoleProvenance,
+        classeActuelle: values.classeActuelle,
         pourcentage: pourcentage,
         photo_path: photoUrl || '',
         created_at: serverTimestamp() || new Date(),
@@ -340,28 +348,7 @@ const FormulaireInscription = () => {
   }
 
   if (submitted) {
-    return (
-      <div className="min-h-screen  flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircleIcon size={48} className="text-green-600" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Inscription Réussie!
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Votre demande d'inscription a été soumise avec succès. Vous recevrez
-            une confirmation par email.
-          </p>
-          <button
-            onClick={() => navigate('/')}
-            className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 cursor-pointer"
-          >
-            Retour à l'Accueil
-          </button>
-        </div>
-      </div>
-    )
+    return <FicheInscription />
   }
   return (
     <>
@@ -750,7 +737,7 @@ const FormulaireInscription = () => {
                           required
                         >
                           <SelectTrigger className="w-full flex justify-between items-center px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300">
-                            <SelectValue placeholder="Sélectionnez une commune" />
+                            <SelectValue placeholder="Sélectionnez votre commune" />
                             <SelectIcon>
                               <ChevronDown className="size-4" />
                             </SelectIcon>
@@ -790,7 +777,7 @@ const FormulaireInscription = () => {
                           required
                         >
                           <SelectTrigger className="w-full flex justify-between items-center px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300">
-                            <SelectValue placeholder="Sélectionnez une Réligion" />
+                            <SelectValue placeholder="Sélectionnez votre Réligion" />
                             <SelectIcon>
                               <ChevronDown className="size-4" />
                             </SelectIcon>

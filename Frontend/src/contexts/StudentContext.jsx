@@ -27,10 +27,10 @@ export const StudentProvider = ({ children }) => {
         if (studentSnap.exists()) {
           setStudentData(studentSnap.data())
           setIsStudent(true)
-        } else {
-          setStudentData(null)
-          setIsStudent(false)
+          return
         }
+        setStudentData(null)
+        setIsStudent(false)
       } catch (error) {
         toast.error(`Erreur lors du chargement du profil : ${error.message}`)
       } finally {
@@ -49,7 +49,6 @@ export const StudentProvider = ({ children }) => {
         isStudentLoading,
       }}
     >
-      <ToastContainer position="top-right" />
       {children}
     </StudentContext.Provider>
   )

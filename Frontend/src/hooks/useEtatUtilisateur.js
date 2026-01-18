@@ -4,7 +4,7 @@ const useEtatUtilisateur = () => {
   const { isAdmin, isAdminLoading } = useAdminContext()
   const { studentData, isStudentLoading, isStudent } = useStudent()
   const loading = isStudentLoading || isAdminLoading
-  console.log(isStudent)
+
   const userInformation = {
     isAdmin,
     studentData,

@@ -24,9 +24,9 @@ export const AdminProvider = ({ children }) => {
 
         if (adminSnap.exists()) {
           setIsAdmin(true)
-        } else {
-          setIsAdmin(false)
+          return
         }
+        setIsAdmin(false)
       } catch (error) {
         toast.error(`Erreur lors du chargement admin : ${error.message}`)
       } finally {

@@ -52,11 +52,10 @@ const RouterApp = () => {
               <Route path="/personnels" element={<PersonnelManagement />} />
               <Route path="/palmares" element={<Palmares />} />
               <Route path="/publier-cours" element={<PublishCours />} />
+              <Route path="/annonces" element={<AnnouncementPage />} />
             </>
           ) : (
             <>
-              <Route path="/connexion" element={<FormulaireConnection />} />
-              <Route path="/inscription" element={<FormulaireInscription />} />
               <Route path="/horraires" element={<ScheduleClass />} />
               <Route path="/mes-cours" element={<Cours />} />
               <Route path="/annonces" element={<AnnouncementPage />} />
@@ -71,6 +70,8 @@ const RouterApp = () => {
 
           <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<NotFindPage />} />
+          <Route path="/connexion" element={<FormulaireConnection />} />
+          <Route path="/inscription" element={<FormulaireInscription />} />
           {/* admin routes */}
         </Routes>
       ) : (

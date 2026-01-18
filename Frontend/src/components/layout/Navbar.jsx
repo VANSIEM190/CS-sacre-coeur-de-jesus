@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MenuIcon, XIcon } from 'lucide-react'
 import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
+import { Button } from '../ui'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -48,7 +49,7 @@ const Navbar = () => {
               href="#about"
               className="text-gray-700 hover:text-indigo-600 transition-colors"
             >
-              À Propos
+              Propos
             </a>
             <a
               href="#programs"
@@ -63,15 +64,17 @@ const Navbar = () => {
               Contact
             </a>
             {accesUtilisateur ? null : (
-              <button
+              <Button
+                type="button"
+                variant="primary"
                 onClick={() => {
                   onNavigateToConnetion()
                   setIsMenuOpen(false)
                 }}
-                className="w-full px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg"
+                className="w-full px-4 py-2  text-white rounded-lg"
               >
                 Connexion
-              </button>
+              </Button>
             )}
           </nav>
           {/* Mobile Menu Button */}
@@ -121,15 +124,15 @@ const Navbar = () => {
               Contact
             </a>
             {accesUtilisateur ? null : (
-              <button
+              <Button
                 onClick={() => {
                   onNavigateToConnetion()
                   setIsMenuOpen(false)
                 }}
-                className="w-full px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg"
+                className="w-full px-4 py-2 text-white rounded-lg"
               >
                 Connexion
-              </button>
+              </Button>
             )}
           </nav>
         )}
