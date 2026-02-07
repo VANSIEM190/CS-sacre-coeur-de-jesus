@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^1.38.0",
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.4",
@@ -41,14 +43,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
-    "@types/react": "^19.1.16",
-    "@types/react-dom": "^19.1.9",
+    "@types/react": "^19.2.11",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
     "baseline-browser-mapping": "^2.9.11",
+    "daisyui": "^5.5.18",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "typescript": "^5.9.3",
     "vite": "^7.1.7"
   }
 }

@@ -1,0 +1,5 @@
+export { programs } from './nosProgramme'
+export { maladiesList } from './maladieList'
+export { paysDuMonde } from './paysList'
+export { religionsKinshasa } from './religionlist'
+export { communesKinshasa } from './communeList'

@@ -1,0 +1,108 @@
+import { ChevronRightIcon } from 'lucide-react'
+import { Button, CardContainer, CardContent } from '@/components/ui'
+import { useNavigate } from 'react-router-dom'
+import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
+
+const stats = [
+  { number: '6+', label: "Années d'Excellence" },
+  { number: '700+', label: 'Élèves Diplômés' },
+  { number: '50+', label: 'Enseignants Qualifiés' },
+  { number: '95%', label: 'Taux de Réussite' },
+]
+const HeroSection = () => {
+  const navigate = useNavigate()
+  const { isAdmin, isStudent } = useEtatUtilisateur()
+
+  const onNavigateTo = () => {
+    if (isAdmin) {
+      navigate('/annonces')
+      return
+    }
+
+    if (isStudent) {
+      navigate('/horraires')
+      return
+    }
+
+    navigate('/inscription')
+  }
+  return (
+    <>
+      <section id="home" className="pt-32 pb-20 px-4">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-block px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4 max-md:mt-5">
+                🎓 Année Scolaire {new Date().getFullYear()} -{' '}
+                {new Date().getFullYear() + 1}
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                Construisez Votre
+                <span className="block bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  Avenir Brillant
+                </span>
+              </h1>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Une éducation de qualité pour façonner les leaders de demain.
+                Rejoignez notre communauté d'excellence académique.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  onClick={onNavigateTo}
+                  type="button"
+                  variant="primary"
+                  className={'flex items-center justify-center'}
+                >
+                  {isStudent || isAdmin ? 'Explorer ' : "S'inscrire Maintenant"}
+                  <ChevronRightIcon size={20} className="ml-2" />
+                </Button>
+
+                <a
+                  href="#programs"
+                  className="px-8 py-4 border-2 border-indigo-600 text-indigo-600 text-lg font-semibold rounded-xl hover:bg-indigo-600 hover:text-white transition-all duration-300 flex items-center justify-center"
+                >
+                  Nos Programmes
+                </a>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-purple-400 rounded-3xl blur-3xl opacity-20"></div>
+
+              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 max-w-xs max-md:hidden">
+                <div className="flex items-center space-x-3">
+                  <div className="flex -space-x-2">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-indigo-500"></div>
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500"></div>
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-green-500 to-teal-500"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">
+                      2000+ Élèves
+                    </p>
+                    <p className="text-xs text-gray-500">Rejoignez-nous!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
+            {stats.map((stat, index) => (
+              <CardContainer
+                key={index}
+                className="bg-white rounded-2xl p-6 shadow-lg text-center transform hover:scale-102 transition-all duration-300"
+              >
+                <CardContent className="text-4xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                  {stat.number}
+                </CardContent>
+                <div className="text-gray-600 text-sm">{stat.label}</div>
+              </CardContainer>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default HeroSection
