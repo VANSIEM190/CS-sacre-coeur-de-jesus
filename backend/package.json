@@ -2,9 +2,11 @@
   "name": "smart-note",
   "version": "1.0.0",
   "description": "une application qui permet aux étudiants de bien comprendre leurs cours",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --watch src/**/*.ts --exec \"node --loader ts-node/esm src/server.ts\"",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [
     "Cs-sacre-coeur-de-jesus"
@@ -13,9 +15,21 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@google/genai": "^1.38.0",
+    "bcrypt": "^6.0.0",
+    "cookieparser": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.16.3",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.2.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
