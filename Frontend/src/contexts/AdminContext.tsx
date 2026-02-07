@@ -1,12 +1,21 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { auth, db } from '@/services/firebaseConfig'
 
-const AdminContext = createContext(null)
+type propsTypeAdminProvider = {
+  children: React.ReactNode
+}
 
-export const AdminProvider = ({ children }) => {
+type AdminContextType = {
+  isAdmin: boolean
+  isAdminLoading: boolean
+}
+
+const AdminContext = createContext<AdminContextType | null>(null)
+
+export const AdminProvider = ({ children }: propsTypeAdminProvider) => {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isAdminLoading, setIsAdminLoading] = useState(true)
 
@@ -15,12 +24,11 @@ export const AdminProvider = ({ children }) => {
       try {
         if (!user) {
           setIsAdmin(false)
-          setIsAdminLoading(false)
           return
         }
 
-        const adminRef = doc(db, 'admin', user.uid)
-        const adminSnap = await getDoc(adminRef)
+        const dbAdminRef = doc(db, 'admin', user.uid)
+        const adminSnap = await getDoc(dbAdminRef)
 
         if (adminSnap.exists()) {
           setIsAdmin(true)
@@ -28,7 +36,7 @@ export const AdminProvider = ({ children }) => {
         }
         setIsAdmin(false)
       } catch (error) {
-        toast.error(`Erreur lors du chargement admin : ${error.message}`)
+        toast.error(`Erreur lors du chargement admin : ${error}`)
       } finally {
         setIsAdminLoading(false)
       }
@@ -39,7 +47,6 @@ export const AdminProvider = ({ children }) => {
 
   return (
     <AdminContext.Provider value={{ isAdmin, isAdminLoading }}>
-      <ToastContainer position="top-right" />
       {children}
     </AdminContext.Provider>
   )

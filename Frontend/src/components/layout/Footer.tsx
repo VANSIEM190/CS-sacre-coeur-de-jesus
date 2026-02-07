@@ -96,21 +96,27 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiFacebookLine size={16} />
-                <span>CS Sacré coeur de Jésus De Mikonga</span>
+                <span className="text-sm">
+                  CS Sacré coeur de Jésus De Mikonga
+                </span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiInstagramLine size={16} />
-                <span className="max-sm:text-sm break-all">
+                <span className="text-sm break-all">
                   CsSacrécoeurDeJésusDeMikonga2017
                 </span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiTwitterXLine size={16} />
-                <span>CsSacrécoeurDeJésusDeMikonga2017</span>
+                <span className="text-sm">
+                  CsSacrécoeurDeJésusDeMikonga2017
+                </span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiLinkedinLine size={16} />
-                <span>CS Sacré coeur de Jésus De Mikonga</span>
+                <span className="text-sm">
+                  CS Sacré coeur de Jésus De Mikonga
+                </span>
               </li>
             </ul>
           </div>

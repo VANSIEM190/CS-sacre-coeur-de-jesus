@@ -37,7 +37,7 @@ export default function PersonnelManagement() {
   return (
     <>
       <Navbar />
-      <div className=" w-screen  bg-linear-to-b from-neutral-50 to-white ">
+      <div className=" w-screen  bg-linear-to-b from-neutral-50 to-white overflow-hidden ">
         <div className="mt-20 min-h-screen  p-6 md:p-8 font-sans text-slate-900">
           <header className="max-w-6xl mb-8">
             <div className="flex justify-around items-center w-screen">
@@ -57,7 +57,7 @@ export default function PersonnelManagement() {
                 </div>
               </div>
               <div>
-                <div className="hidden lg:flex items-center gap-3 w-full mr-20">
+                <div className="hidden lg:flex items-center gap-3 ">
                   <Input
                     type="search"
                     placeholder="Rechercher par nom ou rôle..."

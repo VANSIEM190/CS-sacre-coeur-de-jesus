@@ -18,7 +18,7 @@ import {
 import FicheInscription from './FicheInscription'
 import { signUpSchema as validateYupSchema } from '@/validators/signUpSchema'
 import type { FormikErrors } from 'formik/dist/types'
-import { FormValues } from '@/@types/PropsTypeFormulaireInscription'
+import { FormValuesData } from '@/@types/PropsTypeFormulaireInscription'
 import {
   Button,
   Input,
@@ -35,7 +35,7 @@ import {
   SelectContent,
 } from '../../components/ui'
 
-const initialValues: FormValues = {
+const initialValues: FormValuesData = {
   nom: '',
   postNom: '',
   prenom: '',
@@ -77,7 +77,7 @@ const FormulaireInscription = () => {
       field: string,
       value: any,
       shouldValidate?: boolean | undefined
-    ) => Promise<void | FormikErrors<FormValues>>
+    ) => Promise<void | FormikErrors<FormValuesData>>
   ) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -94,7 +94,7 @@ const FormulaireInscription = () => {
     if (!profilePhoto) return
 
     const fileExt = profilePhoto.name.split('.').pop()
-    const fileName = `${Math.random()}.${fileExt}`
+    const fileName = `${Date.now()}.${fileExt}`
     const filePath = `profile_photos/${fileName}`
 
     const { data, error } = await supabase.storage
@@ -155,7 +155,7 @@ const FormulaireInscription = () => {
     }
   }
 
-  const registerStudent = async (values: FormValues) => {
+  const registerStudent = async (values: FormValuesData) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -173,7 +173,7 @@ const FormulaireInscription = () => {
     }
   }
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValuesData) => {
     setIsLoading(true)
     try {
       const userId = await registerStudent(values)

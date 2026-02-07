@@ -1,4 +1,4 @@
-export type FormValues = {
+export type FormValuesData = {
   nom: string
   postNom: string
   prenom: string

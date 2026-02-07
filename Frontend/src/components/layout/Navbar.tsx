@@ -35,7 +35,7 @@ const Navbar = () => {
   const { isAdmin, studentData } = useEtatUtilisateur()
   const accesUtilisateur = studentData || isAdmin
   const linksToShow = isAdmin ? EcoleLinks : ElevesLinks
-
+  console.log(studentData)
   const onNavigateToConnetion = () => {
     navigate('/connexion')
   }
@@ -97,7 +97,17 @@ const Navbar = () => {
                 >
                   <img src="/imgAcc.png" alt="profil-admin" />
                 </Link>
-              ) : null
+              ) : (
+                <Link
+                  to=""
+                  className="w-13 h-13  rounded-full flex items-center justify-center"
+                >
+                  <img
+                    src={studentData?.photo_path ?? '/iamge'}
+                    alt="profil-admin"
+                  />
+                </Link>
+              )
             ) : (
               <button
                 type="button"

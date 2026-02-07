@@ -1,13 +1,24 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { auth, db } from '@/services/firebaseConfig'
+import { FormValuesData } from '@/@types/PropsTypeFormulaireInscription'
 
-const StudentContext = createContext(null)
+type propTypeStudentProvider = {
+  children: React.ReactNode
+}
 
-export const StudentProvider = ({ children }) => {
-  const [studentData, setStudentData] = useState(null)
+type propsTypeStudentContext = {
+  studentData: FormValuesData | null
+  isStudent: boolean
+  isStudentLoading: boolean
+}
+
+const StudentContext = createContext<propsTypeStudentContext | null>(null)
+
+export const StudentProvider = ({ children }: propTypeStudentProvider) => {
+  const [studentData, setStudentData] = useState<FormValuesData | null>(null)
   const [isStudent, setIsStudent] = useState(false)
   const [isStudentLoading, setIsStudentLoading] = useState(true)
 
@@ -17,7 +28,6 @@ export const StudentProvider = ({ children }) => {
         if (!user) {
           setStudentData(null)
           setIsStudent(false)
-          setIsStudentLoading(false)
           return
         }
 
@@ -25,14 +35,15 @@ export const StudentProvider = ({ children }) => {
         const studentSnap = await getDoc(studentRef)
 
         if (studentSnap.exists()) {
-          setStudentData(studentSnap.data())
+          setStudentData(studentSnap.data() as FormValuesData)
           setIsStudent(true)
           return
+        } else {
+          setStudentData(null)
+          setIsStudent(false)
         }
-        setStudentData(null)
-        setIsStudent(false)
       } catch (error) {
-        toast.error(`Erreur lors du chargement du profil : ${error.message}`)
+        toast.error(`Erreur lors du chargement du profil : ${error}`)
       } finally {
         setIsStudentLoading(false)
       }
