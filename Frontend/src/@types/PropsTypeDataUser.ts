@@ -28,4 +28,5 @@ export type propsTypeDataUser = {
   sexe: string
   telephone: string
   updated_at: string
+  creaded_at: string
 }

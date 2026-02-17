@@ -8,7 +8,7 @@ export const SignupStudent = async (request: Request, response: Response) => {
     response.cookie('accessToken', accessToken, { httpOnly: true })
     response
       .status(201)
-      .json({ message: 'User registered successfully', role: 'élèves' })
+      .json({ message: 'User registered successfully', role: 'student' })
   } catch (error) {
     if (error instanceof Error) {
       response.status(400).json({ error: error.message })

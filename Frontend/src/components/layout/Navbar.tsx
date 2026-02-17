@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
-import { useUser } from '@/contexts/UserContext'
 import {
   Button,
   DropdownMenu,
@@ -13,6 +12,7 @@ import {
   AvatarFallback,
 } from '../ui'
 import { TiUserAdd } from 'react-icons/ti'
+import useUserRole from '@/hooks/useUserRole'
 
 const ElevesLinks = [
   { name: 'Mes Cours', href: '/mes-cours' },
@@ -34,10 +34,10 @@ const EcoleLinks = [
 const Navbar = () => {
   const [itemsIsVisible, setItemsIsVisible] = useState(false)
   const navigate = useNavigate()
-  const { data, loading } = useUser()
-  // const accesUtilisateur = isStudent || isAdmin
-  // const linksToShow = isAdmin ? EcoleLinks : ElevesLinks
-  console.log(data)
+  const { userData, isAdmin, isStudent } = useUserRole()
+  const accesUtilisateur = isAdmin || isStudent
+  const linksToShow = isAdmin ? EcoleLinks : ElevesLinks
+  console.log(isStudent, isAdmin)
   const onNavigateToConnetion = () => {
     navigate('/eleves/connexion')
   }
@@ -61,7 +61,7 @@ const Navbar = () => {
           </Link>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2 w-2xl">
-            {EcoleLinks.map(link => (
+            {linksToShow.map(link => (
               <div
                 className="list-none px-0.5 rounded hover:text-gray-500 cursor-pointer"
                 key={link.name}
@@ -71,31 +71,39 @@ const Navbar = () => {
             ))}
           </nav>
           <div>
-            {/* {data?.email  ? (
-              isStudent ? (
+            {accesUtilisateur ? (
+              isAdmin ? (
+                <Link to="/e">
+                  <Avatar>
+                    <AvatarImage
+                      src="/imgAcc.png"
+                      alt="profil_admin"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-slate-200"
+                    />
+                    <AvatarFallback>
+                      <div className="w-12 h-12 rounded-full bg-gray-200 border-2 border-slate-200 flex items-center justify-center text-gray-600 font-semibold">
+                        {userData?.data?.nom?.charAt(0).toUpperCase() ?? 'S'}
+                      </div>
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+              ) : (
                 <Link to="/eleves/mon-compte">
                   <Avatar>
                     <AvatarImage
                       src={
-                        studentData?.photo_path &&
-                        `http://localhost:3000/assets/${studentData.photo_path}`
+                        userData?.data?.photo_path &&
+                        `http://localhost:3000/assets/${userData?.data?.photo_path}`
                       }
                       alt="profil_élève"
                       className="w-10 h-10 rounded-full object-cover border-2 border-slate-200"
                     />
                     <AvatarFallback>
                       <div className="w-12 h-12 rounded-full bg-gray-200 border-2 border-slate-200 flex items-center justify-center text-gray-600 font-semibold">
-                        {studentData?.nom?.charAt(0).toUpperCase() ?? 'S'}
+                        {userData?.data?.nom?.charAt(0).toUpperCase() ?? 'SA'}
                       </div>
                     </AvatarFallback>
                   </Avatar>
-                </Link>
-              ) : (
-                <Link
-                  to=""
-                  className="w-13 h-13  rounded-full flex items-center justify-center"
-                >
-                  <img src="/imgAcc.png" alt="profil-admin" />
                 </Link>
               )
             ) : (
@@ -108,14 +116,14 @@ const Navbar = () => {
               >
                 <TiUserAdd />
               </button>
-            )} */}
+            )}
           </div>
 
           {/* Mobile Menu Button */}
         </div>
         {/* Mobile Navigation */}
 
-        {/* <nav className="md:hidden pb-4 space-y-3">
+        <nav className="md:hidden pb-4 space-y-3">
           <DropdownMenu className="w-full">
             <DropdownTrigger className="relative ">
               <button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white/10 shadow px-3 py-2 text-sm font-semibold text-gray-600 inset-ring-1 inset-ring-white/5 hover:bg-white/20">
@@ -152,7 +160,7 @@ const Navbar = () => {
               Connexion
             </Button>
           )}
-        </nav> */}
+        </nav>
       </div>
     </header>
   )

@@ -5,8 +5,9 @@ import { sacreCoeurDB } from '../../config/db.config.js'
 export const loginAdminRepository = async (data: adminTypeData) => {
   try {
     const { email } = data
-    const { sql, values } = adminModel.findStudentsByEmail(email)
+    const { sql, values } = adminModel.findAdminByEmail(email)
     const [rows] = await sacreCoeurDB.execute(sql, values)
+    console.log(rows)
     return rows as adminTypeData[]
   } catch (error: any) {
     if (error.code === 'ER_DUP_ENTRY') {

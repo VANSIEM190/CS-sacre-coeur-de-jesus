@@ -26,4 +26,5 @@ export type FormValuesData = {
   ecoleProvenance: string
   classeActuelle: string
   photo_path: string
+  role: string
 }

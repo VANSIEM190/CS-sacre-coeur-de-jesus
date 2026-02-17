@@ -19,13 +19,13 @@ export const validateLoginOfStudent = async (data: studentTypeData) => {
 
     if (!mdpCompare) throw new Error('mot de passe invalid')
     const accessToken = jwt.sign(
-      { id: student.id, email: student.email, role: 'élèves' },
+      { id: student.id, email: student.email, role: 'student' },
       env.JWT_SECRET as string,
       { expiresIn: '1h' }
     )
 
     const refreshToken = jwt.sign(
-      { id: student.id, email: student.email, role: 'élèves' },
+      { id: student.id, email: student.email, role: 'student' },
       env.JWT_REFRESH_SECRET as string,
       { expiresIn: '30d' }
     )

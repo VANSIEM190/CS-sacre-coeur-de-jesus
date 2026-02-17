@@ -26,7 +26,7 @@ export const loginStudent = async (request: Request, response: Response) => {
       student: {
         id: student.id,
         email: student.email,
-        role: 'élèves',
+        role: 'student',
       },
     })
   } catch (error) {

@@ -9,7 +9,7 @@ export const refreshToken = (req: Request, res: Response) => {
   try {
     const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET as string) as {
       id: number
-      role: 'admin' | 'élèves'
+      role: 'admin' | 'student'
     }
 
     // Générer un nouveau Access Token
@@ -19,7 +19,13 @@ export const refreshToken = (req: Request, res: Response) => {
       { expiresIn: '1h' }
     )
 
-    res.json({ accessToken: newAccessToken })
+    res.cookie('accessToken', newAccessToken, {
+      httpOnly: true,
+      secure: false, // true en production HTTPS
+      sameSite: 'lax',
+    })
+
+    res.status(200).json({ message: 'Token refresh OK' })
   } catch (err) {
     res.status(403).json({ message: 'Refresh token invalide' })
   }

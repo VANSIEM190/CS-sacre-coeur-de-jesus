@@ -25,5 +25,4 @@ export type studentTypeData = {
   ecoleProvenance: string
   classeActuelle: string
   photo_path: string | null
-  role: string
 }

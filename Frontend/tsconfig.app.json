@@ -26,5 +26,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../backend/src/controllers/clients/@types/userTokenDataType.ts"
+  ]
 }

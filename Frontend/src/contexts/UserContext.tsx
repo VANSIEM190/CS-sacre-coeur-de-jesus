@@ -7,15 +7,21 @@ type propTypeStudentProvider = {
   children: React.ReactNode
 }
 
+type userDatatype = {
+  data: FormValuesData
+  status: string
+  role: string
+}
+
 type propsTypeStudentContext = {
-  data: FormValuesData | null
+  userData: userDatatype | null
   loading: boolean
 }
 
 const UserContext = createContext<propsTypeStudentContext | null>(null)
 
 export const UserProvider = ({ children }: propTypeStudentProvider) => {
-  const [data, setData] = useState<FormValuesData | null>(null)
+  const [userData, setUserData] = useState<userDatatype | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,10 +32,10 @@ export const UserProvider = ({ children }: propTypeStudentProvider) => {
         })
 
         if (response.data.status !== 'succes') {
-          setData(null)
+          setUserData(null)
           return
         }
-        setData(response.data)
+        setUserData(response.data)
         console.log(response.data)
       } catch (error) {
         toast.error(`Erreur lors du chargement du profil : ${error}`)
@@ -43,7 +49,7 @@ export const UserProvider = ({ children }: propTypeStudentProvider) => {
   return (
     <UserContext.Provider
       value={{
-        data,
+        userData,
         loading,
       }}
     >

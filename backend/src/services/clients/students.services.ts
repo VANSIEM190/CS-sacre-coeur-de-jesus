@@ -23,7 +23,7 @@ export const validateStudent = async (
     }
     const studentCreated = await createStudent(studentData)
     const accessToken = jwt.sign(
-      { id: studentCreated.insertId, role: 'élèves' },
+      { id: studentCreated.insertId, role: 'student' },
       env.JWT_SECRET as string,
       { expiresIn: '1h' }
     )

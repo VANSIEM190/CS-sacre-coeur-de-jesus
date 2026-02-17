@@ -58,11 +58,12 @@ export const StudentAuthModel = {
     ]
     return { sql, values }
   },
-  findStudentsById: (id: number, table: string) => {
-    const sql = `SELECT * FROM ${table}  WHERE id=?`
+  findStudentsById: (id: number) => {
+    const sql = `SELECT * FROM students  WHERE id=?`
     const values = [id]
     return { sql, values }
   },
+
   findStudentsByEmail: (email: string) => {
     const sql = 'SELECT * FROM students WHERE email=?'
     const values = [email]

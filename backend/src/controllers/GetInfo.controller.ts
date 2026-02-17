@@ -1,12 +1,13 @@
 import type { Request, Response } from 'express'
+import { userTokenDataType } from './clients/@types/userTokenDataType'
 
 export const getInformations = async (req: Request, res: Response) => {
   try {
     res.status(200).json({
       status: 'succes',
       data: req.studentTypeData,
-      role: 'admin',
-    })
+      role: req.userRole,
+    } as userTokenDataType)
   } catch (err) {
     res
       .status(400)
