@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { ScheduleCard } from './ScheduleCard'
 import { CalendarIcon, ClockIcon } from 'lucide-react'
-import { useStudent } from '@/contexts/StudentContext'
 import { toast } from 'react-toastify'
 import ButtonDownload from './ButtonDownload'
 import { cn } from '@/lib/cn'
+import { useUser } from '@/contexts'
 const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
 
 export function ScheduleDisplay() {
   const [selectedDay, setSelectedDay] = useState('Lundi')
   const [horraires, setHorraires] = useState([])
-  const { studentData, loading } = useStudent()
+  const { data, loading } = useUser()
 
   useEffect(() => {
     const fetchScheduleForOption = async () => {
-      if (!loading && studentData) {
+      if (!loading && data) {
         try {
-          const response = await fetch(
-            `/horraires/${studentData.optioneleve}.json`
-          )
-          const data = await response.json()
-          setHorraires(data)
+          const response = await fetch(`/horraires/${data.optionEleve}.json`)
+          const datas = await response.json()
+          setHorraires(datas)
           console.log('Horaires fetchés selon option:', data)
         } catch (error) {
           toast.error('Erreur fetch des horaires:', error.message)
@@ -28,7 +26,7 @@ export function ScheduleDisplay() {
       }
     }
     fetchScheduleForOption()
-  }, [loading, studentData])
+  }, [loading, data])
 
   return (
     <>

@@ -1,24 +1,23 @@
-import type { Timestamp } from 'firebase/firestore'
-
 export type propsTypeDataUser = {
   avenue: string
   classeActuelle: string
   commune: string
-  created_at: Timestamp
-  datenaissance: string
+  created_at: string
+  dateNaissance: string
   degreParente: string
   ecoleProvenance: string
   email: string
-  id: string
-  lieunaissance: string
+  id: number
+  lieuNaissance: string
   maladie: string
+  motdepasse: string
   nationalite: string
   nom: string
-  nommere: string
-  nompere: string
-  optioneleve: string
+  nomMere: string
+  nomPere: string
+  optionEleve: string
   photo_path: string
-  postnom: string
+  postNom: string
   pourcentage: number
   precisionSante: string
   prenom: string
@@ -28,5 +27,5 @@ export type propsTypeDataUser = {
   religion: string
   sexe: string
   telephone: string
-  user_id: string
+  updated_at: string
 }

@@ -83,7 +83,7 @@ const Footer = () => {
                   to="/mon-profil"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Être informer de nos nouvelles
+                  nos nouvelles
                 </Link>
               </li>
             </ul>
@@ -96,27 +96,21 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiFacebookLine size={16} />
-                <span className="text-sm">
-                  CS Sacré coeur de Jésus De Mikonga
-                </span>
+                <span className="text-sm">CS Sacré coeur de Jésus</span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiInstagramLine size={16} />
                 <span className="text-sm break-all">
-                  CsSacrécoeurDeJésusDeMikonga2017
+                  CsSacrécoeurDeJésusDe2017
                 </span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiTwitterXLine size={16} />
-                <span className="text-sm">
-                  CsSacrécoeurDeJésusDeMikonga2017
-                </span>
+                <span className="text-sm">CsSacrécoeurDeJésus2017</span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400">
                 <RiLinkedinLine size={16} />
-                <span className="text-sm">
-                  CS Sacré coeur de Jésus De Mikonga
-                </span>
+                <span className="text-sm">CS Sacré coeur de Jésus</span>
               </li>
             </ul>
           </div>

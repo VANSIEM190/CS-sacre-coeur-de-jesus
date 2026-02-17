@@ -39,7 +39,11 @@ const StudentsList = React.memo(({ students = [] }: StudentsListProps) => {
             <CardHeader className="flex gap-2">
               <Avatar>
                 <AvatarImage
-                  src={student.photo_path}
+                  src={
+                    student.photo_path
+                      ? `http://localhost:3000/assets/${student.photo_path}`
+                      : '/imgAcc.png'
+                  }
                   alt="profil_élève"
                   className="size-10 rounded-full border-2 border-slate-200"
                 />
@@ -58,11 +62,11 @@ const StudentsList = React.memo(({ students = [] }: StudentsListProps) => {
                     {student.email}
                   </p>
                   <span className="text-xs text-gray-500 xl:hidden truncate">
-                    {student.optioneleve}
+                    {student.optionEleve}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500 max-xl:hidden truncate">
-                  {student.optioneleve}
+                  {student.optionEleve}
                 </span>
               </div>
             </CardHeader>
@@ -71,7 +75,7 @@ const StudentsList = React.memo(({ students = [] }: StudentsListProps) => {
                 type="button"
                 variant="primary"
                 className="px-3 py-1 text-sm rounded-md hover:scale-100"
-                onClick={() => navigate(`/eleves/${student.user_id}`)}
+                onClick={() => navigate(`/eleves/${student.id}`)}
               >
                 Voir
               </Button>

@@ -1,7 +1,6 @@
 import { ChevronRightIcon } from 'lucide-react'
 import { Button, CardContainer, CardContent } from '@/components/ui'
 import { useNavigate } from 'react-router-dom'
-import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
 
 const stats = [
   { number: '6+', label: "Années d'Excellence" },
@@ -11,21 +10,20 @@ const stats = [
 ]
 const HeroSection = () => {
   const navigate = useNavigate()
-  const { isAdmin, isStudent } = useEtatUtilisateur()
 
-  const onNavigateTo = () => {
-    if (isAdmin) {
-      navigate('/annonces')
-      return
-    }
+  // const onNavigateTo = () => {
+  //   if (isAdmin) {
+  //     navigate('/annonces')
+  //     return
+  //   }
 
-    if (isStudent) {
-      navigate('/horraires')
-      return
-    }
+  //   if (isStudent) {
+  //     navigate('/horraires')
+  //     return
+  //   }
 
-    navigate('/inscription')
-  }
+  //   navigate('/inscription')
+  // }
   return (
     <>
       <section id="home" className="pt-32 pb-20 px-4">
@@ -48,12 +46,12 @@ const HeroSection = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
-                  onClick={onNavigateTo}
+                  onClick={() => navigate('/')}
                   type="button"
                   variant="primary"
                   className={'flex items-center justify-center'}
                 >
-                  {isStudent || isAdmin ? 'Explorer ' : "S'inscrire Maintenant"}
+                  "S'inscrire Maintenant"
                   <ChevronRightIcon size={20} className="ml-2" />
                 </Button>
 

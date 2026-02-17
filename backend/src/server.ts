@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import { routes } from './router/routes'
+import { routes } from './router/routes.js'
+import cookieParser from 'cookie-parser'
 const app = express()
 
 app.use(
@@ -11,13 +12,14 @@ app.use(
   })
 )
 
-app.use('/api/v1', routes)
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 app.use(express.static('public'))
 
-app.listen(300, error => {
+app.use('/api/v1', routes)
+
+app.listen(3000, error => {
   if (error) {
     console.log('il y a erreur lors du démararge')
   }

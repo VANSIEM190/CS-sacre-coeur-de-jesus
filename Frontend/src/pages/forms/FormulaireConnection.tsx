@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Footer, Navbar } from '@/components/layout'
-import { auth } from '@/services/firebaseConfig'
-import { signInWithEmailAndPassword } from 'firebase/auth'
 import { toast, ToastContainer } from 'react-toastify'
 import { Button, Input, Label } from '../../components/ui'
 import {
@@ -12,18 +10,19 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from 'lucide-react'
+import axios from 'axios'
 
 const FormulaireConnection = () => {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    motdepasse: '',
   })
   const [showPassword, setShowPassword] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleInputChange = e => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
@@ -31,23 +30,22 @@ const FormulaireConnection = () => {
     }))
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
+
     try {
-      const userSignIn = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
+      axios.defaults.withCredentials = true
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/students/Auth/login',
+        formData
       )
+      console.log(response.data)
 
-      if (!userSignIn) return toast.error('erreur lors de la connection')
-
-      toast.success('connection reussie !!')
-      setIsLoading(false)
+      toast.success('connexion reussie !!')
       setLoggedIn(true)
     } catch (error) {
-      toast.error('une erreur est survenue', error.message)
+      toast.error('une erreur est survenue')
     } finally {
       setIsLoading(false)
     }
@@ -115,15 +113,15 @@ const FormulaireConnection = () => {
               </div>
               {/* Password */}
               <div className="mb-6">
-                <Label htmlFor="password">Mot de passe *</Label>
+                <Label htmlFor="motdepasse">Mot de passe *</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <LockIcon size={20} className="text-gray-400" />
                   </div>
                   <Input
                     type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={formData.password}
+                    name="motdepasse"
+                    value={formData.motdepasse}
                     onChange={handleInputChange}
                     className=" pl-10 pr-12 py-3"
                     required
@@ -169,6 +167,7 @@ const FormulaireConnection = () => {
               {/* Submit Button */}
               <Button
                 type="submit"
+                variant="primary"
                 disabled={isLoading}
                 className="w-full py-3 mb-6"
               >
@@ -186,9 +185,17 @@ const FormulaireConnection = () => {
               {/* Register Link */}
               <div className="text-center">
                 <p className="text-gray-600">
+                  Vous êtes Admin?{' '}
+                  <Link
+                    to="/admin/connexion"
+                    className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-300"
+                  >
+                    Connectz-vous ici
+                  </Link>
+                  <br />
                   Vous n'avez pas de compte?{' '}
                   <Link
-                    to="/inscription"
+                    to="/eleves/inscription"
                     className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-300"
                   >
                     Inscrivez-vous ici

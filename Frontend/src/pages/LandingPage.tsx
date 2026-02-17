@@ -1,5 +1,4 @@
 import { Navbar, Footer } from '@/components/layout'
-import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
 import {
   SectionAprpos,
   SectionContact,
@@ -8,9 +7,10 @@ import {
   HeroSection,
   Loader,
 } from '@/components/common'
+import { useUser } from '@/contexts'
 
 const LandingPage = () => {
-  const { loading } = useEtatUtilisateur()
+  const { loading } = useUser()
 
   if (loading) {
     return <Loader />

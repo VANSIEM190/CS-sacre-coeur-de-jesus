@@ -1,6 +1,6 @@
-import { env } from './env.config'
+import { env } from './env.config.js'
 import dotenv from 'dotenv'
-import mysql from 'mysql2'
+import mysql from 'mysql2/promise'
 dotenv.config()
 
 export const sacreCoeurDB = mysql.createPool({

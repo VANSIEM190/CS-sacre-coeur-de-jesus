@@ -1,11 +1,12 @@
 import React from 'react'
-import useEtatUtilisateur from '@/hooks/useEtatUtilisateur'
+
 import { Button } from '../../components/ui'
 import { useNavigate } from 'react-router-dom'
 import { Footer, Navbar } from '../../components/layout'
+import { useUser } from '@/contexts'
 
 const FicheInscription = () => {
-  const { studentData } = useEtatUtilisateur()
+  const { data } = useUser()
   const navigate = useNavigate()
 
   const generateIdDocUser = () => {
@@ -78,38 +79,35 @@ const FicheInscription = () => {
                   Nom complet
                 </p>
                 <p className="text-lg font-medium">
-                  {studentData?.nom} {studentData?.postnom}{' '}
-                  {studentData?.prenom}
+                  {data?.nom} {data?.postnom} {data?.prenom}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-semibold uppercase mb-1">
                   Date de naissance
                 </p>
-                <p className="text-lg font-medium">
-                  {studentData?.datenaissance}
-                </p>
+                <p className="text-lg font-medium">{data?.datenaissance}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-semibold uppercase mb-1">
                   Email professionnel
                 </p>
                 <p className="text-lg font-medium text-indigo-600">
-                  {studentData?.email}
+                  {data?.email}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-semibold uppercase mb-1">
                   Téléphone
                 </p>
-                <p className="text-lg font-medium">{studentData?.telephone}</p>
+                <p className="text-lg font-medium">{data?.telephone}</p>
               </div>
               <div className="md:col-span-2">
                 <p className="text-xs text-slate-500 font-semibold uppercase mb-1">
                   classe sollicitée
                 </p>
                 <p className="text-lg font-bold text-indigo-900">
-                  {studentData?.optioneleve}
+                  {data?.optionEleve}
                 </p>
               </div>
             </div>

@@ -3,11 +3,10 @@ import AnnouncementsView from './clients/AnnouncementView'
 import { AdminPanel } from '@/components/common'
 import { Shield, GraduationCap } from 'lucide-react'
 import { Footer, Navbar } from '@/components/layout'
-import { useAdminContext } from '@/contexts/AdminContext'
+
 import { cn } from '@/lib/cn'
 
 const AnnouncementPage = () => {
-  const { isAdmin } = useAdminContext()
   const [isVisiblePanel, setIsvisiblePanel] = useState(true)
 
   return (
@@ -32,7 +31,7 @@ const AnnouncementPage = () => {
                   </p>
                 </div>
               </div>
-              {isAdmin && (
+              {/* {isAdmin && (
                 <button
                   onClick={() => {
                     setIsvisiblePanel(prevVisibility => !prevVisibility)
@@ -52,11 +51,11 @@ const AnnouncementPage = () => {
                   />
                   {isVisiblePanel ? 'Mode Administrateur' : 'Mode Élève'}
                 </button>
-              )}
+              )} */}
             </div>
           </header>
 
-          {isAdmin && isVisiblePanel ? (
+          {isVisiblePanel ? (
             <AdminPanel
               setPanelIsVisible={setIsvisiblePanel}
               panelIsVisible={isVisiblePanel}

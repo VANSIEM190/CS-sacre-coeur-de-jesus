@@ -9,16 +9,17 @@ import { db, auth } from '@/services/firebaseConfig'
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import ListeParClasse from '@/utils/ListeParClasse'
+import FicheInscription from './FicheInscription'
+import { signUpSchema as validateYupSchema } from '@/validators/signUpSchema'
+import type { FormikErrors } from 'formik/dist/types'
+import { FormValuesData } from '@/@types/PropsTypeFormulaireInscription'
+import axios from 'axios'
 import {
   paysDuMonde,
   maladiesList,
   religionsKinshasa,
   communesKinshasa,
 } from '@/data'
-import FicheInscription from './FicheInscription'
-import { signUpSchema as validateYupSchema } from '@/validators/signUpSchema'
-import type { FormikErrors } from 'formik/dist/types'
-import { FormValuesData } from '@/@types/PropsTypeFormulaireInscription'
 import {
   Button,
   Input,
@@ -62,11 +63,10 @@ const initialValues: FormValuesData = {
   confirmMdp: '',
   ecoleProvenance: '',
   classeActuelle: '',
-  photo_path: null,
+  photo_path: '',
 }
 
 const FormulaireInscription = () => {
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -82,115 +82,42 @@ const FormulaireInscription = () => {
     const file = e.target.files?.[0]
     if (file) {
       setFieldValue('photo_path', file)
-      setProfilePhoto(file)
       const reader = new FileReader()
       reader.onloadend = () => setPhotoPreview(reader.result as string)
       reader.readAsDataURL(file)
     }
   }
 
-  // Upload la photo dans Supabase Storage
-  const uploadProfilePhoto = async () => {
-    if (!profilePhoto) return
-
-    const fileExt = profilePhoto.name.split('.').pop()
-    const fileName = `${Date.now()}.${fileExt}`
-    const filePath = `profile_photos/${fileName}`
-
-    const { data, error } = await supabase.storage
-      .from('SACRECOEUR')
-      .upload(filePath, profilePhoto)
-
-    if (error) {
-      toast.error('Erreur upload photo : ' + error.message)
-      return
-    }
-
-    const { data: url } = await supabase.storage
-      .from('SACRECOEUR')
-      .getPublicUrl(filePath)
-    return url.publicUrl
-  }
-
-  const saveUserInfo = async (
-    userId: string,
-    values: FormValues,
-    photoUrl: string
-  ) => {
-    try {
-      const studentsDBRef = doc(db, 'students', userId)
-      await setDoc(studentsDBRef, {
-        user_id: userId,
-        nom: values.nom,
-        postnom: values.postNom,
-        prenom: values.prenom,
-        sexe: values.sexe,
-        datenaissance: values.dateNaissance || null,
-        lieunaissance: values.lieuNaissance,
-        nationalite: values.nationalite,
-        nompere: values.nomPere,
-        nommere: values.nomMere,
-        professionPere: values.professionPere,
-        professionMere: values.professionMere,
-        degreParente: values.degreParente,
-        avenue: values.avenue,
-        commune: values.commune,
-        quartier: values.quartier,
-        religion: values.religion,
-        maladie: values.maladie,
-        precisionSante: values.precisionSante,
-        email: values.email,
-        telephone: values.telephone,
-        optioneleve: values.optionEleve,
-        ecoleProvenance: values.ecoleProvenance,
-        classeActuelle: values.classeActuelle,
-        pourcentage: values.pourcentage,
-        photo_path: photoUrl || '',
-        created_at: serverTimestamp() || new Date(),
-      })
-      return true
-    } catch (err) {
-      console.error('Erreur:', err)
-      return false
-    }
-  }
-
-  const registerStudent = async (values: FormValuesData) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        values?.email,
-        values?.motdepasse
-      )
-      if (!userCredential) {
-        toast.error("Erreur lors de l'inscription : utilisateur non créé")
-        return null
-      }
-      return userCredential.user.uid
-    } catch (error) {
-      toast.error("Erreur lors de l'inscription : " + error)
-      return null
-    }
-  }
-
   const handleSubmit = async (values: FormValuesData) => {
     setIsLoading(true)
+
     try {
-      const userId = await registerStudent(values)
-      if (!userId) return
+      const formData = new FormData()
 
-      // Upload la photo si sélectionnée
-      const photoUrl = await uploadProfilePhoto()
-      if (!photoUrl) return
-      values.photo_path = photoUrl
-
-      // Enregistrement des infos utilisateur
-      const saved = await saveUserInfo(userId, values, photoUrl)
-      if (!saved) return
+      for (const key in values) {
+        // @ts-ignore
+        formData.append(key, values[key])
+      }
+      axios.defaults.withCredentials = true
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/students/auth/register',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
 
       setSubmitted(true)
     } catch (error) {
-      toast.error("Erreur lors de l'inscription : " + error)
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          `Erreur lors de l'inscription : ${
+            error.response?.data?.message || 'Erreur serveur'
+          }`
+        )
+      }
     } finally {
       setIsLoading(false)
     }

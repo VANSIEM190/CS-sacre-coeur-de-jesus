@@ -21,6 +21,7 @@ import {
   Input,
 } from '@/components/ui'
 import createFilter from '@/utils/filtered'
+import axios from 'axios'
 
 const StudentsManagement = () => {
   const [valueSearch, setValueSearch] = useState('')
@@ -31,19 +32,23 @@ const StudentsManagement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const studentsQuery = query(
-          collection(db, 'students'),
-          orderBy('nom', 'asc')
+        // const studentsQuery = query(
+        //   collection(db, 'students'),
+        //   orderBy('nom', 'asc')
+        // )
+        // const querySnapshot = await getDocs(studentsQuery)
+        // const studentsList: propsTypeDataUser[] = querySnapshot.docs.map(
+        //   doc => ({
+        //     id: doc.id,
+        //     ...(doc.data() as Omit<propsTypeDataUser, 'id'>),
+        //   })
+        // )
+        // console.log(studentsList)
+        const studentsList = await axios.get(
+          'http://localhost:3000/api/v1/students/getAll'
         )
-        const querySnapshot = await getDocs(studentsQuery)
-        const studentsList: propsTypeDataUser[] = querySnapshot.docs.map(
-          doc => ({
-            id: doc.id,
-            ...(doc.data() as Omit<propsTypeDataUser, 'id'>),
-          })
-        )
-        console.log(studentsList)
-        setEleves(studentsList)
+        setEleves(studentsList.data.data)
+        console.log(studentsList.data.data)
       } catch (error) {
         toast.error('Erreur lors du fetch des élèves : ' + error)
       } finally {

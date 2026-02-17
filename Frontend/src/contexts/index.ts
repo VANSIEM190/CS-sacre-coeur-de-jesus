@@ -1,3 +1,2 @@
-export { AdminProvider, useAdminContext } from './AdminContext'
-export { StudentProvider, useStudent } from './StudentContext'
+export { UserProvider, useUser } from './UserContext'
 export { NetworkStatusProvider, useNetworkStatus } from './NetWorkStatusCotext'

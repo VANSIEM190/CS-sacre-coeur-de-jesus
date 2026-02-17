@@ -25,5 +25,5 @@ export type FormValuesData = {
   confirmMdp: string
   ecoleProvenance: string
   classeActuelle: string
-  photo_path: string | null
+  photo_path: string
 }
