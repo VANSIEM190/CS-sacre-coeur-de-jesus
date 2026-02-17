@@ -25,7 +25,11 @@ api.interceptors.response.use(
         )
 
         return api(originalRequest)
-      } catch {}
+      } catch {
+        if (window.location.pathname !== '/admin/connexion') {
+          window.location.href = '/admin/connexion'
+        }
+      }
     }
 
     return Promise.reject(error)
